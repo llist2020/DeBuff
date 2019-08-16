@@ -1,0 +1,1752 @@
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/layoutaa\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"#edf0f2\"\r\n    tools:context=\".MainActivity\">\r\n\r\n  <ScrollView\r\n      android:id=\"@+id/scrollView2\"\r\n      android:layout_width=\"match_parent\"\r\n      android:layout_height=\"match_parent\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:animateLayoutChanges=\"true\"\r\n        android:orientation=\"vertical\">\r\n\r\n      <androidx.cardview.widget.CardView\r\n          android:layout_width=\"match_parent\"\r\n          android:layout_height=\"match_parent\"\r\n          android:layout_marginLeft=\"8dp\"\r\n          android:layout_marginTop=\"8dp\"\r\n          android:layout_marginRight=\"8dp\"\r\n          android:animateLayoutChanges=\"true\"\r\n          app:cardElevation=\"0dp\"\r\n          app:contentPadding=\"16dp\">\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:animateLayoutChanges=\"true\"\r\n            android:orientation=\"vertical\">\r\n\r\n          <TextView\r\n              android:id=\"@+id/proton\"\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"wrap_content\"\r\n              android:text=\"Number of acidic protons:\"\r\n              android:textSize=\"16sp\" />\r\n\r\n          <View\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"1dp\"\r\n              android:layout_marginTop=\"4dp\"\r\n              android:background=\"#e1e1e1\" />\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:layout_gravity=\"right\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:gravity=\"right\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <EditText\r\n                android:id=\"@+id/nTxt\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:imeOptions=\"actionUnspecified\"\r\n                android:inputType=\"number\"\r\n                android:text=\"1\"\r\n                android:textAlignment=\"textEnd\"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/unit\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"visible\" />\r\n\r\n            <Button\r\n                android:id=\"@+id/NextBtn\"\r\n                style=\"@style/Widget.AppCompat.Button.Borderless.Colored\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"Next\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:layout_gravity=\"right\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:gravity=\"right\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <Switch\r\n                android:id=\"@+id/AcidBaseSwInp\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:enabled=\"false\"\r\n                android:text=\"Acid\" />\r\n\r\n            <Button\r\n                android:id=\"@+id/AddBtn\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:enabled=\"false\"\r\n                android:text=\"Add component\"\r\n                android:visibility=\"visible\" />\r\n\r\n            <Button\r\n                android:id=\"@+id/RstBtn\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:enabled=\"false\"\r\n                android:text=\"reset\" />\r\n          </LinearLayout>\r\n\r\n        </LinearLayout>\r\n\r\n      </androidx.cardview.widget.CardView>\r\n\r\n      <androidx.cardview.widget.CardView\r\n          android:id=\"@+id/cardView\"\r\n          android:layout_width=\"match_parent\"\r\n          android:layout_height=\"match_parent\"\r\n          android:layout_marginLeft=\"8dp\"\r\n          android:layout_marginTop=\"8dp\"\r\n          android:layout_marginRight=\"8dp\"\r\n          android:animateLayoutChanges=\"true\"\r\n          app:cardElevation=\"0dp\"\r\n          app:contentPadding=\"16dp\">\r\n\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:animateLayoutChanges=\"true\"\r\n            android:orientation=\"vertical\">\r\n\r\n          <TextView\r\n              android:id=\"@+id/twwww\"\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"wrap_content\"\r\n              android:text=\"Titration\"\r\n              android:textSize=\"16sp\" />\r\n\r\n          <View\r\n              android:id=\"@+id/view\"\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"1dp\"\r\n              android:layout_marginTop=\"4dp\"\r\n              android:layout_marginBottom=\"4dp\"\r\n              android:background=\"#e1e1e1\" />\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\"\r\n              android:paddingBottom=\"8dp\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:gravity=\"left\"\r\n                android:text=\"against: \"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:gravity=\"right\"\r\n                android:text=\"base\"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <Switch\r\n                android:id=\"@+id/AcidBaseSw\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginLeft=\"8dp\"\r\n                android:layout_marginRight=\"8dp\"\r\n                android:layout_weight=\"0.1\"\r\n                android:enabled=\"false\"\r\n                android:gravity=\"right|center_vertical\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"0.1\"\r\n                android:gravity=\"right\"\r\n                android:text=\"acid\"\r\n                android:textSize=\"24sp\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView7\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:text=\"of concentration:\"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView9\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c = \"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <EditText\r\n                android:id=\"@+id/TitTxt\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:enabled=\"false\"\r\n                android:inputType=\"numberDecimal\"\r\n                android:text=\"1.00\"\r\n                android:textSize=\"20sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView8\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\" M\"\r\n                android:textSize=\"24sp\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView11\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:text=\"and volume:\"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView15\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"V = \"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <EditText\r\n                android:id=\"@+id/VolTitTxt\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:enabled=\"false\"\r\n                android:inputType=\"numberDecimal\"\r\n                android:text=\"1.00\"\r\n                android:textSize=\"20sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView19\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\" ml\"\r\n                android:textSize=\"24sp\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <View\r\n              android:id=\"@+id/divider5\"\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"1dp\"\r\n              android:background=\"?android:attr/listDivider\" />\r\n\r\n          <Button\r\n              android:id=\"@+id/TitBtn\"\r\n              style=\"@style/Widget.AppCompat.Button.Borderless.Colored\"\r\n              android:layout_width=\"wrap_content\"\r\n              android:layout_height=\"wrap_content\"\r\n              android:layout_gravity=\"right\"\r\n              android:enabled=\"false\"\r\n              android:text=\"Titrate\" />\r\n\r\n        </LinearLayout>\r\n\r\n      </androidx.cardview.widget.CardView>\r\n\r\n\r\n      <androidx.cardview.widget.CardView\r\n          android:layout_width=\"match_parent\"\r\n          android:layout_height=\"match_parent\"\r\n          android:layout_marginLeft=\"8dp\"\r\n          android:layout_marginTop=\"8dp\"\r\n          android:layout_marginRight=\"8dp\"\r\n          android:animateLayoutChanges=\"true\"\r\n          app:cardElevation=\"0dp\"\r\n          app:contentPadding=\"16dp\">\r\n\r\n        <LinearLayout\r\n            android:id=\"@+id/res\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:animateLayoutChanges=\"true\"\r\n            android:orientation=\"vertical\">\r\n\r\n          <TextView\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"wrap_content\"\r\n              android:text=\"Results\"\r\n              android:textSize=\"16sp\" />\r\n\r\n          <View\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"1dp\"\r\n              android:layout_marginTop=\"4dp\"\r\n              android:layout_marginBottom=\"4dp\"\r\n              android:background=\"#e1e1e1\" />\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"pH = \"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/pHVw\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"--\"\r\n                android:textSize=\"24sp\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"V = \"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/solutionVol\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"--\"\r\n                android:textSize=\"24sp\" />\r\n\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_weight=\"1\"\r\n                android:text=\" ml\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"visible\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwx\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c(X+) =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"visible\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtx\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"visible\" />\r\n\r\n            <TextView\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"visible\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVw6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxt6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/c6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwy\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxty\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cy\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <View\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"1dp\"\r\n              android:layout_marginTop=\"4dp\"\r\n              android:layout_marginBottom=\"4dp\"\r\n              android:background=\"#e1e1e1\" />\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl1\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl2\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl3\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl4\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl5\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl6\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n          <LinearLayout\r\n              android:layout_width=\"match_parent\"\r\n              android:layout_height=\"match_parent\"\r\n              android:animateLayoutChanges=\"true\"\r\n              android:orientation=\"horizontal\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/cVwl7\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"c() =\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cTxtl7\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"0\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/cl7\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:text=\"M\"\r\n                android:textColor=\"#7f7f7f\"\r\n                android:textSize=\"24sp\"\r\n                android:visibility=\"gone\" />\r\n          </LinearLayout>\r\n\r\n            <RadioGroup\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:orientation=\"horizontal\"\r\n                android:layout_gravity=\"fill_horizontal\"\r\n                >\r\n\r\n              <RadioButton\r\n                  android:id=\"@+id/radioButton\"\r\n                  android:layout_width=\"wrap_content\"\r\n                  android:layout_height=\"wrap_content\"\r\n                  android:layout_weight=\"1\"\r\n                  android:text=\"1\" />\r\n\r\n              <RadioButton\r\n                  android:id=\"@+id/radioButton2\"\r\n                  android:layout_width=\"wrap_content\"\r\n                  android:layout_height=\"wrap_content\"\r\n                  android:layout_weight=\"1\"\r\n                  android:text=\"2\" />\r\n\r\n              <RadioButton\r\n                  android:id=\"@+id/radioButton3\"\r\n                  android:layout_width=\"wrap_content\"\r\n                  android:layout_height=\"wrap_content\"\r\n                  android:layout_weight=\"1\"\r\n                  android:text=\"3\" />\r\n\r\n              <RadioButton\r\n                  android:id=\"@+id/radioButton4\"\r\n                  android:layout_width=\"wrap_content\"\r\n                  android:layout_height=\"wrap_content\"\r\n                  android:layout_weight=\"1\"\r\n                  android:text=\"4\" />\r\n            </RadioGroup>\r\n\r\n\r\n        </LinearLayout>\r\n\r\n      </androidx.cardview.widget.CardView>\r\n\r\n    </LinearLayout>\r\n  </ScrollView>\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(date 1565970252000)
++++ app/src/main/res/layout/activity_main.xml	(date 1565971491460)
+@@ -8,938 +8,938 @@
+     android:background="#edf0f2"
+     tools:context=".MainActivity">
+ 
+-  <ScrollView
+-      android:id="@+id/scrollView2"
+-      android:layout_width="match_parent"
+-      android:layout_height="match_parent">
++    <ScrollView
++        android:id="@+id/scrollView2"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
+ 
+-    <LinearLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:animateLayoutChanges="true"
+-        android:orientation="vertical">
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:animateLayoutChanges="true"
++            android:orientation="vertical">
+ 
+-      <androidx.cardview.widget.CardView
+-          android:layout_width="match_parent"
+-          android:layout_height="match_parent"
+-          android:layout_marginLeft="8dp"
+-          android:layout_marginTop="8dp"
+-          android:layout_marginRight="8dp"
+-          android:animateLayoutChanges="true"
+-          app:cardElevation="0dp"
+-          app:contentPadding="16dp">
++            <androidx.cardview.widget.CardView
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
++                android:layout_marginLeft="8dp"
++                android:layout_marginTop="8dp"
++                android:layout_marginRight="8dp"
++                android:animateLayoutChanges="true"
++                app:cardElevation="0dp"
++                app:contentPadding="16dp">
+ 
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            android:animateLayoutChanges="true"
+-            android:orientation="vertical">
++                <LinearLayout
++                    android:layout_width="match_parent"
++                    android:layout_height="match_parent"
++                    android:animateLayoutChanges="true"
++                    android:orientation="vertical">
+ 
+-          <TextView
+-              android:id="@+id/proton"
+-              android:layout_width="match_parent"
+-              android:layout_height="wrap_content"
+-              android:text="Number of acidic protons:"
+-              android:textSize="16sp" />
++                    <TextView
++                        android:id="@+id/proton"
++                        android:layout_width="match_parent"
++                        android:layout_height="wrap_content"
++                        android:text="Number of acidic protons:"
++                        android:textSize="16sp" />
+ 
+-          <View
+-              android:layout_width="match_parent"
+-              android:layout_height="1dp"
+-              android:layout_marginTop="4dp"
+-              android:background="#e1e1e1" />
++                    <View
++                        android:layout_width="match_parent"
++                        android:layout_height="1dp"
++                        android:layout_marginTop="4dp"
++                        android:background="#e1e1e1" />
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:layout_gravity="right"
+-              android:animateLayoutChanges="true"
+-              android:gravity="right"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:layout_gravity="right"
++                        android:animateLayoutChanges="true"
++                        android:gravity="right"
++                        android:orientation="horizontal">
+ 
+-            <EditText
+-                android:id="@+id/nTxt"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:imeOptions="actionUnspecified"
+-                android:inputType="number"
+-                android:text="1"
+-                android:textAlignment="textEnd"
+-                android:textSize="24sp" />
++                        <EditText
++                            android:id="@+id/nTxt"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:imeOptions="actionUnspecified"
++                            android:inputType="number"
++                            android:text="1"
++                            android:textAlignment="textEnd"
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/unit"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textSize="24sp"
+-                android:visibility="visible" />
++                        <TextView
++                            android:id="@+id/unit"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textSize="24sp"
++                            android:visibility="visible" />
+ 
+-            <Button
+-                android:id="@+id/NextBtn"
+-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="Next" />
++                        <Button
++                            android:id="@+id/NextBtn"
++                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="Next" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:layout_gravity="right"
+-              android:animateLayoutChanges="true"
+-              android:gravity="right"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:layout_gravity="right"
++                        android:animateLayoutChanges="true"
++                        android:gravity="right"
++                        android:orientation="horizontal">
+ 
+-            <Switch
+-                android:id="@+id/AcidBaseSwInp"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:enabled="false"
+-                android:text="Acid" />
++                        <Switch
++                            android:id="@+id/AcidBaseSwInp"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:enabled="false"
++                            android:text="Acid" />
+ 
+-            <Button
+-                android:id="@+id/AddBtn"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:enabled="false"
+-                android:text="Add component"
+-                android:visibility="visible" />
++                        <Button
++                            android:id="@+id/AddBtn"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:enabled="false"
++                            android:text="Add component"
++                            android:visibility="visible" />
+ 
+-            <Button
+-                android:id="@+id/RstBtn"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:enabled="false"
+-                android:text="reset" />
+-          </LinearLayout>
++                        <Button
++                            android:id="@+id/RstBtn"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:enabled="false"
++                            android:text="reset" />
++                    </LinearLayout>
+ 
+-        </LinearLayout>
++                </LinearLayout>
+ 
+-      </androidx.cardview.widget.CardView>
++            </androidx.cardview.widget.CardView>
+ 
+-      <androidx.cardview.widget.CardView
+-          android:id="@+id/cardView"
+-          android:layout_width="match_parent"
+-          android:layout_height="match_parent"
+-          android:layout_marginLeft="8dp"
+-          android:layout_marginTop="8dp"
+-          android:layout_marginRight="8dp"
+-          android:animateLayoutChanges="true"
+-          app:cardElevation="0dp"
+-          app:contentPadding="16dp">
++            <androidx.cardview.widget.CardView
++                android:id="@+id/cardView"
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
++                android:layout_marginLeft="8dp"
++                android:layout_marginTop="8dp"
++                android:layout_marginRight="8dp"
++                android:animateLayoutChanges="true"
++                app:cardElevation="0dp"
++                app:contentPadding="16dp">
+ 
+ 
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            android:animateLayoutChanges="true"
+-            android:orientation="vertical">
++                <LinearLayout
++                    android:layout_width="match_parent"
++                    android:layout_height="match_parent"
++                    android:animateLayoutChanges="true"
++                    android:orientation="vertical">
+ 
+-          <TextView
+-              android:id="@+id/twwww"
+-              android:layout_width="match_parent"
+-              android:layout_height="wrap_content"
+-              android:text="Titration"
+-              android:textSize="16sp" />
++                    <TextView
++                        android:id="@+id/twwww"
++                        android:layout_width="match_parent"
++                        android:layout_height="wrap_content"
++                        android:text="Titration"
++                        android:textSize="16sp" />
+ 
+-          <View
+-              android:id="@+id/view"
+-              android:layout_width="match_parent"
+-              android:layout_height="1dp"
+-              android:layout_marginTop="4dp"
+-              android:layout_marginBottom="4dp"
+-              android:background="#e1e1e1" />
++                    <View
++                        android:id="@+id/view"
++                        android:layout_width="match_parent"
++                        android:layout_height="1dp"
++                        android:layout_marginTop="4dp"
++                        android:layout_marginBottom="4dp"
++                        android:background="#e1e1e1" />
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal"
+-              android:paddingBottom="8dp">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal"
++                        android:paddingBottom="8dp">
+ 
+-            <TextView
+-                android:id="@+id/textView3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:gravity="left"
+-                android:text="against: "
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:gravity="left"
++                            android:text="against: "
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/textView6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:gravity="right"
+-                android:text="base"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:gravity="right"
++                            android:text="base"
++                            android:textSize="24sp" />
+ 
+-            <Switch
+-                android:id="@+id/AcidBaseSw"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginLeft="8dp"
+-                android:layout_marginRight="8dp"
+-                android:layout_weight="0.1"
+-                android:enabled="false"
+-                android:gravity="right|center_vertical" />
++                        <Switch
++                            android:id="@+id/AcidBaseSw"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_marginLeft="8dp"
++                            android:layout_marginRight="8dp"
++                            android:layout_weight="0.1"
++                            android:enabled="false"
++                            android:gravity="right|center_vertical" />
+ 
+-            <TextView
+-                android:id="@+id/textView4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="0.1"
+-                android:gravity="right"
+-                android:text="acid"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="0.1"
++                            android:gravity="right"
++                            android:text="acid"
++                            android:textSize="24sp" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/textView7"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:text="of concentration:"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView7"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="of concentration:"
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/textView9"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c = "
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView9"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c = "
++                            android:textSize="24sp" />
+ 
+-            <EditText
+-                android:id="@+id/TitTxt"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:enabled="false"
+-                android:inputType="numberDecimal"
+-                android:text="1.00"
+-                android:textSize="20sp" />
++                        <EditText
++                            android:id="@+id/TitTxt"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:enabled="false"
++                            android:inputType="numberDecimal"
++                            android:text="1.00"
++                            android:textSize="20sp" />
+ 
+-            <TextView
+-                android:id="@+id/textView8"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text=" M"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView8"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text=" M"
++                            android:textSize="24sp" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/textView11"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:text="and volume:"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView11"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="and volume:"
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/textView15"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="V = "
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView15"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="V = "
++                            android:textSize="24sp" />
+ 
+-            <EditText
+-                android:id="@+id/VolTitTxt"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:enabled="false"
+-                android:inputType="numberDecimal"
+-                android:text="1.00"
+-                android:textSize="20sp" />
++                        <EditText
++                            android:id="@+id/VolTitTxt"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:enabled="false"
++                            android:inputType="numberDecimal"
++                            android:text="1.00"
++                            android:textSize="20sp" />
+ 
+-            <TextView
+-                android:id="@+id/textView19"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text=" ml"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView19"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text=" ml"
++                            android:textSize="24sp" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <View
+-              android:id="@+id/divider5"
+-              android:layout_width="match_parent"
+-              android:layout_height="1dp"
+-              android:background="?android:attr/listDivider" />
++                    <View
++                        android:id="@+id/divider5"
++                        android:layout_width="match_parent"
++                        android:layout_height="1dp"
++                        android:background="?android:attr/listDivider" />
+ 
+-          <Button
+-              android:id="@+id/TitBtn"
+-              style="@style/Widget.AppCompat.Button.Borderless.Colored"
+-              android:layout_width="wrap_content"
+-              android:layout_height="wrap_content"
+-              android:layout_gravity="right"
+-              android:enabled="false"
+-              android:text="Titrate" />
++                    <Button
++                        android:id="@+id/TitBtn"
++                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:layout_gravity="right"
++                        android:enabled="false"
++                        android:text="Titrate" />
+ 
+-        </LinearLayout>
++                </LinearLayout>
+ 
+-      </androidx.cardview.widget.CardView>
++            </androidx.cardview.widget.CardView>
+ 
+ 
+-      <androidx.cardview.widget.CardView
+-          android:layout_width="match_parent"
+-          android:layout_height="match_parent"
+-          android:layout_marginLeft="8dp"
+-          android:layout_marginTop="8dp"
+-          android:layout_marginRight="8dp"
+-          android:animateLayoutChanges="true"
+-          app:cardElevation="0dp"
+-          app:contentPadding="16dp">
++            <androidx.cardview.widget.CardView
++                android:layout_width="match_parent"
++                android:layout_height="match_parent"
++                android:layout_marginLeft="8dp"
++                android:layout_marginTop="8dp"
++                android:layout_marginRight="8dp"
++                android:animateLayoutChanges="true"
++                app:cardElevation="0dp"
++                app:contentPadding="16dp">
+ 
+-        <LinearLayout
+-            android:id="@+id/res"
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            android:animateLayoutChanges="true"
+-            android:orientation="vertical">
++                <LinearLayout
++                    android:id="@+id/res"
++                    android:layout_width="match_parent"
++                    android:layout_height="match_parent"
++                    android:animateLayoutChanges="true"
++                    android:orientation="vertical">
+ 
+-          <TextView
+-              android:layout_width="match_parent"
+-              android:layout_height="wrap_content"
+-              android:text="Results"
+-              android:textSize="16sp" />
++                    <TextView
++                        android:layout_width="match_parent"
++                        android:layout_height="wrap_content"
++                        android:text="Results"
++                        android:textSize="16sp" />
+ 
+-          <View
+-              android:layout_width="match_parent"
+-              android:layout_height="1dp"
+-              android:layout_marginTop="4dp"
+-              android:layout_marginBottom="4dp"
+-              android:background="#e1e1e1" />
++                    <View
++                        android:layout_width="match_parent"
++                        android:layout_height="1dp"
++                        android:layout_marginTop="4dp"
++                        android:layout_marginBottom="4dp"
++                        android:background="#e1e1e1" />
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+ 
+-            <TextView
+-                android:id="@+id/textView2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="pH = "
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/textView2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="pH = "
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/pHVw"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="--"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/pHVw"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="--"
++                            android:textSize="24sp" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="V = "
+-                android:textSize="24sp" />
++                        <TextView
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="V = "
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:id="@+id/solutionVol"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="--"
+-                android:textSize="24sp" />
++                        <TextView
++                            android:id="@+id/solutionVol"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="--"
++                            android:textSize="24sp" />
+ 
+-            <TextView
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_weight="1"
+-                android:text=" ml"
+-                android:textSize="24sp"
+-                android:visibility="visible" />
+-          </LinearLayout>
++                        <TextView
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text=" ml"
++                            android:textSize="24sp"
++                            android:visibility="visible" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwx"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c(X+) ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="visible" />
++                        <TextView
++                            android:id="@+id/cVwx"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c(X+) ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="visible" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtx"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="visible" />
++                        <TextView
++                            android:id="@+id/cTxtx"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="visible" />
+ 
+-            <TextView
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="visible" />
+-          </LinearLayout>
++                        <TextView
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="visible" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/c1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/c2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/c3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/c4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-          </LinearLayout>
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/c5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVw6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVw6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxt6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxt6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/c6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/c6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+ 
+-            <TextView
+-                android:id="@+id/cVwy"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwy"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxty"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxty"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cy"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cy"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <View
+-              android:layout_width="match_parent"
+-              android:layout_height="1dp"
+-              android:layout_marginTop="4dp"
+-              android:layout_marginBottom="4dp"
+-              android:background="#e1e1e1" />
++                    <View
++                        android:layout_width="match_parent"
++                        android:layout_height="1dp"
++                        android:layout_marginTop="4dp"
++                        android:layout_marginBottom="4dp"
++                        android:background="#e1e1e1" />
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl1"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl1"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl4"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl5"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl5"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl6"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl6"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-          <LinearLayout
+-              android:layout_width="match_parent"
+-              android:layout_height="match_parent"
+-              android:animateLayoutChanges="true"
+-              android:orientation="horizontal">
++                    <LinearLayout
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:animateLayoutChanges="true"
++                        android:orientation="horizontal">
+ 
+-            <TextView
+-                android:id="@+id/cVwl7"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="c() ="
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cVwl7"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="c() ="
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cTxtl7"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="0"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
++                        <TextView
++                            android:id="@+id/cTxtl7"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="0"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
+ 
+-            <TextView
+-                android:id="@+id/cl7"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:text="M"
+-                android:textColor="#7f7f7f"
+-                android:textSize="24sp"
+-                android:visibility="gone" />
+-          </LinearLayout>
++                        <TextView
++                            android:id="@+id/cl7"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:text="M"
++                            android:textColor="#7f7f7f"
++                            android:textSize="24sp"
++                            android:visibility="gone" />
++                    </LinearLayout>
+ 
+-            <RadioGroup
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                android:orientation="horizontal"
+-                android:layout_gravity="fill_horizontal"
+-                >
++                    <RadioGroup
++                        android:layout_width="match_parent"
++                        android:layout_height="match_parent"
++                        android:orientation="horizontal"
++                        android:layout_gravity="fill_horizontal"
++                        >
+ 
+-              <RadioButton
+-                  android:id="@+id/radioButton"
+-                  android:layout_width="wrap_content"
+-                  android:layout_height="wrap_content"
+-                  android:layout_weight="1"
+-                  android:text="1" />
++                        <RadioButton
++                            android:id="@+id/radioButton"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="1" />
+ 
+-              <RadioButton
+-                  android:id="@+id/radioButton2"
+-                  android:layout_width="wrap_content"
+-                  android:layout_height="wrap_content"
+-                  android:layout_weight="1"
+-                  android:text="2" />
++                        <RadioButton
++                            android:id="@+id/radioButton2"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="2" />
+ 
+-              <RadioButton
+-                  android:id="@+id/radioButton3"
+-                  android:layout_width="wrap_content"
+-                  android:layout_height="wrap_content"
+-                  android:layout_weight="1"
+-                  android:text="3" />
++                        <RadioButton
++                            android:id="@+id/radioButton3"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="3" />
+ 
+-              <RadioButton
+-                  android:id="@+id/radioButton4"
+-                  android:layout_width="wrap_content"
+-                  android:layout_height="wrap_content"
+-                  android:layout_weight="1"
+-                  android:text="4" />
+-            </RadioGroup>
++                        <RadioButton
++                            android:id="@+id/radioButton4"
++                            android:layout_width="wrap_content"
++                            android:layout_height="wrap_content"
++                            android:layout_weight="1"
++                            android:text="4" />
++                    </RadioGroup>
+ 
+ 
+-        </LinearLayout>
++                </LinearLayout>
+ 
+-      </androidx.cardview.widget.CardView>
++            </androidx.cardview.widget.CardView>
+ 
+-    </LinearLayout>
+-  </ScrollView>
++        </LinearLayout>
++    </ScrollView>
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
