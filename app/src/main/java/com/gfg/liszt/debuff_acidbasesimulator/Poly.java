@@ -1,5 +1,7 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -130,5 +132,29 @@ public class Poly {
             cache = x;
         }
     }
-
+    public double[] add(@NonNull double[] a, @NonNull double[] b){
+        if (a.length<b.length){
+            for (int i=0; i<a.length; i++){
+                b[i] += a[i];
+            }
+            return(b);
+        } else{
+            for (int i=0; i<b.length; i++){
+                a[i] += b[i];
+            }
+            return(a);
+        }
+    }
+    public double[] multiply(@NotNull double[] a, @NonNull double[] b){
+        double[] out = new double[a.length+b.length-1];
+        for (int i = 0; i<out.length; i++){
+            out[i] = 0;
+        }
+        for (int i = 0; i<a.length; i++){
+            for (int j = 0; j<b.length; j++){
+                out[i+j] += a[i]*b[j];
+            }
+        }
+        return(out);
+    }
 }

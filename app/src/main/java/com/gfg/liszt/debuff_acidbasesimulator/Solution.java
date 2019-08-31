@@ -6,6 +6,8 @@ import android.widget.TextView;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import androidx.annotation.NonNull;
+
 /**
  * @author L. List
  * @date 4.7.2018.
@@ -95,7 +97,7 @@ public class Solution {
         return(out);
     }
     @Contract(pure = true)
-    private double cstsb(int i, Component c){
+    private double cstsb(int i, @NonNull Component c){
         double out = 1;
         for (int j=c.n;j>(c.n-i);j--){
             out *= c.K[j];
@@ -104,55 +106,106 @@ public class Solution {
     }
     public double cstsc(int i, Component c){
         double out = 1;
-        for (int j=0;j<i;j++){
-            out *= c.K[j+1];
+        for (int j=0;j<i+1;j++){
+            out *= c.K[j];
         }
         return(out);
     }
-    void up(int exp, double co, Component c){
+    public double[] up(int exp, double co, @NonNull Component c){
+        double[] out = new double[c.n+3];
+        for (int i = 0; i<out.length; i++){
+            out[i] = 0;
+        }
         for (int i=0;i<n;i++){
-            try{
-                dic[i+exp] += co*(c.n-i)/(csts(i, c));
-
-            } catch (Exception ex){
-                dic[i+exp] = co*(c.n-i)/(csts(i, c));
-            }
+            out[i+exp] += co*(c.n-i)/(csts(i, c));
         }
+        return(out);
     }
-    void upb(int exp, double co, Component c){
-        for (int i=0;i<(c.n+1);i++){
-            try{
-                dic[i+exp] += co/(cstsb(i, c));
-            } catch (Exception ex){
-                dic[i+exp] = co/(cstsb(i, c));
-            }
+    public double[] upb(int exp, double co, @NonNull Component c){
+        double[] out = new double[c.n+3];
+        for (int i = 0; i<out.length; i++){
+            out[i] = 0;
         }
+        for (int i=0;i<(c.n+1);i++){
+            out[i+exp] += co/(cstsb(i, c));
+
+        }
+        return(out);
+    }
+    public double[] upc(int exp, double co, @NonNull Component c){
+        double[] out = new double[c.n+3];
+        for (int i = 0; i<out.length; i++){
+            out[i] = 0;
+        }
+        for (int i=1;i<c.n;i++){
+            out[i+1+exp] += i*co*(cstsc(i, c))/Math.pow(c.kw, i);
+        }
+        return(out);
+    }
+    public double[] upd(int exp, double co, @NonNull Component c){
+        double[] out = new double[c.n+3];
+        for (int i = 0; i<out.length; i++){
+            out[i] = 0;
+        }
+        for (int i=0;i<(c.n+1);i++){
+            out[i+exp] += co*(cstsc(i, c))/Math.pow(c.kw, i);
+        }
+        return(out);
     }
 
     // a method saving the concs calculated @ checking of mass & charge conservations
 
 
     // the most important function implementing all the math and functions involved in displaying of the Solution's properties
-    public String mainfunc(Poly p, TextView[] txts){
+    public String mainfunc(@NonNull Poly p, TextView[] txts){
         System.out.println("Initializing simulation.");
         dic = new double[comps[0].n+3];
+        for (int i = 0; i<dic.length; i++){
+            dic[i] = 0;
+        }
         // major distribution required
-        /*for (Component el: comps) {
+        for (Component el: comps) {
             try {
-                up(1, -el.cu, el);
-                upb(2, 1, el);
-                upb(0, -kw, el);
-                upb(1, cn, el);
+                el.brojnik = up(0, el.cu, el);
+                el.nazivnik = upb(0, 1, el);
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println("EComp"); //empty component
             }
             //el.ConcPrt(txts);
-        }*/
-        up(1, -comps[0].cu, comps[0]);
-        upb(2, 1, comps[0]);
-        upb(0, -kw, comps[0]);
-        upb(1, cn, comps[0]);
+        }
+        dic[0] = kw;
+        dic[1] = -cn;
+        dic[2] = -1;
+        for (Component el: comps){
+            try {
+                dic = p.multiply(dic, el.nazivnik);
+            }catch(Exception e){
+                System.out.println("EComp");
+            }
+        }
+        for (int i = 0; i<4; i++){
+            for (int j = 0; j<4; j++){
+                if (i!=j){
+                    try {
+                        comps[i].brojnik = p.multiply(comps[i].brojnik, comps[j].nazivnik);
+                    }catch(Exception e){
+                        System.out.println("EComp");
+                    }
+                }
+            }
+        }
+        for (int i = 0; i<4; i++){
+            try{
+                dic = p.add(comps[i].brojnik, dic);
+            }catch(Exception e){
+                System.out.println("EComp");
+            }
+        }
+        /*p.add(dic, up(1, -comps[0].cu, comps[0]));
+        p.add(dic, upb(2, 1, comps[0]));
+        p.add(dic, upb(0, -kw, comps[0]));
+        p.add(dic, upb(1, cn, comps[0]));*/
 
         p.p = dic;
         try {

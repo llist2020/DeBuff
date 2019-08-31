@@ -3,6 +3,8 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 /**
  * @author L. List
  * @date 5.7.2018.
@@ -132,7 +134,7 @@ public class User {
     itt=0;
   }
 
-  public void Outs(TextView[] t, Component c){
+  public void Outs(TextView[] t, @NonNull Component c){
     txts = t;
     for (int i=0; i<3*(c.n+1); i++){
       txts[i].setVisibility(View.VISIBLE);
