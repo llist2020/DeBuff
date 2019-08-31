@@ -16,6 +16,7 @@ public class Component extends Solution{
     int n;
     double V, cu;
     private double cn, h;
+    Poly brojnik, nazivnik;
 
 
     public Component(@NotNull User u) {
