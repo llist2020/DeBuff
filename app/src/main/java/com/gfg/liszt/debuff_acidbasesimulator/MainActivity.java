@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity{
             TitTxt.setEnabled(false);
             VolTitTxt.setEnabled(false);
             TitBtn.setEnabled(false);
+            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                rBtnz.getChildAt(i).setEnabled(false);
+            }
         }
 
         NextBtn.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +139,9 @@ public class MainActivity extends AppCompatActivity{
                             TitTxt.setEnabled(false);
                             VolTitTxt.setEnabled(false);
                             TitBtn.setEnabled(false);
+                            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                rBtnz.getChildAt(i).setEnabled(false);
+                            }
                             try {
                                 u1.n = Integer.parseInt(nTxt.getText().toString());
                                 Rst(Nvws);
@@ -248,6 +254,9 @@ public class MainActivity extends AppCompatActivity{
                                     TitTxt.setEnabled(true);
                                     VolTitTxt.setEnabled(true);
                                     TitBtn.setEnabled(true);
+                                    for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                        rBtnz.getChildAt(i).setEnabled(true);
+                                    }
                                 } else { // saving a pKa; prepare for next one/v
                                     if (u1.itt == u1.n + 2){
                                         System.out.println(253);
@@ -289,6 +298,9 @@ public class MainActivity extends AppCompatActivity{
                                             TitTxt.setEnabled(true);
                                             VolTitTxt.setEnabled(true);
                                             TitBtn.setEnabled(true);
+                                            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                                rBtnz.getChildAt(i).setEnabled(true);
+                                            }
                                         }
                                     }
                                 }
@@ -364,6 +376,9 @@ public class MainActivity extends AppCompatActivity{
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
                                 TitBtn.setEnabled(true);
+                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                    rBtnz.getChildAt(i).setEnabled(true);
+                                }
                                 break;
                             }
 
@@ -403,6 +418,9 @@ public class MainActivity extends AppCompatActivity{
                             TitTxt.setEnabled(true);
                             VolTitTxt.setEnabled(true);
                             TitBtn.setEnabled(true);
+                            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                rBtnz.getChildAt(i).setEnabled(true);
+                            }
                             break;
                     }
                     u1.itt++;
@@ -437,11 +455,25 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 System.out.println("kliklik");
+                int id = rBtnz.getCheckedRadioButtonId();
                 try {
-                    u1.Outs(Nvws, s1.GetComps()[i]);
+                    switch(id){
+                        case  R.id.rBtn0:
+                            u1.Outs(Nvws, s1.GetComps()[0]);
+                            break;
+                        case  R.id.rBtn1:
+                            u1.Outs(Nvws, s1.GetComps()[1]);
+                            break;
+                        case  R.id.rBtn2:
+                            u1.Outs(Nvws, s1.GetComps()[2]);
+                            break;
+                        case  R.id.rBtn3:
+                            u1.Outs(Nvws, s1.GetComps()[3]);
+                            break;
+                    }
                 } catch (Exception e){
                     Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
-                    rBtnz.clearCheck();
+                    rBtn0.setChecked(true);
                 }
             }
         });
