@@ -5,6 +5,8 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -29,6 +31,11 @@ public class MainActivity extends AppCompatActivity{
         final Button TitBtn = findViewById(R.id.TitBtn);
         final Button AddBtn = findViewById(R.id.AddBtn);
         final Button RstBtn = findViewById(R.id.RstBtn);
+        final RadioGroup rBtnz = findViewById(R.id.rBtnz);
+        final RadioButton rBtn1 = findViewById(R.id.rBtn1);
+        final RadioButton rBtn2 = findViewById(R.id.rBtn2);
+        final RadioButton rBtn3 = findViewById(R.id.rBtn3);
+        final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
         final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
         final TextView pHVw = findViewById(R.id.pHVw);
@@ -425,7 +432,21 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+        rBtnz.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                System.out.println("kliklik");
+                try {
+                    u1.Outs(Nvws, s1.GetComps()[i]);
+                } catch (Exception e){
+                    Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
+                    rBtnz.clearCheck();
+                }
+            }
+        });
     }
+
 
     public void Rst(TextView[] txts){
         for (TextView el : txts) {

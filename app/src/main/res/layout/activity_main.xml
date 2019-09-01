@@ -898,41 +898,42 @@
                 android:visibility="gone" />
           </LinearLayout>
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="fill_horizontal"
-                >
+          <RadioGroup
+              android:id="@+id/rBtnz"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="fill_horizontal"
+              android:orientation="horizontal">
 
-              <RadioButton
-                  android:id="@+id/radioButton"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:text="1" />
+            <RadioButton
+                android:id="@+id/rBtn0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="1" />
 
-              <RadioButton
-                  android:id="@+id/radioButton2"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:text="2" />
+            <RadioButton
+                android:id="@+id/rBtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2" />
 
-              <RadioButton
-                  android:id="@+id/radioButton3"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:text="3" />
+            <RadioButton
+                android:id="@+id/rBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3" />
 
-              <RadioButton
-                  android:id="@+id/radioButton4"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:text="4" />
-            </RadioGroup>
+            <RadioButton
+                android:id="@+id/rBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4" />
+          </RadioGroup>
 
 
         </LinearLayout>

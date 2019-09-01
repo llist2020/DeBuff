@@ -17,6 +17,7 @@ public class Component extends Solution{
     double V, cu;
     private double cn, h;
     double[] brojnik, nazivnik;
+    boolean acid;
 
 
     public Component(@NotNull User u) {
