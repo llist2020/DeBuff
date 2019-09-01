@@ -2,11 +2,9 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.widget.Switch;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import androidx.annotation.NonNull;
 
 /**
  * @author L. List

@@ -1,8 +1,7 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
-import org.jetbrains.annotations.NotNull;
-
 import androidx.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author L. List
@@ -26,16 +25,18 @@ public class Poly {
     // reviews the offered polynomial root (H+ concentration)
     private boolean check(double h, @NonNull Solution s) {
         System.out.println("Checking the offered root.");
-        boolean mcons = true, chcons = true;
+        boolean mcons = true;
+        double outb = 0;
         Component[] comps = s.GetComps();
-        /*for (Component el: comps) {
+
+        for (Component el: comps) {
             try {
                 double[] c = new double[el.n+1];
-                double out = 0, outb = 0;
+                double out = 0;
                 for (int i = 0; i < el.n + 1; i++) {
                     out += el.cstsc(i, el) / (Math.pow(h, i));
                 }
-                c[0] = el.cu / out; // calculates a segment of the function
+                c[0] = el.cu / out; // calculates conc of the HnA specie
                 out = 0;
                 for (int i = 1; i < el.n + 1; i++) {
                     c[i] = c[i - 1] * el.K[i] / h;
@@ -46,16 +47,20 @@ public class Poly {
                 for (int i = 0; i < c.length; i++) {
                     outb += c[i] * i;
                 } // calculates overall charge
+
+                System.out.println(outb);
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
-                chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((el.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((el.GetCn() + h) * 100d) / 100d)) && chcons; // law of conservation of charge
+
                 if (mcons){
                     el.setConcentrations(c);
                 }
             } catch (Exception e) {
                 System.out.println("EComp"); //empty component
             }
-        }*/
-            double[] c = new double[comps[0].n + 1];
+        }
+        boolean chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((s.GetCn() + h) * 100d) / 100d)); // law of conservation of charge
+
+            /*double[] c = new double[comps[0].n + 1];
             double out = 0, outb = 0;
             for (int i = 0; i < comps[0].n + 1; i++) {
                 out += comps[0].cstsc(i, comps[0]) / (Math.pow(h, i));
@@ -71,15 +76,19 @@ public class Poly {
             for (int i = 0; i < c.length; i++) {
                 outb += c[i] * i;
             } // calculates overall charge
+
             mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(comps[0].cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(comps[0].cu * 100d) / 100d)) && mcons; // law of conservation of mass
+
             chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((comps[0].GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((comps[0].GetCn() + h) * 100d) / 100d)) && chcons; // law of conservation of charge
+
         if (mcons) {
             comps[0].setConcentrations(c);
             System.out.println("mcons radi");
             if (!chcons){
                 System.out.println("al chcons njet");
             }
-        }
+        }*/
+
         if (mcons && chcons) {
             return (true);
         } else {
