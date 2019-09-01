@@ -48,7 +48,6 @@ public class Poly {
                     outb += c[i] * i;
                 } // calculates overall charge
 
-                System.out.println(outb);
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
 
                 if (mcons){

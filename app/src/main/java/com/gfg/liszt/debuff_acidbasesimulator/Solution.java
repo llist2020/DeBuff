@@ -164,7 +164,7 @@ public class Solution {
         // major distribution required
         for (Component el: comps) {
             try {
-                el.brojnik = up(0, el.cu, el);
+                el.brojnik = up(1, el.cu, el);
                 el.nazivnik = upb(0, 1, el);
                 System.out.println("Component application successful.");
             } catch(Exception e){
