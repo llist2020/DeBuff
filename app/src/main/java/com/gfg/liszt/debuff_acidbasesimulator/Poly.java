@@ -54,39 +54,10 @@ public class Poly {
                     el.setConcentrations(c);
                 }
             } catch (Exception e) {
-                System.out.println("EComp"); //empty component
+                System.out.println("Check: EComp"); //empty component
             }
         }
         boolean chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((s.GetCn() + h) * 100d) / 100d)); // law of conservation of charge
-
-            /*double[] c = new double[comps[0].n + 1];
-            double out = 0, outb = 0;
-            for (int i = 0; i < comps[0].n + 1; i++) {
-                out += comps[0].cstsc(i, comps[0]) / (Math.pow(h, i));
-            }
-            c[0] = comps[0].cu / out; // calculates a segment of the function
-            out = 0;
-            for (int i = 1; i < comps[0].n + 1; i++) {
-                c[i] = c[i - 1] * comps[0].K[i] / h;
-            } // defines concentrations' values
-            for (int i = 0; i < c.length; i++) {
-                out += c[i];
-            } // calculates overall concentration
-            for (int i = 0; i < c.length; i++) {
-                outb += c[i] * i;
-            } // calculates overall charge
-
-            mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(comps[0].cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(comps[0].cu * 100d) / 100d)) && mcons; // law of conservation of mass
-
-            chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((comps[0].GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((comps[0].GetCn() + h) * 100d) / 100d)) && chcons; // law of conservation of charge
-
-        if (mcons) {
-            comps[0].setConcentrations(c);
-            System.out.println("mcons radi");
-            if (!chcons){
-                System.out.println("al chcons njet");
-            }
-        }*/
 
         if (mcons && chcons) {
             return (true);

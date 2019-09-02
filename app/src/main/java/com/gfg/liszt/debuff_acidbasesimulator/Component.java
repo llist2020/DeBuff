@@ -20,10 +20,15 @@ public class Component extends Solution{
     boolean acid;
 
 
-    public Component(@NotNull User u) {
+    public Component(@NotNull User u, @NotNull Solution s) {
         super();
         cu = u.cu;
-        cn = u.cn;
+        cn = 0;
+        try{
+            cn = u.cn+s.GetComps()[0].cn;
+        } catch (Exception e){
+            cn = u.cn;
+        }
         n = u.n;
         K = u.K;
         h = cu*n+1;

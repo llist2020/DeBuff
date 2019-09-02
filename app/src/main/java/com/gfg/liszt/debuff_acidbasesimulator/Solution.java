@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Solution {
     private Component[] comps = new Component[4];
-    double[] K;
     private double[] dic;
     int n;
     final double kw=Math.pow(10,-14);
@@ -23,18 +22,17 @@ public class Solution {
         n=0;
     }
     public Solution(@NotNull User u){
-    comps[0] = new Component(u);
+    comps[0] = new Component(u, this);
     cu = u.cu;
     cn = u.cn;
     n = u.n;
-    K = u.K;
     dic = new double[n+3];
     h = cu*n+1;
     V = u.V;
 } // collecting inputs
 
     public void AddComp(@NotNull User u){
-        comps[u.citt] = new Component(u);
+        comps[u.citt] = new Component(u, this);
         h += u.cu*u.n+1;
         n += u.n;
         cu += u.cu;
@@ -157,20 +155,23 @@ public class Solution {
     // the most important function implementing all the math and functions involved in displaying of the Solution's properties
     public String mainfunc(@NonNull Poly p, TextView[] txts){
         System.out.println("Initializing simulation.");
-        dic = new double[comps[0].n+3];
+        dic = new double[n+3];
         for (int i = 0; i<dic.length; i++){
             dic[i] = 0;
         }
-        // major distribution required
+
+        // major redistribution required
         for (Component el: comps) {
             try {
+                System.out.println("pokusaj");
+                System.out.println(up(1, el.cu, el)[0]); // tu na drugoj komponenti baca error!
                 el.brojnik = up(1, el.cu, el);
+                System.out.println("tu nije greska");
                 el.nazivnik = upb(0, 1, el);
                 System.out.println("Component application successful.");
             } catch(Exception e){
-                System.out.println("EComp"); //empty component
+                System.out.println("Collecting data: EComp"); //empty component
             }
-            //el.ConcPrt(txts);
         }
         dic[0] = kw;
         dic[1] = -cn;
@@ -179,7 +180,7 @@ public class Solution {
             try {
                 dic = p.multiply(dic, el.nazivnik);
             }catch(Exception e){
-                System.out.println("EComp");
+                System.out.println("Preparing poly1: EComp");
             }
         }
         for (int i = 0; i<4; i++){
@@ -188,7 +189,7 @@ public class Solution {
                     try {
                         comps[i].brojnik = p.multiply(comps[i].brojnik, comps[j].nazivnik);
                     }catch(Exception e){
-                        System.out.println("EComp");
+                        System.out.println("Preparing poly2: EComp");
                     }
                 }
             }
@@ -197,13 +198,9 @@ public class Solution {
             try{
                 dic = p.add(comps[i].brojnik, dic);
             }catch(Exception e){
-                System.out.println("EComp");
+                System.out.println("Preparing poly3: EComp");
             }
         }
-        /*p.add(dic, up(1, -comps[0].cu, comps[0]));
-        p.add(dic, upb(2, 1, comps[0]));
-        p.add(dic, upb(0, -kw, comps[0]));
-        p.add(dic, upb(1, cn, comps[0]));*/
 
         p.p = dic;
         try {

@@ -459,16 +459,24 @@ public class MainActivity extends AppCompatActivity{
                 try {
                     switch(id){
                         case  R.id.rBtn0:
+                            Rst(Nvws);
                             u1.Outs(Nvws, s1.GetComps()[0]);
+                            s1.GetComps()[0].ConcPrt(Nvws);
                             break;
                         case  R.id.rBtn1:
+                            Rst(Nvws);
                             u1.Outs(Nvws, s1.GetComps()[1]);
+                            s1.GetComps()[1].ConcPrt(Nvws);
                             break;
                         case  R.id.rBtn2:
+                            Rst(Nvws);
                             u1.Outs(Nvws, s1.GetComps()[2]);
+                            s1.GetComps()[2].ConcPrt(Nvws);
                             break;
                         case  R.id.rBtn3:
+                            Rst(Nvws);
                             u1.Outs(Nvws, s1.GetComps()[3]);
+                            s1.GetComps()[3].ConcPrt(Nvws);
                             break;
                     }
                 } catch (Exception e){
