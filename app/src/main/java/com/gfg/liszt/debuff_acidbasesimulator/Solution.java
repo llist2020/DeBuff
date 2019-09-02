@@ -109,12 +109,15 @@ public class Solution {
     }
     public double[] up(int exp, double co, @NonNull Component c){
         double[] out = new double[c.n+3];
+        System.out.println("1");
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
+        System.out.println("2"); // error je između 2 i 3
         for (int i=0;i<n;i++){
             out[i+exp] += co*(c.n-i)/(csts(i, c));
         }
+        System.out.println("3");¸¸
         return(out);
     }
     public double[] upb(int exp, double co, @NonNull Component c){
