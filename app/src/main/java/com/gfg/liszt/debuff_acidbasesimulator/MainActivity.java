@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -100,6 +101,17 @@ public class MainActivity extends AppCompatActivity{
         //napisal bi ja al neznam javu
         // btw gumbe mozes isto u xml visibility: gone i dok izracunas sve stavis ih na visible
         //DO TUD
+
+        ///evo i gumba
+        final Button openMe = findViewById(R.id.openme);
+        openMe.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                otvoriPopup();
+            }
+        });
+
+
+
 
         u1 = new User(choice, Nvws);
         Rst(Nvws);
@@ -498,5 +510,23 @@ public class MainActivity extends AppCompatActivity{
         for (int i=(txts.length)-3; i<txts.length; i++){
             txts[i].setVisibility(View.VISIBLE);
         }
+    }
+
+        //OVDI POCINJE DIALOG
+
+    public void otvoriPopup() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Title...");
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.okbtn);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }
