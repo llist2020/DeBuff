@@ -1,6 +1,7 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
 import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -69,6 +70,8 @@ public class Poly {
     }
     public double solve(Solution s) { // returns a legitimate root by Newton's method with given initial x
         System.out.println("Finding a legitimate root.");
+        System.out.println(p.length);
+        System.out.println("poly:");
         for (double el: p){
             System.out.println(el);
         }
@@ -85,10 +88,6 @@ public class Poly {
         x -= cal(x)/P_der.cal(x);
         while (true){
             x -= cal(x)/P_der.cal(x);
-            /*System.out.println("iksič");
-            System.out.println(x);
-            System.out.println(Math.pow(10, Math.log(Math.abs(x))/2.3-dx));
-            System.out.println(x-cache);*/
             if ((Math.abs(x-cache)<Math.pow(10, Math.log(Math.abs(x))/2.3-dx))||(x==cache)){
                 if (check(x, s)){
                     System.out.println(x);
@@ -97,8 +96,7 @@ public class Poly {
                     if (x>0){
                         x = Math.pow(10, -15);
                     } else{
-                        // Well, *
-                        System.out.println("newton fucked up");
+                        System.out.println("newts fucked up");
                         //return(-100);
                         x = 100;
                     }
@@ -113,19 +111,39 @@ public class Poly {
     }
     public double[] add(@NonNull double[] a, @NonNull double[] b){
         if (a.length<b.length){
+            double[] out = b.clone();
             for (int i=0; i<a.length; i++){
-                b[i] += a[i];
+                out[i] += a[i];
             }
-            return(b);
+            System.out.println("add");
+            System.out.println(out.length);
+            return(out);
         } else{
+            double[] out = a.clone();
             for (int i=0; i<b.length; i++){
-                a[i] += b[i];
+                out[i] += b[i];
             }
-            return(a);
+            System.out.println("add");
+            System.out.println(out.length);
+            for (double el: out){
+                System.out.println(el);
+            }
+            return(out);
         }
     }
     public double[] multiply(@NotNull double[] a, @NonNull double[] b){
         double[] out = new double[a.length+b.length-1];
+        double[] outs = out.clone();
+        int l = out.length;
+        System.out.println("mul");
+        System.out.println("a");
+        for (double el: a){
+            System.out.println(el);
+        }
+        System.out.println("b");
+        for (double el: b){
+            System.out.println(el);
+        }
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
@@ -134,6 +152,19 @@ public class Poly {
                 out[i+j] += a[i]*b[j];
             }
         }
-        return(out);
+        System.out.println(out.length);
+        for (double el: out){
+            System.out.println(el);
+        }
+        for (int i = out.length-1; i>0; i--){
+            if (out[i] == 0.0){
+                l = i;
+            } else{ break;}
+        }
+        outs = new double[l];
+        for (int i = 0; i<l; i++){
+            outs[i] = out[i];
+        }
+        return(outs);
     }
 }

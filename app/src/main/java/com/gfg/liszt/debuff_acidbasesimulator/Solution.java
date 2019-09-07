@@ -39,14 +39,10 @@ public class Solution {
         cn += u.cn;
         dic = new double[n+3];
         comps[u.citt].V = V;
+        System.out.println("citt");
         System.out.println(u.citt);
         for(int i=0; i<u.citt; i++){
             comps[i].SetCn(cn);
-        }
-        try{
-            System.out.println(comps[0].K[1]);
-        } catch(Exception e) {
-            System.out.println("krepalo");
         }
     }
     public Component[] GetComps(){
@@ -109,15 +105,12 @@ public class Solution {
     }
     public double[] up(int exp, double co, @NonNull Component c){
         double[] out = new double[c.n+3];
-        System.out.println("1");
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        System.out.println("2"); // error je između 2 i 3
-        for (int i=0;i<n;i++){
+        for (int i=0;i<c.n;i++){
             out[i+exp] += co*(c.n-i)/(csts(i, c));
         }
-        System.out.println("3");¸¸
         return(out);
     }
     public double[] upb(int exp, double co, @NonNull Component c){
@@ -126,6 +119,8 @@ public class Solution {
             out[i] = 0;
         }
         for (int i=0;i<(c.n+1);i++){
+            System.out.println(i);
+            System.out.println(cstsb(i,c));
             out[i+exp] += co/(cstsb(i, c));
 
         }
@@ -164,15 +159,17 @@ public class Solution {
         }
 
         // major redistribution required
-        for (Component el: comps) {
+        for (int i = 0; i<comps.length; i++) {
             try {
-                System.out.println("pokusaj");
-                System.out.println(up(1, el.cu, el)[0]); // tu na drugoj komponenti baca error!
+                Component el = comps[i];
                 el.brojnik = up(1, el.cu, el);
-                System.out.println("tu nije greska");
                 el.nazivnik = upb(0, 1, el);
                 System.out.println("Component application successful.");
+                for (double m: el.K){
+                    System.out.println(m);
+                }
             } catch(Exception e){
+                System.out.println(e.getMessage());
                 System.out.println("Collecting data: EComp"); //empty component
             }
         }
@@ -192,7 +189,9 @@ public class Solution {
                     try {
                         comps[i].brojnik = p.multiply(comps[i].brojnik, comps[j].nazivnik);
                     }catch(Exception e){
-                        System.out.println("Preparing poly2: EComp");
+                        if(j==0) {
+                            System.out.println("Preparing poly2: EComp");
+                        }
                     }
                 }
             }

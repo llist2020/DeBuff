@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity{
     public void otvoriPopup() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog);
-        dialog.setTitle("Title...");
+        dialog.setTitle("Add a component");
 
         Button dialogButton = (Button) dialog.findViewById(R.id.okbtn);
         dialogButton.setOnClickListener(new View.OnClickListener() {
