@@ -70,7 +70,6 @@ public class Poly {
     }
     public double solve(Solution s) { // returns a legitimate root by Newton's method with given initial x
         System.out.println("Finding a legitimate root.");
-        System.out.println(p.length);
         System.out.println("poly:");
         for (double el: p){
             System.out.println(el);
@@ -133,7 +132,7 @@ public class Poly {
     }
     public double[] multiply(@NotNull double[] a, @NonNull double[] b){
         double[] out = new double[a.length+b.length-1];
-        double[] outs = out.clone();
+        double[] outs;
         int l = out.length;
         System.out.println("mul");
         System.out.println("a");

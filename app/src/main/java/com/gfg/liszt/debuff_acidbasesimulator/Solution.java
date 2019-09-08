@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * @author L. List
  * @date 4.7.2018.
  */
+
 public class Solution {
     private Component[] comps = new Component[4];
     private double[] dic;
@@ -119,8 +120,6 @@ public class Solution {
             out[i] = 0;
         }
         for (int i=0;i<(c.n+1);i++){
-            System.out.println(i);
-            System.out.println(cstsb(i,c));
             out[i+exp] += co/(cstsb(i, c));
 
         }

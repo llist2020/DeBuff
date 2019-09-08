@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
  * @author L. List
  * @date 5.7.2018.
  */
+
 public class User {
     TextView[] txts;
     double cu, cn;

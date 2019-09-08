@@ -33,9 +33,6 @@ public class MainActivity extends AppCompatActivity{
         final Button AddBtn = findViewById(R.id.AddBtn);
         final Button RstBtn = findViewById(R.id.RstBtn);
         final RadioGroup rBtnz = findViewById(R.id.rBtnz);
-        final RadioButton rBtn1 = findViewById(R.id.rBtn1);
-        final RadioButton rBtn2 = findViewById(R.id.rBtn2);
-        final RadioButton rBtn3 = findViewById(R.id.rBtn3);
         final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
         final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
@@ -94,14 +91,6 @@ public class MainActivity extends AppCompatActivity{
         final TextView cl7 = findViewById(R.id.cl7);
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
-        //i sad kao napravis varijablu za broj itema na jednoj stranici(u jednom objektu jel)
-        //private var list-length ili kak vec
-        //iz nje odredis kolko bus prikazal tih text-viewa i samo promjenis cl(i) text-view u [i] iz liste
-        //a broj objekta povuci iz broja stranice(gumba jel)
-        //napisal bi ja al neznam javu
-        // btw gumbe mozes isto u xml visibility: gone i dok izracunas sve stavis ih na visible
-        //DO TUD
-
         ///evo i gumba
         final Button openMe = findViewById(R.id.openme);
         openMe.setOnClickListener(new View.OnClickListener() {
@@ -109,8 +98,6 @@ public class MainActivity extends AppCompatActivity{
                 otvoriPopup();
             }
         });
-
-
 
 
         u1 = new User(choice, Nvws);
@@ -138,6 +125,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // A menu with iterator User.itt; takes inputs (depending on the iterator) and displays the results
+                System.out.println("likk");
+                System.out.println(u1.itt);
                 if(u1.ent) {
                     switch (u1.itt) {
                         case 0: // saving n; prepare for cu
@@ -160,7 +149,7 @@ public class MainActivity extends AppCompatActivity{
                                 if (u1.n == 0) {
                                     Snackbar.make(mainLayout, "Your acid is not acidic.", Snackbar.LENGTH_LONG).show();
                                 }
-                                if (u1.n > 6 || u1.n < 0) { // math limit; no point to calculate polyprotic acid solutions
+                                if (u1.n > 6 || u1.n < 0) { // math limit;
                                     Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
                                     u1.itt--;
                                     nTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -181,7 +170,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                             break;
                         case 1: // saving cu; prepare for cn
-                            System.out.println(166);
+                            System.out.println(171);
                             InpHead.setText("Overall cation concentration:");
                             nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                             try {
@@ -203,22 +192,83 @@ public class MainActivity extends AppCompatActivity{
                                 u1.itt--;
                             }
                             break;
+                        case 2: // saving cn; prepare for pKas
+                            System.out.println(195);
+                            InpHead.setText("Equilibrium constant pKa1:");
+                            try {
+                                u1 = new User(u1.cu, Float.parseFloat(nTxt.getText().toString()), u1.n, 2, u1.citt);
+                                if (u1.cn > 100 || u1.cn<-1) {
+                                    Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
+                                    u1.itt--;
+                                    InpHead.setText("Overall cation concentration:");
+                                    break;
+                                } else {
+                                    Unit.setVisibility(View.INVISIBLE);
+                                }
+                            } catch (Exception e) {
+                                InpHead.setText("Overall cation concentration:");
+                                if (nTxt.getText().toString().equals(".")) {
+                                    Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
+                                } else {
+                                    Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
+                                }
+                                u1.itt--;
+                            }
                         default:
-                            System.out.println(189);
+                            System.out.println(216);
                             InpHead.setText("Equilibrium constant pKa" + String.valueOf(u1.itt - 1) + ":");
-                            if (u1.itt == 2) {  // saving cn; prepare for pKas
+                            if (u1.itt == u1.n + 3) { // saving V; fajrunt za ulaze
+                                System.out.println(213);
+                                InpHead.setText("Number of acidic protons:");
+                                nTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                Unit.setVisibility(View.INVISIBLE);
                                 try {
-                                    u1 = new User(u1.cu, Float.parseFloat(nTxt.getText().toString()), u1.n, 2, u1.citt);
-                                    if (u1.cn > 100 || u1.cn<-1) {
-                                        Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
+                                    u1.V = Float.parseFloat(nTxt.getText().toString());
+                                    if (u1.V > 2000) {
+                                        Snackbar.make(mainLayout, "Do you really need more than 2L?", Snackbar.LENGTH_LONG).show();
                                         u1.itt--;
-                                        InpHead.setText("Overall cation concentration:");
+                                        InpHead.setText("Solution volume:");
                                         break;
                                     } else {
                                         Unit.setVisibility(View.INVISIBLE);
                                     }
                                 } catch (Exception e) {
-                                    InpHead.setText("Overall cation concentration:");
+                                    InpHead.setText("Solution volume:");
+                                    Unit.setVisibility(View.VISIBLE);
+                                    Unit.setText("ml");
+                                    nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                                    u1.itt--;
+                                    if (nTxt.getText().toString().equals(".")) {
+                                        Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
+                                    } else {
+                                        Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                }
+                                s1 = new Solution(u1);
+                                p1 = new Poly(s1.GetDic());
+                                u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                pHVw.setText(s1.mainfunc(p1, u1.txts));
+                                u1.itt = -1;
+                                u1.citt++;
+                                Unit.setVisibility(View.INVISIBLE);
+                                AcidBaseSw.setEnabled(true);
+                                TitTxt.setEnabled(true);
+                                VolTitTxt.setEnabled(true);
+                                TitBtn.setEnabled(true);
+                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                    rBtnz.getChildAt(i).setEnabled(true);
+                                }
+                            } else { // saving a pKa; prepare for next one/v
+                                System.out.println(261);
+                                try {
+                                    u1.K[u1.itt - 2] = Math.pow(10, -Float.parseFloat(nTxt.getText().toString()));
+                                    if (u1.K[u1.itt - 2] < Math.pow(10, -35) || u1.K[u1.itt - 2] > Math.pow(10, 35)) {
+                                        Snackbar.make(mainLayout, "Constant too extreme.", Snackbar.LENGTH_LONG).show();
+                                        u1.itt--;
+                                        InpHead.setText("Equilibrium constant pKa" + String.valueOf(u1.itt - 1) + ":");
+                                    }
+                                } catch (Exception e) {
                                     if (nTxt.getText().toString().equals(".")) {
                                         Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
                                     } else {
@@ -226,38 +276,21 @@ public class MainActivity extends AppCompatActivity{
                                     }
                                     u1.itt--;
                                 }
-                            } else {
-                                if (u1.itt == u1.n + 3) {
-                                    System.out.println(213);
+                                if (u1.citt == 0 && u1.itt == u1.n + 2){ // preparation for V
+                                    System.out.println(278);
+                                    InpHead.setText("Solution volume:");
+                                    Unit.setVisibility(View.VISIBLE);
+                                    Unit.setText("ml");
+                                    nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);}
+                                else if (u1.itt == u1.n + 2){ // resetting
+                                    System.out.println(276);
                                     InpHead.setText("Number of acidic protons:");
                                     nTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
                                     Unit.setVisibility(View.INVISIBLE);
-                                    try {
-                                        u1.V = Float.parseFloat(nTxt.getText().toString());
-                                        if (u1.V > 2000) {
-                                            Snackbar.make(mainLayout, "Do you really need more than 2L?", Snackbar.LENGTH_LONG).show();
-                                            u1.itt--;
-                                            InpHead.setText("Solution volume:");
-                                            break;
-                                        } else {
-                                            Unit.setVisibility(View.INVISIBLE);
-                                        }
-                                    } catch (Exception e) {
-                                        InpHead.setText("Solution volume:");
-                                        Unit.setVisibility(View.VISIBLE);
-                                        Unit.setText("ml");
-                                        nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                        u1.itt--;
-                                        if (nTxt.getText().toString().equals(".")) {
-                                            Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
-                                        } else {
-                                            Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
-                                        }
-                                        break;
-                                    }
-                                    s1 = new Solution(u1);
+
+                                    s1.AddComp(u1);
                                     p1 = new Poly(s1.GetDic());
-                                    u1.Outs(Nvws, s1.GetComps()[0]);
+                                    u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                     pHVw.setText(s1.mainfunc(p1, u1.txts));
                                     u1.itt = -1;
                                     u1.citt++;
@@ -269,52 +302,6 @@ public class MainActivity extends AppCompatActivity{
                                     for(int i = 0; i < rBtnz.getChildCount(); i++){
                                         rBtnz.getChildAt(i).setEnabled(true);
                                     }
-                                } else { // saving a pKa; prepare for next one/v
-                                    if (u1.itt == u1.n + 2){
-                                        System.out.println(253);
-                                        try {
-                                            u1.K[u1.itt - 2] = Math.pow(10, -Float.parseFloat(nTxt.getText().toString()));
-                                            if (u1.K[u1.itt - 2] < Math.pow(10, -35) || u1.K[u1.itt - 2] > Math.pow(10, 35)) {
-                                                Snackbar.make(mainLayout, "Constant too extreme.", Snackbar.LENGTH_LONG).show();
-                                                u1.itt--;
-                                                InpHead.setText("Equilibrium constant pKa" + String.valueOf(u1.itt - 1) + ":");
-                                            }
-                                        } catch (Exception e) {
-                                            if (nTxt.getText().toString().equals(".")) {
-                                                Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
-                                            } else {
-                                                Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
-                                            }
-                                            u1.itt--;
-                                        }
-                                        if (u1.citt == 0){
-                                            System.out.println(270);
-                                            InpHead.setText("Solution volume:");
-                                            Unit.setVisibility(View.VISIBLE);
-                                            Unit.setText("ml");
-                                            nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);}
-                                        else{
-                                            System.out.println(276);
-                                            InpHead.setText("Number of acidic protons:");
-                                            nTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                            Unit.setVisibility(View.INVISIBLE);
-
-                                            s1.AddComp(u1);
-                                            p1 = new Poly(s1.GetDic());
-                                            u1.Outs(Nvws, s1.GetComps()[0]);
-                                            pHVw.setText(s1.mainfunc(p1, u1.txts));
-                                            u1.itt = -1;
-                                            u1.citt++;
-                                            Unit.setVisibility(View.INVISIBLE);
-                                            AcidBaseSw.setEnabled(true);
-                                            TitTxt.setEnabled(true);
-                                            VolTitTxt.setEnabled(true);
-                                            TitBtn.setEnabled(true);
-                                            for(int i = 0; i < rBtnz.getChildCount(); i++){
-                                                rBtnz.getChildAt(i).setEnabled(true);
-                                            }
-                                        }
-                                    }
                                 }
                             }
                             break;
@@ -325,7 +312,7 @@ public class MainActivity extends AppCompatActivity{
                 } else{
                     switch (u1.itt) {
                         case 0: // saving cu; prepare for cn
-                            System.out.println(304);
+                            System.out.println(313);
                             InpHead.setText("Overall cation concentration:");
                             nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                             try {
@@ -348,7 +335,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                             break;
                         case 1:
-                            System.out.println(327);
+                            System.out.println(336);
                             try {
                                 u1.cn = Float.parseFloat(nTxt.getText().toString());
                                 if (u1.cn > 100 && u1.cn<-1) {
@@ -379,7 +366,7 @@ public class MainActivity extends AppCompatActivity{
                                 System.out.println(355);
                                 s1.AddComp(u1);
                                 p1 = new Poly(s1.GetDic());
-                                u1.Outs(Nvws, s1.GetComps()[0]);
+                                u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.mainfunc(p1, u1.txts));
                                 u1.itt = -1;
                                 u1.ent = true;
@@ -421,7 +408,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                             s1 = new Solution(u1);
                             p1 = new Poly(s1.GetDic());
-                            u1.Outs(Nvws, s1.GetComps()[0]);
+                            u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                             pHVw.setText(s1.mainfunc(p1, u1.txts));
                             u1.itt = -1;
                             u1.ent = true;
@@ -452,6 +439,8 @@ public class MainActivity extends AppCompatActivity{
                         s1.tit(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                         p1 = new Poly(s1.GetDic());
                         pHVw.setText(s1.mainfunc(p1, u1.txts));
+                        u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                        s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].ConcPrt(Nvws);
                     }
                 } catch(Exception e){
                     if(TitTxt.getText().toString().equals(".")||VolTitTxt.getText().toString().equals(".")){
@@ -466,31 +455,12 @@ public class MainActivity extends AppCompatActivity{
         rBtnz.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                System.out.println("kliklik");
+                System.out.println("lik");
                 int id = rBtnz.getCheckedRadioButtonId();
                 try {
-                    switch(id){
-                        case  R.id.rBtn0:
-                            Rst(Nvws);
-                            u1.Outs(Nvws, s1.GetComps()[0]);
-                            s1.GetComps()[0].ConcPrt(Nvws);
-                            break;
-                        case  R.id.rBtn1:
-                            Rst(Nvws);
-                            u1.Outs(Nvws, s1.GetComps()[1]);
-                            s1.GetComps()[1].ConcPrt(Nvws);
-                            break;
-                        case  R.id.rBtn2:
-                            Rst(Nvws);
-                            u1.Outs(Nvws, s1.GetComps()[2]);
-                            s1.GetComps()[2].ConcPrt(Nvws);
-                            break;
-                        case  R.id.rBtn3:
-                            Rst(Nvws);
-                            u1.Outs(Nvws, s1.GetComps()[3]);
-                            s1.GetComps()[3].ConcPrt(Nvws);
-                            break;
-                    }
+                    Rst(Nvws);
+                    u1.Outs(Nvws, s1.GetComps()[rbutt(id)]);
+                    s1.GetComps()[rbutt(id)].ConcPrt(Nvws);
                 } catch (Exception e){
                     Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
                     rBtn0.setChecked(true);
@@ -509,6 +479,20 @@ public class MainActivity extends AppCompatActivity{
         }
         for (int i=(txts.length)-3; i<txts.length; i++){
             txts[i].setVisibility(View.VISIBLE);
+        }
+    }
+    public int rbutt(int ajdi) {
+        switch (ajdi) {
+            case R.id.rBtn0:
+                return (0);
+            case R.id.rBtn1:
+                return (1);
+            case R.id.rBtn2:
+                return (2);
+            case R.id.rBtn3:
+                return (3);
+            default:
+                return(5555);
         }
     }
 
