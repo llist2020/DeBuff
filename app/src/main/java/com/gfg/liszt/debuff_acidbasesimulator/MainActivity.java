@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity{
                                 }
                                 u1.itt--;
                             }
+                            break;
                         default:
                             System.out.println(216);
                             InpHead.setText("Equilibrium constant pKa" + String.valueOf(u1.itt - 1) + ":");
