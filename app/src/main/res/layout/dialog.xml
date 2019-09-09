@@ -34,7 +34,6 @@
                 android:layout_weight="1"
                 android:imeOptions="actionUnspecified"
                 android:inputType="number"
-                android:text="1"
                 android:textAlignment="textEnd"
                 android:textSize="24sp" />
 
@@ -60,8 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:imeOptions="actionUnspecified"
-                android:inputType="number"
-                android:text="1"
+                android:inputType="numberDecimal"
                 android:textAlignment="textEnd"
                 android:textSize="24sp" />
 
@@ -94,8 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:imeOptions="actionUnspecified"
-                android:inputType="number"
-                android:text="1"
+                android:inputType="numberSigned|number|numberDecimal"
                 android:textAlignment="textEnd"
                 android:textSize="24sp" />
 
@@ -128,8 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:imeOptions="actionUnspecified"
-                android:inputType="number"
-                android:text="1"
+                android:inputType="numberDecimal"
                 android:textAlignment="textEnd"
                 android:textSize="24sp" />
 
@@ -168,6 +164,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/Khead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Equilibrium constant pKa1"
@@ -187,8 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:imeOptions="actionUnspecified"
-                android:inputType="number"
-                android:text="1"
+                android:inputType="numberSigned|number|numberDecimal"
                 android:textAlignment="textEnd"
                 android:textSize="24sp" />
 
@@ -197,6 +193,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="bottom"
                 android:text="Next" />
 
         </LinearLayout>

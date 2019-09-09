@@ -11,21 +11,23 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity{
     private User u1;
     private Poly p1;
     private Solution s1;
+    final Dialog dialog = new Dialog(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final EditText nTxt = findViewById(R.id.nTxt);
+        final EditText nTxt = findViewById(R.id.nTxt0);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
         final Button NextBtn = findViewById(R.id.NextBtn);
@@ -95,7 +97,54 @@ public class MainActivity extends AppCompatActivity{
         final Button openMe = findViewById(R.id.openme);
         openMe.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                otvoriPopup();
+                dialog.setContentView(R.layout.dialog);
+                dialog.setTitle("Add a component");
+
+                Button dialogButton = (Button) dialog.findViewById(R.id.okbtn);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean allclr = true;
+                        try{
+                            int n = Integer.parseInt(((EditText)dialog.findViewById(R.id.nTxt)).getText().toString());
+                            if (u1.n == 0) {
+                                Snackbar.make(mainLayout, "Your acid is not acidic.", Snackbar.LENGTH_LONG).show();
+                            }
+                            if (u1.n > 6 || u1.n < 0) { // math limit;
+                                Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
+                                allclr = false;
+                            }
+                        } catch (Exception e) {
+                            if (((EditText)dialog.findViewById(R.id.nTxt)).getText().toString().equals(".")) {
+                                Snackbar.make(mainLayout, "Invalid input. (src-n)", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(mainLayout, "An error occurred. (src-n)", Snackbar.LENGTH_LONG).show();
+                            }
+                            allclr = false;
+                        }
+
+                        try {
+                            Float cu = Float.parseFloat(((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString());
+                            if (u1.cu > 100) {
+                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cu)", Snackbar.LENGTH_LONG).show();
+                                allclr = false;
+                            }
+                        } catch (Exception e) {
+                            if (((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString().equals(".")) {
+                                Snackbar.make(mainLayout, "Invalid input. (src-cu)", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(mainLayout, "An error occurred. (src-cu)", Snackbar.LENGTH_LONG).show();
+                            }
+                            allclr = false;
+                        }
+
+
+                        Float cn = Float.parseFloat(((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
         });
 
@@ -471,7 +520,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void Rst(TextView[] txts){
+    public void Rst(@NonNull TextView[] txts){
         for (TextView el : txts) {
             el.setVisibility(View.GONE); // Remove the yet-to-calculate values
         }
@@ -500,7 +549,7 @@ public class MainActivity extends AppCompatActivity{
         //OVDI POCINJE DIALOG
 
     public void otvoriPopup() {
-        final Dialog dialog = new Dialog(this);
+
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle("Add a component");
 
@@ -513,5 +562,6 @@ public class MainActivity extends AppCompatActivity{
         });
 
         dialog.show();
+
     }
 }
