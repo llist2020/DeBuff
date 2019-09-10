@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +36,7 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="number"
                 android:textAlignment="textEnd"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -61,13 +62,13 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="numberDecimal"
                 android:textAlignment="textEnd"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="M"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -94,13 +95,13 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="numberSigned|number|numberDecimal"
                 android:textAlignment="textEnd"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="M"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -127,13 +128,13 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="numberDecimal"
                 android:textAlignment="textEnd"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ml"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -186,7 +187,7 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="numberSigned|number|numberDecimal"
                 android:textAlignment="textEnd"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/NextBtn"

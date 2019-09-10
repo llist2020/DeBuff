@@ -1,16 +1,21 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -21,10 +26,13 @@ public class MainActivity extends AppCompatActivity{
     private User u1;
     private Poly p1;
     private Solution s1;
-    final Dialog dialog = new Dialog(this);
+    public Dialog dialog;
+    public BottomSheetDialog bottomSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dialog = new BottomSheetDialog(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final EditText nTxt = findViewById(R.id.nTxt0);
@@ -66,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
         final TextView Unit = findViewById(R.id.unit);
         final TextView InpHead = findViewById(R.id.proton);
         //final TextView[] Nvws = {cVw1, cTxt1, c1, cVw2, cTxt2, c2, cVw3, cTxt3, c3, cVw4, cTxt4, c4, cVw5, cTxt5, c5, cVw6, cTxt6, c6, cVw7, cTxt7, c7, cVwx, cTxtx, solutionVol};
-        final ConstraintLayout mainLayout = findViewById(R.id.layoutaa);
+        final RelativeLayout mainLayout = findViewById(R.id.layoutaa);
         final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
 
         //LISTA IDE TU DOLE
@@ -94,9 +102,10 @@ public class MainActivity extends AppCompatActivity{
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
         ///evo i gumba
-        final Button openMe = findViewById(R.id.openme);
-        openMe.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
 
@@ -148,13 +157,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
-        u1 = new User(choice, Nvws);
         Rst(Nvws);
         Unit.setVisibility(View.INVISIBLE);
-        if(choice==0){
-            u1.ent=true;
-        } else{
+        if(choice==0) u1.ent = true;
+        else{
             InpHead.setText("Overall acid concentration:");
             Unit.setVisibility(View.VISIBLE);
             pHVw.setText("--");
@@ -546,22 +552,4 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-        //OVDI POCINJE DIALOG
-
-    public void otvoriPopup() {
-
-        dialog.setContentView(R.layout.dialog);
-        dialog.setTitle("Add a component");
-
-        Button dialogButton = (Button) dialog.findViewById(R.id.okbtn);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-
-    }
 }

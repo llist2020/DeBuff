@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutaa"
@@ -298,12 +298,6 @@
 
             </androidx.cardview.widget.CardView>
 
-
-            <Button
-                android:id="@+id/openme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="otvori me" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -949,4 +943,18 @@
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add_white_24dp" />
+
+</RelativeLayout>
