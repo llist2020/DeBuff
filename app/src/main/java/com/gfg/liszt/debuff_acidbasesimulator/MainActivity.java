@@ -1,10 +1,8 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MainActivity extends AppCompatActivity{
     private User u1;
@@ -109,19 +106,40 @@ public class MainActivity extends AppCompatActivity{
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
 
-                Button dialogButton = (Button) dialog.findViewById(R.id.okbtn);
-                dialogButton.setOnClickListener(new View.OnClickListener() {
+                Button ManBtn = dialog.findViewById(R.id.ManBtn);
+                Button dialogBtn = dialog.findViewById(R.id.okbtn);
+                ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean allclr = true;
+                        u1.allclr = true;
+                        InpHead.setText("Overall acid concentration:");
+                        pHVw.setText("--");
+                        solutionVol.setText("--");
+                        cTxtx.setText("--");
+                        AcidBaseSw.setEnabled(false);
+                        TitTxt.setEnabled(false);
+                        VolTitTxt.setEnabled(false);
+                        TitBtn.setEnabled(false);
+                        for(int i = 0; i < rBtnz.getChildCount(); i++){
+                            rBtnz.getChildAt(i).setEnabled(false);
+                        }
+                        dialog.findViewById(R.id.KTxt).setEnabled(false);
+                        /*dialog.findViewById(R.id.nTxt).setEnabled(true);
+                        dialog.findViewById(R.id.cuTxt).setEnabled(true);
+                        dialog.findViewById(R.id.cnTxt).setEnabled(true);
+                        dialog.findViewById(R.id.ManBtn).setEnabled(true);
+                        dialog.findViewById(R.id.AutoBtn).setEnabled(true);*/
+
+                        int n = 0;
+                        float cu = 0, cn = 0;
                         try{
-                            int n = Integer.parseInt(((EditText)dialog.findViewById(R.id.nTxt)).getText().toString());
+                            n = Integer.parseInt(((EditText)dialog.findViewById(R.id.nTxt)).getText().toString());
                             if (u1.n == 0) {
                                 Snackbar.make(mainLayout, "Your acid is not acidic.", Snackbar.LENGTH_LONG).show();
                             }
                             if (u1.n > 6 || u1.n < 0) { // math limit;
                                 Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
-                                allclr = false;
+                                u1.allclr = false;
                             }
                         } catch (Exception e) {
                             if (((EditText)dialog.findViewById(R.id.nTxt)).getText().toString().equals(".")) {
@@ -129,14 +147,14 @@ public class MainActivity extends AppCompatActivity{
                             } else {
                                 Snackbar.make(mainLayout, "An error occurred. (src-n)", Snackbar.LENGTH_LONG).show();
                             }
-                            allclr = false;
+                            u1.allclr = false;
                         }
 
                         try {
-                            Float cu = Float.parseFloat(((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString());
+                            cu = Float.parseFloat(((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString());
                             if (u1.cu > 100) {
                                 Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cu)", Snackbar.LENGTH_LONG).show();
-                                allclr = false;
+                                u1.allclr = false;
                             }
                         } catch (Exception e) {
                             if (((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString().equals(".")) {
@@ -144,22 +162,60 @@ public class MainActivity extends AppCompatActivity{
                             } else {
                                 Snackbar.make(mainLayout, "An error occurred. (src-cu)", Snackbar.LENGTH_LONG).show();
                             }
-                            allclr = false;
+                            u1.allclr = false;
                         }
 
-
-                        Float cn = Float.parseFloat(((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString());
-                        dialog.dismiss();
+                        try {
+                            cn = Float.parseFloat(((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString());
+                            if (u1.cu > 100) {
+                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cn)", Snackbar.LENGTH_LONG).show();
+                                u1.allclr = false;
+                            }
+                        } catch (Exception e) {
+                            if (((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString().equals(".")) {
+                                Snackbar.make(mainLayout, "Invalid input. (src-cn)", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(mainLayout, "An error occurred. (src-cn)", Snackbar.LENGTH_LONG).show();
+                            }
+                            u1.allclr = false;
+                        }
+                        if (u1.allclr){
+                            u1.n = n;
+                            u1.cu = cu;
+                            u1.cn = cn;
+                            dialog.findViewById(R.id.nTxt).setEnabled(false);
+                            dialog.findViewById(R.id.cuTxt).setEnabled(false);
+                            dialog.findViewById(R.id.cnTxt).setEnabled(false);
+                            dialog.findViewById(R.id.ManBtn).setEnabled(false);
+                            dialog.findViewById(R.id.AutoBtn).setEnabled(false);
+                            if (n>0){
+                                dialog.findViewById(R.id.KTxt).setEnabled(true);
+                                //if (n == 1) dialog.findViewById(R.id.NextBtn).setText()
+                            }
+                        }
                     }
                 });
 
+                dialogBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        System.out.println("yitt");
+                        System.out.println(u1.itt);
+                        System.out.println(u1.citt);
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
             }
         });
 
+        u1 = new User(choice, Nvws);
         Rst(Nvws);
         Unit.setVisibility(View.INVISIBLE);
-        if(choice==0) u1.ent = true;
+        if(choice==0){
+            u1.ent = true;
+            fab.performClick();
+        }
         else{
             InpHead.setText("Overall acid concentration:");
             Unit.setVisibility(View.VISIBLE);

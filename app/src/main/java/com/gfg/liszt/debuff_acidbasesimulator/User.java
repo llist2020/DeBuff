@@ -14,7 +14,7 @@ public class User {
     double cu, cn;
     int n, itt, citt=0;
     double[] K;
-    boolean ent=false;
+    boolean ent=false, allclr = true;
     double V = 10;
     // constructors
     User(double icu,double icn,int in, int i, int ci){
