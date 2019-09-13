@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity{
         final EditText nTxt = findViewById(R.id.nTxt0);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
-        final Button NextBtn = findViewById(R.id.NextBtn);
+        final Button NextBtn0 = findViewById(R.id.NextBtn0);
         final Button TitBtn = findViewById(R.id.TitBtn);
         final Button AddBtn = findViewById(R.id.AddBtn);
         final Button RstBtn = findViewById(R.id.RstBtn);
@@ -105,13 +105,23 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
+                dialog.findViewById(R.id.KTxt).setEnabled(false);
+                dialog.findViewById(R.id.NextBtn).setEnabled(false);
+                if (u1.citt!=0){
+                    dialog.findViewById(R.id.VTxt).setEnabled(false);
+                    ((TextView) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
+                }
 
                 Button ManBtn = dialog.findViewById(R.id.ManBtn);
+                final Button NextBtn = dialog.findViewById(R.id.NextBtn);
                 Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         u1.allclr = true;
+                        int n = 0;
+                        float cu = 0, cn = 0, V = 0;
+
                         InpHead.setText("Overall acid concentration:");
                         pHVw.setText("--");
                         solutionVol.setText("--");
@@ -123,66 +133,72 @@ public class MainActivity extends AppCompatActivity{
                         for(int i = 0; i < rBtnz.getChildCount(); i++){
                             rBtnz.getChildAt(i).setEnabled(false);
                         }
-                        dialog.findViewById(R.id.KTxt).setEnabled(false);
-                        /*dialog.findViewById(R.id.nTxt).setEnabled(true);
-                        dialog.findViewById(R.id.cuTxt).setEnabled(true);
-                        dialog.findViewById(R.id.cnTxt).setEnabled(true);
-                        dialog.findViewById(R.id.ManBtn).setEnabled(true);
-                        dialog.findViewById(R.id.AutoBtn).setEnabled(true);*/
 
-                        int n = 0;
-                        float cu = 0, cn = 0;
                         try{
                             n = Integer.parseInt(((EditText)dialog.findViewById(R.id.nTxt)).getText().toString());
-                            if (u1.n == 0) {
+                            if (n == 0) {
                                 Snackbar.make(mainLayout, "Your acid is not acidic.", Snackbar.LENGTH_LONG).show();
                             }
-                            if (u1.n > 6 || u1.n < 0) { // math limit;
-                                Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
+                            if (n > 6 || n < 0) { // math limit;
                                 u1.allclr = false;
+                                Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
+                            u1.allclr = false;
                             if (((EditText)dialog.findViewById(R.id.nTxt)).getText().toString().equals(".")) {
                                 Snackbar.make(mainLayout, "Invalid input. (src-n)", Snackbar.LENGTH_LONG).show();
                             } else {
                                 Snackbar.make(mainLayout, "An error occurred. (src-n)", Snackbar.LENGTH_LONG).show();
                             }
-                            u1.allclr = false;
                         }
 
                         try {
                             cu = Float.parseFloat(((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString());
-                            if (u1.cu > 100) {
-                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cu)", Snackbar.LENGTH_LONG).show();
+                            if (cu > 100) {
                                 u1.allclr = false;
+                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cu)", Snackbar.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
+                            u1.allclr = false;
                             if (((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString().equals(".")) {
                                 Snackbar.make(mainLayout, "Invalid input. (src-cu)", Snackbar.LENGTH_LONG).show();
                             } else {
                                 Snackbar.make(mainLayout, "An error occurred. (src-cu)", Snackbar.LENGTH_LONG).show();
                             }
-                            u1.allclr = false;
                         }
 
                         try {
                             cn = Float.parseFloat(((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString());
-                            if (u1.cu > 100) {
-                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cn)", Snackbar.LENGTH_LONG).show();
+                            if (cu > 100) {
                                 u1.allclr = false;
+                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cn)", Snackbar.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
+                            u1.allclr = false;
                             if (((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString().equals(".")) {
                                 Snackbar.make(mainLayout, "Invalid input. (src-cn)", Snackbar.LENGTH_LONG).show();
                             } else {
                                 Snackbar.make(mainLayout, "An error occurred. (src-cn)", Snackbar.LENGTH_LONG).show();
                             }
-                            u1.allclr = false;
                         }
+
+                        try {
+                            V = Float.parseFloat(((EditText) dialog.findViewById(R.id.VTxt)).getText().toString());
+                            if (V > 2000) {
+                                u1.allclr = false;
+                                Snackbar.make(mainLayout, "Do you really need more than 2L?", Snackbar.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            u1.allclr = false;
+                            if (((EditText) dialog.findViewById(R.id.VTxt)).getText().toString().equals(".")) {
+                                Snackbar.make(mainLayout, "Invalid input. (src-V)", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                Snackbar.make(mainLayout, "An error occurred. (src-V)", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+
                         if (u1.allclr){
-                            u1.n = n;
-                            u1.cu = cu;
-                            u1.cn = cn;
+                            u1 = new User(n, cu, cn, V, 0, u1.citt);
                             dialog.findViewById(R.id.nTxt).setEnabled(false);
                             dialog.findViewById(R.id.cuTxt).setEnabled(false);
                             dialog.findViewById(R.id.cnTxt).setEnabled(false);
@@ -190,7 +206,28 @@ public class MainActivity extends AppCompatActivity{
                             dialog.findViewById(R.id.AutoBtn).setEnabled(false);
                             if (n>0){
                                 dialog.findViewById(R.id.KTxt).setEnabled(true);
-                                //if (n == 1) dialog.findViewById(R.id.NextBtn).setText()
+                                dialog.findViewById(R.id.NextBtn).setEnabled(true);
+                                dialog.findViewById(R.id.NextBtn).performClick();
+                            } else{
+                                if (u1.citt==0) s1 = new Solution(u1);
+                                else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+
+                                p1 = new Poly(s1.GetDic());
+                                Rst(Nvws);
+                                u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                pHVw.setText(s1.mainfunc(p1, u1.txts));
+                                s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].ConcPrt(Nvws);
+                                u1.itt = 0;
+                                u1.citt++;
+                                Unit.setVisibility(View.INVISIBLE);
+                                AcidBaseSw.setEnabled(true);
+                                TitTxt.setEnabled(true);
+                                VolTitTxt.setEnabled(true);
+                                TitBtn.setEnabled(true);
+                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                    rBtnz.getChildAt(i).setEnabled(true);
+                                }
+                                dialog.dismiss();
                             }
                         }
                     }
@@ -199,10 +236,75 @@ public class MainActivity extends AppCompatActivity{
                 dialogBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println("yitt");
-                        System.out.println(u1.itt);
-                        System.out.println(u1.citt);
+                        if (u1.citt==0) s1 = new Solution(u1);
+                        else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+
+                        p1 = new Poly(s1.GetDic());
+                        Rst(Nvws);
+                        u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                        pHVw.setText(s1.mainfunc(p1, u1.txts));
+                        s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].ConcPrt(Nvws);
+                        u1.itt = 0;
+                        Unit.setVisibility(View.INVISIBLE);
+                        AcidBaseSw.setEnabled(true);
+                        TitTxt.setEnabled(true);
+                        VolTitTxt.setEnabled(true);
+                        TitBtn.setEnabled(true);
+                        for(int i = 0; i < rBtnz.getChildCount(); i++){
+                            rBtnz.getChildAt(i).setEnabled(true);
+                        }
                         dialog.dismiss();
+                    }
+                });
+
+                NextBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (u1.itt != 0) {
+                            ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + String.valueOf(u1.itt+1) + ":");
+                            try {
+                                u1.K[u1.itt] = Math.pow(10, -Float.parseFloat(((EditText) dialog.findViewById(R.id.KTxt)).getText().toString()));
+                                ((EditText) dialog.findViewById(R.id.KTxt)).setText("");
+                                if (u1.K[u1.itt] < Math.pow(10, -35) || u1.K[u1.itt] > Math.pow(10, 35)) {
+                                    u1.allclr = false;
+                                    u1.itt--;
+                                    Snackbar.make(mainLayout, "Constant too extreme.", Snackbar.LENGTH_LONG).show();
+                                    ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + String.valueOf(u1.itt) + ":");
+                                }
+                            } catch (Exception e) {
+                                if (((EditText) dialog.findViewById(R.id.KTxt)).getText().toString().equals(".")) {
+                                    Snackbar.make(mainLayout, "Invalid input. (src-K)", Snackbar.LENGTH_LONG).show();
+                                } else {
+                                    Snackbar.make(mainLayout, "An error occurred. (src-K)", Snackbar.LENGTH_LONG).show();
+                                }
+                                u1.allclr = false;
+                                u1.itt--;
+                            }
+
+                            if (u1.itt == u1.n && u1.allclr) {
+                                if (u1.citt==0) s1 = new Solution(u1);
+                                else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+
+                                p1 = new Poly(s1.GetDic());
+                                Rst(Nvws);
+                                u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                pHVw.setText(s1.mainfunc(p1, u1.txts));
+                                s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].ConcPrt(Nvws);
+                                u1.itt = 0;
+                                u1.citt++;
+                                Unit.setVisibility(View.INVISIBLE);
+                                AcidBaseSw.setEnabled(true);
+                                TitTxt.setEnabled(true);
+                                VolTitTxt.setEnabled(true);
+                                TitBtn.setEnabled(true);
+                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                    rBtnz.getChildAt(i).setEnabled(true);
+                                }
+                                dialog.dismiss();
+                            }
+                        }
+                        u1.itt++;
+                        if (u1.itt >= u1.n) NextBtn.setText("Go");
                     }
                 });
                 dialog.show();
@@ -232,7 +334,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
-        NextBtn.setOnClickListener(new View.OnClickListener() {
+        NextBtn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // A menu with iterator User.itt; takes inputs (depending on the iterator) and displays the results
@@ -307,7 +409,7 @@ public class MainActivity extends AppCompatActivity{
                             System.out.println(195);
                             InpHead.setText("Equilibrium constant pKa1:");
                             try {
-                                u1 = new User(u1.cu, Float.parseFloat(nTxt.getText().toString()), u1.n, 2, u1.citt);
+                                u1 = new User(u1.n, u1.cu, Float.parseFloat(nTxt.getText().toString()), 10, 2, u1.citt);
                                 if (u1.cn > 100 || u1.cn<-1) {
                                     Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
                                     u1.itt--;
@@ -359,7 +461,7 @@ public class MainActivity extends AppCompatActivity{
                                 }
                                 s1 = new Solution(u1);
                                 p1 = new Poly(s1.GetDic());
-                                u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.mainfunc(p1, u1.txts));
                                 u1.itt = -1;
                                 u1.citt++;
@@ -402,7 +504,7 @@ public class MainActivity extends AppCompatActivity{
 
                                     s1.AddComp(u1);
                                     p1 = new Poly(s1.GetDic());
-                                    u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                    u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                     pHVw.setText(s1.mainfunc(p1, u1.txts));
                                     u1.itt = -1;
                                     u1.citt++;
@@ -478,7 +580,7 @@ public class MainActivity extends AppCompatActivity{
                                 System.out.println(355);
                                 s1.AddComp(u1);
                                 p1 = new Poly(s1.GetDic());
-                                u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                                u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.mainfunc(p1, u1.txts));
                                 u1.itt = -1;
                                 u1.ent = true;
@@ -520,7 +622,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                             s1 = new Solution(u1);
                             p1 = new Poly(s1.GetDic());
-                            u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                            u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                             pHVw.setText(s1.mainfunc(p1, u1.txts));
                             u1.itt = -1;
                             u1.ent = true;
@@ -551,7 +653,7 @@ public class MainActivity extends AppCompatActivity{
                         s1.tit(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                         p1 = new Poly(s1.GetDic());
                         pHVw.setText(s1.mainfunc(p1, u1.txts));
-                        u1.Outs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
+                        u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                         s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].ConcPrt(Nvws);
                     }
                 } catch(Exception e){
@@ -571,7 +673,7 @@ public class MainActivity extends AppCompatActivity{
                 int id = rBtnz.getCheckedRadioButtonId();
                 try {
                     Rst(Nvws);
-                    u1.Outs(Nvws, s1.GetComps()[rbutt(id)]);
+                    u1.PrepOuts(Nvws, s1.GetComps()[rbutt(id)]);
                     s1.GetComps()[rbutt(id)].ConcPrt(Nvws);
                 } catch (Exception e){
                     Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();

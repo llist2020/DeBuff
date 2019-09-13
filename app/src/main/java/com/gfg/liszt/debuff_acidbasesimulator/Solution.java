@@ -2,9 +2,11 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.widget.Switch;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author L. List
@@ -164,9 +166,6 @@ public class Solution {
                 el.brojnik = up(1, el.cu, el);
                 el.nazivnik = upb(0, 1, el);
                 System.out.println("Component application successful.");
-                for (double m: el.K){
-                    System.out.println(m);
-                }
             } catch(Exception e){
                 System.out.println(e.getMessage());
                 System.out.println("Collecting data: EComp"); //empty component

@@ -17,12 +17,13 @@ public class User {
     boolean ent=false, allclr = true;
     double V = 10;
     // constructors
-    User(double icu,double icn,int in, int i, int ci){
+    User(int in, double icu, double icn, double iV, int i, int ci){
         cu = icu;
         cn = icn;
         n = in;
         K = new double[n+1];
         K[0] = 1;
+        V = iV;
         itt = i;
         citt = ci;
         ent = true;
@@ -134,7 +135,7 @@ public class User {
         itt=0;
     }
 
-    public void Outs(TextView[] t, @NonNull Component c){
+    public void PrepOuts(TextView[] t, @NonNull Component c){
         txts = t;
         for (int i=0; i<3*(c.n+1); i++){
             txts[i].setVisibility(View.VISIBLE);

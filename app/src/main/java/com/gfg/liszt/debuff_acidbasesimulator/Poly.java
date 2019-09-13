@@ -1,8 +1,8 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
-import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author L. List
@@ -115,7 +115,6 @@ public class Poly {
                 out[i] += a[i];
             }
             System.out.println("add");
-            System.out.println(out.length);
             return(out);
         } else{
             double[] out = a.clone();
@@ -123,10 +122,6 @@ public class Poly {
                 out[i] += b[i];
             }
             System.out.println("add");
-            System.out.println(out.length);
-            for (double el: out){
-                System.out.println(el);
-            }
             return(out);
         }
     }
@@ -135,14 +130,6 @@ public class Poly {
         double[] outs;
         int l = out.length;
         System.out.println("mul");
-        System.out.println("a");
-        for (double el: a){
-            System.out.println(el);
-        }
-        System.out.println("b");
-        for (double el: b){
-            System.out.println(el);
-        }
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
@@ -151,12 +138,8 @@ public class Poly {
                 out[i+j] += a[i]*b[j];
             }
         }
-        System.out.println(out.length);
-        for (double el: out){
-            System.out.println(el);
-        }
         for (int i = out.length-1; i>0; i--){
-            if (out[i] == 0.0){
+            if (Double.toString(out[i]).equals("0.0")){
                 l = i;
             } else{ break;}
         }
