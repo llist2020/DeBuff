@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity{
         final RadioGroup rBtnz = findViewById(R.id.rBtnz);
         final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
-        final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
         final TextView pHVw = findViewById(R.id.pHVw);
         final TextView cVw1 = findViewById(R.id.cVw1);
         final TextView cVw2 = findViewById(R.id.cVw2);
@@ -112,9 +111,11 @@ public class MainActivity extends AppCompatActivity{
                     ((TextView) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
                 }
 
-                Button ManBtn = dialog.findViewById(R.id.ManBtn);
+                final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
-                Button dialogBtn = dialog.findViewById(R.id.okbtn);
+                final Button dialogBtn = dialog.findViewById(R.id.okbtn);
+                final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
+
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -204,13 +205,14 @@ public class MainActivity extends AppCompatActivity{
                             dialog.findViewById(R.id.cnTxt).setEnabled(false);
                             dialog.findViewById(R.id.ManBtn).setEnabled(false);
                             dialog.findViewById(R.id.AutoBtn).setEnabled(false);
+                            dialog.findViewById(R.id.AcidBaseSwInp).setEnabled(false);
                             if (n>0){
                                 dialog.findViewById(R.id.KTxt).setEnabled(true);
                                 dialog.findViewById(R.id.NextBtn).setEnabled(true);
                                 dialog.findViewById(R.id.NextBtn).performClick();
                             } else{
                                 if (u1.citt==0) s1 = new Solution(u1);
-                                else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+                                else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -237,7 +239,7 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         if (u1.citt==0) s1 = new Solution(u1);
-                        else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+                        else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
 
                         p1 = new Poly(s1.GetDic());
                         Rst(Nvws);
@@ -283,7 +285,7 @@ public class MainActivity extends AppCompatActivity{
 
                             if (u1.itt == u1.n && u1.allclr) {
                                 if (u1.citt==0) s1 = new Solution(u1);
-                                else if (u1.citt<4) s1.AddComp(u1); // VAMO KOD ZA OVERWRITANJE
+                                else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -502,7 +504,7 @@ public class MainActivity extends AppCompatActivity{
                                     nTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
                                     Unit.setVisibility(View.INVISIBLE);
 
-                                    s1.AddComp(u1);
+                                    s1.AddComp(u1, false);
                                     p1 = new Poly(s1.GetDic());
                                     u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                     pHVw.setText(s1.mainfunc(p1, u1.txts));
@@ -578,7 +580,7 @@ public class MainActivity extends AppCompatActivity{
                                 Unit.setText("ml");
                             } else{
                                 System.out.println(355);
-                                s1.AddComp(u1);
+                                s1.AddComp(u1, false);
                                 p1 = new Poly(s1.GetDic());
                                 u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.mainfunc(p1, u1.txts));
@@ -709,5 +711,4 @@ public class MainActivity extends AppCompatActivity{
                 return(5555);
         }
     }
-
 }

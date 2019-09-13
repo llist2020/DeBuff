@@ -17,14 +17,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="top"
             android:animateLayoutChanges="true"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="25pt"
                 android:text="Add a component:"
                 android:textSize="16sp" />
 
@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:enabled="false"
                 android:text="  Acid" />
 
         </LinearLayout>

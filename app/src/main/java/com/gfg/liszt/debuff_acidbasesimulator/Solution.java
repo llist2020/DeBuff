@@ -34,7 +34,7 @@ public class Solution {
     V = u.V;
 } // collecting inputs
 
-    public void AddComp(@NotNull User u){
+    public void AddComp(@NotNull User u, boolean sw){
         comps[u.citt] = new Component(u, this);
         h += u.cu*u.n+1;
         n += u.n;
@@ -42,6 +42,7 @@ public class Solution {
         cn += u.cn;
         dic = new double[n+3];
         comps[u.citt].V = V;
+        comps[u.citt].acid = !sw;
         System.out.println("citt");
         System.out.println(u.citt);
         for(int i=0; i<u.citt; i++){
@@ -160,11 +161,16 @@ public class Solution {
         }
 
         // major redistribution required
-        for (int i = 0; i<comps.length; i++) {
+        for (Component el: comps) {
             try {
-                Component el = comps[i];
-                el.brojnik = up(1, el.cu, el);
-                el.nazivnik = upb(0, 1, el);
+                if (el.acid){
+                    el.brojnik = up(1, el.cu, el);
+                    el.nazivnik = upb(0, 1, el);
+                } else{
+                    el.brojnik = upc(1, el.cu, el);
+                    el.nazivnik = upd(0, 1, el);
+                }
+
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println(e.getMessage());
