@@ -27,7 +27,7 @@ public class Poly {
     private boolean check(double h, @NonNull Solution s) {
         System.out.println("Checking the offered root.");
         boolean mcons = true;
-        double outb = 0;
+        double outa = 0, outb = 0;
         Component[] comps = s.GetComps();
 
         for (Component el: comps) {
@@ -43,19 +43,19 @@ public class Poly {
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] / h;
                     } // defines concentrations' values
-                    for (int i = 0; i < c.length; i++) {
-                        outb += c[i] * i;
+                    for (double CurrC: c) {
+                        outa += CurrC * i;
                     } // calculates overall charge
                 } else{
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] / (h * Math.pow(el.kw, i));
                     } // defines concentrations' values
-                    for (int i = 0; i < c.length; i++) {
-                        outb -= c[i] * i;
+                    for (double CurrC: c) {
+                        outb += CurrC * i;
                     } // calculates overall charge
                 }
-                for (int i = 0; i < c.length; i++) {
-                    out += c[i];
+                for (double CurrC: c) {
+                    out += CurrC;
                 } // calculates overall concentration
 
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
@@ -67,7 +67,11 @@ public class Poly {
                 System.out.println("Check: EComp"); //empty component
             }
         }
-        boolean chcons = (((double) Math.round((outb + s.kw / h) * 10d) / 10d) == ((double) Math.round((s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outb + s.kw / h) * 100d) / 100d) == ((double) Math.round((s.GetCn() + h) * 100d) / 100d)); // law of conservation of charge
+        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d)); // law of conservation of charge
+
+        // debug
+        if (mcons) System.out.println("mcons stima");
+        if (chcons) System.out.println("chcons stima");
 
         if (mcons && chcons) {
             return (true);
