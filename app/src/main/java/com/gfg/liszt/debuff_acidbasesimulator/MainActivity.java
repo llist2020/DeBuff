@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity{
                         pHVw.setText("--");
                         solutionVol.setText("--");
                         cTxtx.setText("--");
-                        AcidBaseSw.setEnabled(false);
+                        AcidBaseSwInp.setEnabled(false);
                         TitTxt.setEnabled(false);
                         VolTitTxt.setEnabled(false);
                         TitBtn.setEnabled(false);
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity{
                                 dialog.findViewById(R.id.NextBtn).setEnabled(true);
                                 dialog.findViewById(R.id.NextBtn).performClick();
                             } else{
-                                if (u1.citt==0) s1 = new Solution(u1);
-                                else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
+                                if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
+                                else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity{
                 dialogBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (u1.citt==0) s1 = new Solution(u1);
-                        else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
+                        if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
+                        else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                         p1 = new Poly(s1.GetDic());
                         Rst(Nvws);
@@ -284,8 +284,8 @@ public class MainActivity extends AppCompatActivity{
                             }
 
                             if (u1.itt == u1.n && u1.allclr) {
-                                if (u1.citt==0) s1 = new Solution(u1);
-                                else if (u1.citt<4) s1.AddComp(u1, false); // VAMO KOD ZA OVERWRITANJE
+                                if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
+                                else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -340,8 +340,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // A menu with iterator User.itt; takes inputs (depending on the iterator) and displays the results
-                System.out.println("likk");
-                System.out.println(u1.itt);
+
                 if(u1.ent) {
                     switch (u1.itt) {
                         case 0: // saving n; prepare for cu
@@ -461,7 +460,7 @@ public class MainActivity extends AppCompatActivity{
                                     }
                                     break;
                                 }
-                                s1 = new Solution(u1);
+                                s1 = new Solution(u1, false);
                                 p1 = new Poly(s1.GetDic());
                                 u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.mainfunc(p1, u1.txts));
@@ -622,7 +621,7 @@ public class MainActivity extends AppCompatActivity{
                                 }
                                 break;
                             }
-                            s1 = new Solution(u1);
+                            s1 = new Solution(u1, false);
                             p1 = new Poly(s1.GetDic());
                             u1.PrepOuts(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
                             pHVw.setText(s1.mainfunc(p1, u1.txts));

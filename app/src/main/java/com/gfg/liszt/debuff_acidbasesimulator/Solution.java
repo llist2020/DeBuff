@@ -24,7 +24,7 @@ public class Solution {
     public Solution(){
         n=0;
     }
-    public Solution(@NotNull User u){
+    public Solution(@NotNull User u, boolean sw){
     comps[0] = new Component(u, this);
     cu = u.cu;
     cn = u.cn;
@@ -32,6 +32,7 @@ public class Solution {
     dic = new double[n+3];
     h = cu*n+1;
     V = u.V;
+    comps[0].acid = !sw;
 } // collecting inputs
 
     public void AddComp(@NotNull User u, boolean sw){
@@ -166,11 +167,15 @@ public class Solution {
                 if (el.acid){
                     el.brojnik = up(1, el.cu, el);
                     el.nazivnik = upb(0, 1, el);
+                    System.out.println("amobrojnik");
+                    for (double g: el.brojnik) System.out.println(g);
+                    System.out.println("amonazivnik");
+                    for (double g: el.nazivnik) System.out.println(g);
                 } else{
                     el.brojnik = upc(1, el.cu, el);
                     el.nazivnik = upd(0, 1, el);
                 }
-
+                System.out.println(el.acid);
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println(e.getMessage());

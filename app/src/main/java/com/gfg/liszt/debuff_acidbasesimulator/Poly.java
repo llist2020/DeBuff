@@ -26,6 +26,11 @@ public class Poly {
     // reviews the offered polynomial root (H+ concentration)
     private boolean check(double h, @NonNull Solution s) {
         System.out.println("Checking the offered root.");
+        System.out.println(h);
+        if (h<0){
+            System.out.println("Negative concentration");
+            return(false);
+        }
         boolean mcons = true;
         double outa = 0, outb = 0;
         Component[] comps = s.GetComps();
@@ -34,8 +39,14 @@ public class Poly {
             try {
                 double[] c = new double[el.n+1];
                 double out = 0;
-                for (int i = 0; i < el.n + 1; i++) {
-                    out += el.cstsc(i, el) / (Math.pow(h, i));
+                if (el.acid) {
+                    for (int i = 0; i < el.n + 1; i++) {
+                        out += el.cstsc(i, el) / (Math.pow(h, i));
+                    }
+                } else{
+                    for (int i = 0; i < el.n + 1; i++) {
+                        out += el.cstsc(i, el) * (Math.pow(h / el.kw, i));
+                    }
                 }
                 c[0] = el.cu / out; // calculates conc of the HnA specie
                 out = 0;
@@ -43,21 +54,28 @@ public class Poly {
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] / h;
                     } // defines concentrations' values
-                    for (double CurrC: c) {
-                        outa += CurrC * i;
+                    for (int i = 0; i < c.length; i++) {
+                        outa += c[i] * i;
                     } // calculates overall charge
                 } else{
                     for (int i = 1; i < el.n + 1; i++) {
-                        c[i] = c[i - 1] * el.K[i] / (h * Math.pow(el.kw, i));
+                        c[i] = c[i - 1] * el.K[i] * h / el.kw;
                     } // defines concentrations' values
-                    for (double CurrC: c) {
-                        outb += CurrC * i;
+                    for (int i = 0; i < c.length; i++) {
+                        outb += c[i] * i;
                     } // calculates overall charge
                 }
                 for (double CurrC: c) {
                     out += CurrC;
                 } // calculates overall concentration
 
+                System.out.println("data");
+                for (double cx: c) System.out.println(cx);
+                System.out.println("out, outa, outb, cn");
+                System.out.println(out);
+                System.out.println(outa);
+                System.out.println(outb);
+                System.out.println(s.GetCn());
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
 
                 if (mcons){

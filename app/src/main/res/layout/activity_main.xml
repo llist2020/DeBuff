@@ -93,7 +93,7 @@
                         android:orientation="horizontal">
 
                         <Switch
-                            android:id="@+id/AcidBaseSwInp"
+                            android:id="@+id/AcidBaseSwInp0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

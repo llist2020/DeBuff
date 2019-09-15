@@ -147,18 +147,30 @@ public class User {
     // defines species' tags
     public String ConcAssign(int i, Component c){
         String out = "c(";
-        if (i!=0){
-            out += "H";
-            if (i!=1){
-                out += String.valueOf(i);
+        if (c.acid) {
+            if (i != 0) {
+                out += "H";
+                if (i != 1) {
+                    out += String.valueOf(i);
+                }
             }
-        }
-        out += "A";
-        if (c.n-i!=0){
-            if (c.n-i!=1){
-                out += String.valueOf(c.n-i);
+            out += "A";
+            if (c.n - i != 0) {
+                if (c.n - i != 1) {
+                    out += String.valueOf(c.n - i);
+                }
+                out += "-";
             }
-            out += "-";
+        } else{
+            if (i != 0 && i != c.n){
+                out += "[B";
+                if (i > 1) out += "(OH)"+(c.n-i);
+                out += "]"+(c.n-i)+"+";
+            } else{
+                out += "B";
+                if (i == 0) out += c.n+"+";
+                else out += "(OH)"+c.n;
+            }
         }
         out += ") = ";
         return(out);
