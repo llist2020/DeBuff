@@ -62,7 +62,7 @@ public class Poly {
                         c[i] = c[i - 1] * el.K[i] * h / el.kw;
                     } // defines concentrations' values
                     for (int i = 0; i < c.length; i++) {
-                        outb += c[i] * i;
+                        outb += c[i] * (el.n - i);
                     } // calculates overall charge
                 }
                 for (double CurrC: c) {

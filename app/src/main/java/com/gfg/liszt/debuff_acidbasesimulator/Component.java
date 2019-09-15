@@ -56,8 +56,14 @@ public class Component extends Solution{
     // a function setting the viewable concentration values
     void ConcPrt(TextView[] txts){
         DecimalFormat format = new DecimalFormat("0.###E0");
-        for (int i=n; i>-1; i--){
-            txts[(n-i)*3+1].setText(String.valueOf(format.format(conc[n-i])));
+        if (acid){
+            for (int i=n; i>-1; i--){
+                txts[(n-i)*3+1].setText(String.valueOf(format.format(conc[n-i])));
+            }
+        } else{
+            for (int i=n; i>-1; i--) {
+                txts[(n - i) * 3 + 1].setText(String.valueOf(format.format(conc[i])));
+            }
         }
         txts[22].setText(String.valueOf(format.format(Math.abs(cn))));
         if(cn<0){

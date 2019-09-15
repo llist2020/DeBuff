@@ -88,7 +88,7 @@ public class Solution {
     @org.jetbrains.annotations.Contract(pure = true)
     private double csts(int i, Component c){
         double out = 1;
-        for (int j=0;j<i;j++){
+        for (int j=0; j<i; j++){
             out *= c.K[c.n-j];
         }
         return(out);
@@ -96,14 +96,14 @@ public class Solution {
     @Contract(pure = true)
     private double cstsb(int i, @NonNull Component c){
         double out = 1;
-        for (int j=c.n;j>(c.n-i);j--){
+        for (int j=c.n; j>(c.n-i); j--){
             out *= c.K[j];
         }
         return(out);
     }
     public double cstsc(int i, Component c){
         double out = 1;
-        for (int j=0;j<i+1;j++){
+        for (int j=0; j<i+1; j++){
             out *= c.K[j];
         }
         return(out);
@@ -113,8 +113,8 @@ public class Solution {
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        for (int i=0;i<c.n;i++){
-            out[i+exp] += co*(c.n-i)/(csts(i, c));
+        for (int i=0; i<c.n ; i++){
+            out[i+exp] += co * (c.n-i) / (csts(i, c));
         }
         return(out);
     }
@@ -123,8 +123,8 @@ public class Solution {
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        for (int i=0;i<(c.n+1);i++){
-            out[i+exp] += co/(cstsb(i, c));
+        for (int i=0; i<(c.n+1); i++){
+            out[i+exp] += co / (cstsb(i, c));
 
         }
         return(out);
@@ -134,8 +134,8 @@ public class Solution {
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        for (int i=1;i<c.n;i++){
-            out[i+1+exp] += i*co*(cstsc(i, c))/Math.pow(c.kw, i);
+        for (int i=0; i<c.n+1; i++){
+            out[i+1+exp] -= i * co * (cstsc(i, c)) / Math.pow(c.kw, i);
         }
         return(out);
     }
@@ -144,8 +144,8 @@ public class Solution {
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        for (int i=0;i<(c.n+1);i++){
-            out[i+exp] += co*(cstsc(i, c))/Math.pow(c.kw, i);
+        for (int i=0; i<(c.n+1); i++){
+            out[i+exp] += co * (cstsc(i, c)) / Math.pow(c.kw, i);
         }
         return(out);
     }
@@ -167,15 +167,15 @@ public class Solution {
                 if (el.acid){
                     el.brojnik = up(1, el.cu, el);
                     el.nazivnik = upb(0, 1, el);
-                    System.out.println("amobrojnik");
-                    for (double g: el.brojnik) System.out.println(g);
-                    System.out.println("amonazivnik");
-                    for (double g: el.nazivnik) System.out.println(g);
                 } else{
                     el.brojnik = upc(1, el.cu, el);
                     el.nazivnik = upd(0, 1, el);
                 }
-                System.out.println(el.acid);
+                System.out.println("amobrojnik");
+                for (double g: el.brojnik) System.out.println(g);
+                /*System.out.println("amonazivnik");
+                for (double g: el.nazivnik) System.out.println(g);
+                System.out.println(el.acid);*/
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println(e.getMessage());
