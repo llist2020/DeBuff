@@ -41,14 +41,14 @@ public class Poly {
                 double out = 0;
                 if (el.acid) {
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.cstsc(i, el) / (Math.pow(h, i));
+                        out += el.cstsb(i, el) / (Math.pow(h, i));
                     }
                 } else{
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.cstsc(i, el) * (Math.pow(h / el.kw, i));
+                        out += el.cstsb(i, el) * (Math.pow((h / el.kw), i));
                     }
                 }
-                c[0] = el.cu / out; // calculates conc of the HnA specie
+                c[0] = el.cu / out; // calculates the concentration of the not dissociated specie
                 out = 0;
                 if (el.acid) {
                     for (int i = 1; i < el.n + 1; i++) {
@@ -56,31 +56,29 @@ public class Poly {
                     } // defines concentrations' values
                     for (int i = 0; i < c.length; i++) {
                         outa += c[i] * i;
-                    } // calculates overall charge
+                    } // calculates overall charge (acid)
                 } else{
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] * h / el.kw;
                     } // defines concentrations' values
                     for (int i = 0; i < c.length; i++) {
-                        outb += c[i] * (el.n - i);
-                    } // calculates overall charge
+                        outb += c[i] * i; // VAMO MOZDA IPAK (n-i)
+                    } // calculates overall charge (base)
                 }
                 for (double CurrC: c) {
                     out += CurrC;
                 } // calculates overall concentration
 
-                System.out.println("data");
+                System.out.println("data; concentrations");
                 for (double cx: c) System.out.println(cx);
-                System.out.println("out, outa, outb, cn");
+                System.out.println("cu, outa, outb, cn");
                 System.out.println(out);
                 System.out.println(outa);
                 System.out.println(outb);
                 System.out.println(s.GetCn());
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
 
-                if (mcons){
-                    el.setConcentrations(c);
-                }
+                if (mcons) el.setConcentrations(c);
             } catch (Exception e) {
                 System.out.println("Check: EComp"); //empty component
             }
@@ -91,9 +89,8 @@ public class Poly {
         if (mcons) System.out.println("mcons stima");
         if (chcons) System.out.println("chcons stima");
 
-        if (mcons && chcons) {
-            return (true);
-        } else {
+        if (mcons && chcons) return (true);
+        else {
             System.out.println("Illegitimate root.");
             return (false);
         }

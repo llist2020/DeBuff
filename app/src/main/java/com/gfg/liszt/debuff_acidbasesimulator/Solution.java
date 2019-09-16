@@ -86,66 +86,62 @@ public class Solution {
 
     // some math functions following
     @org.jetbrains.annotations.Contract(pure = true)
-    private double csts(int i, Component c){
+    private double cstsa(int i, @NonNull Component c){
         double out = 1;
-        for (int j=0; j<i; j++){
-            out *= c.K[c.n-j];
-        }
-        return(out);
-    }
-    @Contract(pure = true)
-    private double cstsb(int i, @NonNull Component c){
-        double out = 1;
-        for (int j=c.n; j>(c.n-i); j--){
+        for (int j=0; j<c.n-i+1; j++){
             out *= c.K[j];
         }
         return(out);
     }
-    public double cstsc(int i, Component c){
+    @Contract(pure = true)
+    public double cstsb(int i, @NonNull Component c){
         double out = 1;
-        for (int j=0; j<i+1; j++){
+        for (int j=0; j<(i+1); j++){
             out *= c.K[j];
         }
         return(out);
     }
     public double[] up(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+3];
+        double[] out = new double[c.n+1+exp];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<c.n ; i++){
-            out[i+exp] += co * (c.n-i) / (csts(i, c));
+            out[i+exp] += co * (c.n-i) * (cstsa(i, c));
         }
         return(out);
     }
     public double[] upb(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+exp+1];
+        double[] out = new double[c.n+1+exp];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[i+exp] += co / (cstsb(i, c));
-
+            out[c.n-i+exp] += co * (cstsb(i, c));
         }
         return(out);
     }
     public double[] upc(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+exp+1];
+        double[] out = new double[c.n+1+exp];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=1; i<(c.n+1); i++){
-            out[i+exp] -= i * co * (cstsc(i, c)) / Math.pow(c.kw, i);
+            out[i-1+exp] -= i * co * (cstsb(i, c)) / Math.pow(c.kw, i-1+exp);
+            System.out.println("upc; cstsb; *co; kw");
+            System.out.println(cstsb(i, c));
+            System.out.println(cstsb(i, c)*co);
+            System.out.println(Math.pow(c.kw, i+exp));
         }
         return(out);
     }
     public double[] upd(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+3];
+        double[] out = new double[c.n+1+exp];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[i+exp] += co * (cstsc(i, c)) / Math.pow(c.kw, i);
+            out[i+exp] += co * (cstsb(i, c)) / Math.pow(c.kw, i+exp);
         }
         return(out);
     }
@@ -172,10 +168,10 @@ public class Solution {
                     el.nazivnik = upd(0, 1, el);
                 }
                 System.out.println("amobrojnik");
-                for (double g: el.brojnik) System.out.println(g);
+                for (int i = 0; i<el.brojnik.length; i++) System.out.println(el.brojnik[i]);
                 /*System.out.println("amonazivnik");
-                for (double g: el.nazivnik) System.out.println(g);
-                System.out.println(el.acid);*/
+                for (int i = 0; i<el.nazivnik.length; i++) System.out.println(el.nazivnik[i]);*/
+                System.out.println(el.acid);
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println(e.getMessage());
