@@ -119,7 +119,7 @@ public class Solution {
         return(out);
     }
     public double[] upb(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+3];
+        double[] out = new double[c.n+exp+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
@@ -130,12 +130,12 @@ public class Solution {
         return(out);
     }
     public double[] upc(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+3];
+        double[] out = new double[c.n+exp+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
-        for (int i=0; i<c.n+1; i++){
-            out[i+1+exp] -= i * co * (cstsc(i, c)) / Math.pow(c.kw, i);
+        for (int i=1; i<(c.n+1); i++){
+            out[i+exp] -= i * co * (cstsc(i, c)) / Math.pow(c.kw, i);
         }
         return(out);
     }
