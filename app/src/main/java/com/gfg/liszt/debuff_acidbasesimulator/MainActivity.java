@@ -2,7 +2,6 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,13 +31,16 @@ public class MainActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final EditText nTxt = findViewById(R.id.nTxt0);
-        final EditText TitTxt = findViewById(R.id.TitTxt);
-        final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
+        /*final EditText nTxt = findViewById(R.id.nTxt0);
         final Button NextBtn0 = findViewById(R.id.NextBtn0);
-        final Button TitBtn = findViewById(R.id.TitBtn);
         final Button AddBtn = findViewById(R.id.AddBtn);
         final Button RstBtn = findViewById(R.id.RstBtn);
+        final TextView Unit = findViewById(R.id.unit);
+        final TextView InpHead = findViewById(R.id.proton);*/
+
+        final EditText TitTxt = findViewById(R.id.TitTxt);
+        final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
+        final Button TitBtn = findViewById(R.id.TitBtn);
         final RadioGroup rBtnz = findViewById(R.id.rBtnz);
         final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
@@ -67,8 +69,6 @@ public class MainActivity extends AppCompatActivity{
         final TextView c5 = findViewById(R.id.c5);
         final TextView c6 = findViewById(R.id.c6);
         final TextView c7 = findViewById(R.id.cy);
-        final TextView Unit = findViewById(R.id.unit);
-        final TextView InpHead = findViewById(R.id.proton);
         //final TextView[] Nvws = {cVw1, cTxt1, c1, cVw2, cTxt2, c2, cVw3, cTxt3, c3, cVw4, cTxt4, c4, cVw5, cTxt5, c5, cVw6, cTxt6, c6, cVw7, cTxt7, c7, cVwx, cTxtx, solutionVol};
         final RelativeLayout mainLayout = findViewById(R.id.layoutaa);
         final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity{
                         int n = 0;
                         float cu = 0, cn = 0, V = 0;
 
-                        InpHead.setText("Overall acid concentration:");
                         pHVw.setText("--");
                         solutionVol.setText("--");
                         cTxtx.setText("--");
@@ -222,7 +221,6 @@ public class MainActivity extends AppCompatActivity{
                                 s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = 0;
                                 u1.citt++;
-                                Unit.setVisibility(View.INVISIBLE);
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
@@ -248,7 +246,6 @@ public class MainActivity extends AppCompatActivity{
                         pHVw.setText(s1.MainFunction(p1, u1.Texts));
                         s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                         u1.itt = 0;
-                        Unit.setVisibility(View.INVISIBLE);
                         AcidBaseSw.setEnabled(true);
                         TitTxt.setEnabled(true);
                         VolTitTxt.setEnabled(true);
@@ -292,7 +289,6 @@ public class MainActivity extends AppCompatActivity{
                                 s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = 0;
                                 u1.citt++;
-                                Unit.setVisibility(View.INVISIBLE);
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
@@ -314,18 +310,14 @@ public class MainActivity extends AppCompatActivity{
 
         u1 = new User(choice, Nvws);
         Rst(Nvws);
-        Unit.setVisibility(View.INVISIBLE);
         if(choice==0){
             u1.ent = true;
             fab.performClick();
         }
         else{
-            InpHead.setText("Overall acid concentration:");
-            Unit.setVisibility(View.VISIBLE);
             pHVw.setText("--");
             solutionVol.setText("--");
             cTxtx.setText("--");
-            nTxt.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             AcidBaseSw.setEnabled(false);
             TitTxt.setEnabled(false);
             VolTitTxt.setEnabled(false);
@@ -335,7 +327,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
 
-        NextBtn0.setOnClickListener(new View.OnClickListener() {
+        /*NextBtn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // A menu with iterator User.itt; takes inputs (depending on the iterator) and displays the results
@@ -641,6 +633,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+*/
 
         TitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
