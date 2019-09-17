@@ -21,10 +21,10 @@ public class Solution {
     double l=1.0, V, cu = 0;
     private double cn = 0, h = 0;
 
-    public Solution(){
+    Solution(){
         n=0;
     }
-    public Solution(@NotNull User u, boolean sw){
+    Solution(@NotNull User u, boolean sw){
     comps[0] = new Component(u, this);
     cu = u.cu;
     cn = u.cn;
@@ -35,7 +35,8 @@ public class Solution {
     comps[0].acid = !sw;
 } // collecting inputs
 
-    public void AddComp(@NotNull User u, boolean sw){
+    void AddComp(@NotNull User u, boolean sw){
+        // KAJ AK JE CITT VECI OD 4
         comps[u.citt] = new Component(u, this);
         h += u.cu*u.n+1;
         n += u.n;
@@ -44,24 +45,23 @@ public class Solution {
         dic = new double[n+3];
         comps[u.citt].V = V;
         comps[u.citt].acid = !sw;
-        System.out.println("citt");
-        System.out.println(u.citt);
         for(int i=0; i<u.citt; i++){
             comps[i].SetCn(cn);
         }
     }
-    public Component[] GetComps(){
+
+    Component[] GetComps(){
         return(comps);
     }
     public double GetCn(){
         return(cn);
     }
-    public double[] GetDic(){
+    double[] GetDic(){
         return(dic);
     }
 
     // titrates the Solution against an ideal base (as default; could be an acid) of volume v & concentration l
-    public void tit(double v, Switch s){
+    void tit(double v, Switch s){
         if (l != 0) {
             if (s.isChecked()) {
                 l = -Math.abs(l);
@@ -94,63 +94,58 @@ public class Solution {
         return(out);
     }
     @Contract(pure = true)
-    public double cstsb(int i, @NonNull Component c){
+    double cstsb(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<(i+1); j++){
             out *= c.K[j];
         }
         return(out);
     }
-    public double[] up(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+1+exp];
+    @Contract(pure = true)
+    private double[] UpA(double co, @NonNull Component c){
+        double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<c.n ; i++){
-            out[i+exp] += co * (c.n-i) * (cstsa(i, c));
+            out[i+1] += co * (c.n-i) * (cstsa(i, c));
         }
         return(out);
     }
-    public double[] upb(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+1+exp];
+    @Contract(pure = true)
+    private double[] DownA(double co, @NonNull Component c){
+        double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[c.n-i+exp] += co * (cstsb(i, c));
+            out[c.n-i] += co * (cstsb(i, c));
         }
         return(out);
     }
-    public double[] upc(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+1+exp];
+    private double[] UpB(double co, @NonNull Component c){
+        double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=1; i<(c.n+1); i++){
-            out[i-1+exp] -= i * co * (cstsb(i, c)) / Math.pow(c.kw, i-1+exp);
-            System.out.println("upc; cstsb; *co; kw");
-            System.out.println(cstsb(i, c));
-            System.out.println(cstsb(i, c)*co);
-            System.out.println(Math.pow(c.kw, i+exp));
+            out[i+1] -= i * co * (cstsb(i, c)) / Math.pow(c.kw, i);
         }
         return(out);
     }
-    public double[] upd(int exp, double co, @NonNull Component c){
-        double[] out = new double[c.n+1+exp];
+    private double[] DownB(double co, @NonNull Component c){
+        double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[i+exp] += co * (cstsb(i, c)) / Math.pow(c.kw, i+exp);
+            out[i] += co * (cstsb(i, c)) / Math.pow(c.kw, i);
         }
         return(out);
     }
 
-    // a method saving the concs calculated @ checking of mass & charge conservations
-
-
     // the most important function implementing all the math and functions involved in displaying of the Solution's properties
-    public String mainfunc(@NonNull Poly p, TextView[] txts){
+    String MainFunction(@NonNull Poly p, TextView[] t){
         System.out.println("Initializing simulation.");
         dic = new double[n+3];
         for (int i = 0; i<dic.length; i++){
@@ -161,17 +156,12 @@ public class Solution {
         for (Component el: comps) {
             try {
                 if (el.acid){
-                    el.brojnik = up(1, el.cu, el);
-                    el.nazivnik = upb(0, 1, el);
+                    el.up = UpA(el.cu, el);
+                    el.down = DownA(1, el);
                 } else{
-                    el.brojnik = upc(1, el.cu, el);
-                    el.nazivnik = upd(0, 1, el);
+                    el.up = UpB(el.cu, el);
+                    el.down = DownB(1, el);
                 }
-                System.out.println("amobrojnik");
-                for (int i = 0; i<el.brojnik.length; i++) System.out.println(el.brojnik[i]);
-                /*System.out.println("amonazivnik");
-                for (int i = 0; i<el.nazivnik.length; i++) System.out.println(el.nazivnik[i]);*/
-                System.out.println(el.acid);
                 System.out.println("Component application successful.");
             } catch(Exception e){
                 System.out.println(e.getMessage());
@@ -183,7 +173,7 @@ public class Solution {
         dic[2] = -1;
         for (Component el: comps){
             try {
-                dic = p.multiply(dic, el.nazivnik);
+                dic = p.Multiply(dic, el.down);
             }catch(Exception e){
                 System.out.println("Preparing poly1: EComp");
             }
@@ -192,7 +182,7 @@ public class Solution {
             for (int j = 0; j<4; j++){
                 if (i!=j){
                     try {
-                        comps[i].brojnik = p.multiply(comps[i].brojnik, comps[j].nazivnik);
+                        comps[i].up = p.Multiply(comps[i].up, comps[j].down);
                     }catch(Exception e){
                         if(j==0) {
                             System.out.println("Preparing poly2: EComp");
@@ -203,7 +193,7 @@ public class Solution {
         }
         for (int i = 0; i<4; i++){
             try{
-                dic = p.add(comps[i].brojnik, dic);
+                dic = p.Add(comps[i].up, dic);
             }catch(Exception e){
                 System.out.println("Preparing poly3: EComp");
             }
@@ -211,12 +201,12 @@ public class Solution {
 
         p.p = dic;
         try {
-            h = -Math.log10(p.solve(this));
+            h = -Math.log10(p.Solve(this));
         } catch(Exception e){
             h = -100;
-            System.out.println("nekaj grdo ne stima");
+            System.out.println(e.getMessage());
         }
-        comps[0].ConcPrt(txts);
+        comps[0].PrintConcentrations(t);
         return(String.valueOf((double)Math.round(h * 1000d) / 1000d));
     }
 }

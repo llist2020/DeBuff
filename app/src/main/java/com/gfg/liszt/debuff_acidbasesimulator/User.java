@@ -9,13 +9,14 @@ import androidx.annotation.NonNull;
  * @date 5.7.2018.
  */
 
-public class User {
-    TextView[] txts;
+class User {
+    TextView[] Texts;
     double cu, cn;
     int n, itt, citt=0;
     double[] K;
     boolean ent=false, allclr = true;
     double V = 10;
+
     // constructors
     User(int in, double icu, double icn, double iV, int i, int ci){
         cu = icu;
@@ -131,21 +132,12 @@ public class User {
                 K[4] = Math.pow(10, -10.26);
                 break;
         }
-        txts = Nvws;
+        Texts = Nvws;
         itt=0;
     }
 
-    public void PrepOuts(TextView[] t, @NonNull Component c){
-        txts = t;
-        for (int i=0; i<3*(c.n+1); i++){
-            txts[i].setVisibility(View.VISIBLE);
-        }
-        for (int i=c.n; i>-1; i--){
-            txts[(c.n-i)*3].setText(ConcAssign(i, c));
-        }
-    }
     // defines species' tags
-    public String ConcAssign(int i, Component c){
+    private String AssignConcentrations(int i, @NonNull Component c){
         String out = "c(";
         if (c.acid) {
             if (i != 0) {
@@ -164,8 +156,11 @@ public class User {
         } else{
             if (i != 0 && i != c.n){
                 out += "[B";
-                if (i > 1) out += "(OH)"+(c.n-i);
-                out += "]"+(c.n-i)+"+";
+                if (i > 1) out += "(OH)"+i;
+                else if (i == 1) out += "(OH)";
+                out += "]";
+                if ((c.n-i) != 1) out += (c.n-i);
+                out += "+";
             } else{
                 out += "B";
                 if (i == 0) out += c.n+"+";
@@ -174,5 +169,14 @@ public class User {
         }
         out += ") = ";
         return(out);
+    }
+    void PrepareOutputs(TextView[] t, @NonNull Component c){
+        Texts = t;
+        for (int i=0; i<3*(c.n+1); i++){
+            Texts[i].setVisibility(View.VISIBLE);
+        }
+        for (int i=c.n; i>-1; i--){
+            Texts[(c.n-i)*3].setText(AssignConcentrations(i, c));
+        }
     }
 }

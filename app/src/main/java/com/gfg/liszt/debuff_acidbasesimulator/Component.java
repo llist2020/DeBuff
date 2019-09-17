@@ -11,16 +11,15 @@ import java.text.DecimalFormat;
  * @date 6.8.2019.
  */
 public class Component extends Solution{
-    double[] K;
-    double[] conc;
-    int n;
-    double V, cu;
-    private double cn, h;
-    double[] brojnik, nazivnik;
     boolean acid;
+    int n;
+    double[] K;
+    double V, cu;
+    private double cn;
+    private double[] Concentrations;
+    double[] up, down;
 
-
-    public Component(@NotNull User u, @NotNull Solution s) {
+    Component(@NotNull User u, @NotNull Solution s) {
         super();
         cu = u.cu;
         cn = 0;
@@ -31,19 +30,20 @@ public class Component extends Solution{
         }
         n = u.n;
         K = u.K;
-        h = cu*n+1;
         V = u.V;
     }
-    public void setConcentrations(double[] c){
-        conc = c;
-    }
+
     public double GetCn(){
         return(cn);
     }
-    public void SetCn(double c) {
+    void SetCn(double c) {
         cn = c;
     }
-    public void titComp(double v, double l){
+    void SetConcentrations(double[] c){
+        Concentrations = c;
+    }
+
+    void titComp(double v, double l){
         cu = cu*V/(V+v);
         try {
             cn = (cn * V + l * v) / (V + v);
@@ -53,24 +53,19 @@ public class Component extends Solution{
         V += v;
         System.out.println("Solution constitution updated successfully.");
     }
+
     // a function setting the viewable concentration values
-    void ConcPrt(TextView[] txts){
+    void PrintConcentrations(TextView[] Texts){
         DecimalFormat format = new DecimalFormat("0.###E0");
-        if (acid){
-            for (int i=n; i>-1; i--){
-                txts[(n-i)*3+1].setText(String.valueOf(format.format(conc[n-i])));
-            }
-        } else{
-            for (int i=n; i>-1; i--) {
-                txts[(n - i) * 3 + 1].setText(String.valueOf(format.format(conc[i])));
-            }
+        for (int i=n; i>-1; i--){
+            Texts[(n-i)*3+1].setText(String.valueOf(format.format(Concentrations[n-i])));
         }
-        txts[22].setText(String.valueOf(format.format(Math.abs(cn))));
+        Texts[22].setText(String.valueOf(format.format(Math.abs(cn))));
         if(cn<0){
-            txts[21].setText("c(X-) = ");
+            Texts[21].setText("c(X-) = ");
         } else{
-            txts[21].setText("c(X+) = ");
+            Texts[21].setText("c(X+) = ");
         }
-        txts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));
+        Texts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));
     }
 }
