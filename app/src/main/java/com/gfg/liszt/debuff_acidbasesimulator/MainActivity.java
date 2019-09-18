@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog);
+                final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
                 dialog.setTitle("Add a component");
                 dialog.findViewById(R.id.KTxt).setEnabled(false);
                 dialog.findViewById(R.id.NextBtn).setEnabled(false);
@@ -79,13 +81,22 @@ public class MainActivity extends AppCompatActivity{
                     dialog.findViewById(R.id.VTxt).setEnabled(false);
                     ((TextView) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
                 }
+                for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
 
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
+                final Button SaveBtn = dialog.findViewById(R.id.SaveBtn);
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
+                    }
+                });
+
+                SaveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         u1.allclr = true;
@@ -294,6 +305,7 @@ public class MainActivity extends AppCompatActivity{
             for(int i = 0; i < rBtnz.getChildCount(); i++){
                 rBtnz.getChildAt(i).setEnabled(false);
             }
+            fab.performClick();
         }
 
         TitBtn.setOnClickListener(new View.OnClickListener() {

@@ -156,15 +156,21 @@ class User {
         } else{
             if (i != 0 && i != c.n){
                 out += "[B";
-                if (i > 1) out += "(OH)"+i;
+                if (i != 1) out += "(OH)"+i;
                 else if (i == 1) out += "(OH)";
                 out += "]";
                 if ((c.n-i) != 1) out += (c.n-i);
                 out += "+";
             } else{
                 out += "B";
-                if (i == 0) out += c.n+"+";
-                else out += "(OH)"+c.n;
+                if (i == 0){
+                    if (c.n != 1) out += c.n;
+                    out += "+";
+                }
+                else{
+                    out += "(OH)";
+                    if (c.n != 1) out += c.n;
+                }
             }
         }
         out += ") = ";

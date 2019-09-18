@@ -65,7 +65,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="against: "
+                            android:text="Against: "
                             android:textSize="24sp" />
 
                         <TextView
@@ -74,7 +74,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="base"
+                            android:text="acid"
                             android:textSize="24sp" />
 
                         <Switch
@@ -84,6 +84,7 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="0.1"
+                            android:checked="true"
                             android:enabled="false"
                             android:gravity="right|center_vertical" />
 
@@ -93,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
                             android:gravity="right"
-                            android:text="acid"
+                            android:text="base"
                             android:textSize="24sp" />
 
                     </LinearLayout>
@@ -109,7 +110,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="of concentration:"
+                            android:text="Concentration:"
                             android:textSize="24sp" />
 
                         <TextView
@@ -148,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="and volume:"
+                            android:text="Volume:"
                             android:textSize="24sp" />
 
                         <TextView

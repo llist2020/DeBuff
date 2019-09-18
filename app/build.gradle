@@ -6,8 +6,8 @@ android {
         applicationId "com.gfg.liszt.debuff_acidbasesimulator"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.6.3"
+        versionCode 4
+        versionName "1.7.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

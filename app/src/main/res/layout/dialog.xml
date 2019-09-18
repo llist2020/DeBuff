@@ -35,130 +35,12 @@
                 android:layout_weight="0"
                 android:text="  Acid" />
 
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Number of acidic protons:"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:animateLayoutChanges="true"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/nTxt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionUnspecified"
-                android:inputType="number"
-                android:textAlignment="textEnd"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Overall acid concentration:"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:animateLayoutChanges="true"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/cuTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionUnspecified"
-                android:inputType="numberDecimal"
-                android:textAlignment="textEnd"
-                android:textSize="16sp" />
-
             <TextView
+                android:id="@+id/textView13"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="M"
+                android:layout_height="25pt"
                 android:textSize="16sp"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Overall cation concentration:"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:animateLayoutChanges="true"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/cnTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionUnspecified"
-                android:inputType="numberSigned|number|numberDecimal"
-                android:textAlignment="textEnd"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="M"
-                android:textSize="16sp"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Solution volume:"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:animateLayoutChanges="true"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/VTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionUnspecified"
-                android:inputType="numberDecimal"
-                android:textAlignment="textEnd"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ml"
-                android:textSize="16sp"
-                android:visibility="visible" />
+                android:text="Base" />
 
         </LinearLayout>
 
@@ -186,6 +68,167 @@
                 android:text="Pre-saved" />
 
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:id="@+id/InpLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Number of acidic protons:"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/nTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="number"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Overall acid concentration:"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/cuTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M"
+                        android:textSize="16sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Overall cation concentration:"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/cnTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="numberSigned|number|numberDecimal"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="M"
+                        android:textSize="16sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Solution volume:"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/VTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ml"
+                        android:textSize="16sp"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <Button
+                        android:id="@+id/SaveBtn"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/Khead"

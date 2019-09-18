@@ -64,9 +64,9 @@ public class Solution {
     void tit(double v, Switch s){
         if (l != 0) {
             if (s.isChecked()) {
-                l = -Math.abs(l);
-            } else {
                 l = Math.abs(l);
+            } else {
+                l = -Math.abs(l);
             }
         }
         for (Component el: comps) {
