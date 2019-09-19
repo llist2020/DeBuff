@@ -14,7 +14,7 @@ class User {
     double cu, cn;
     int n, itt, citt=0;
     double[] K;
-    boolean ent=false, allclr = true;
+    boolean ent=false, allclr = true, acid;
     double V = 10;
 
     // constructors
@@ -30,6 +30,7 @@ class User {
         ent = true;
     }
     User (int a, TextView[] Nvws){
+        acid = true;
         switch(a){
             case 0:
                 cu=0;
@@ -43,53 +44,45 @@ class User {
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, 3);
-                break;
             case 2:
                 n = 1;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -3.17);
-                break;
             case 3:
                 n = 1;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -9.21);
-                break;
             case 4:
                 n = 1;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -4.756);
-                break;
             case 5:
                 n = 2;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -7.04);
                 K[2] = Math.pow(10, -11.96);
-                break;
             case 6:
                 n = 2;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -6.3);
                 K[2] = Math.pow(10, -10.32);
-                break;
             case 7:
                 n = 2;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, 9);
                 K[2] = Math.pow(10, -1.96);
-                break;
             case 8:
                 n = 2;
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -1.2676);
                 K[2] = Math.pow(10, -4.2676);
-                break;
             case 9:
                 n = 3;
                 K = new double[n+1];
@@ -97,7 +90,6 @@ class User {
                 K[1] = Math.pow(10, -2.124);
                 K[2] = Math.pow(10, -7.2);
                 K[3] = Math.pow(10, -11.89);
-                break;
             case 10:
                 n = 3;
                 K = new double[n+1];
@@ -105,7 +97,6 @@ class User {
                 K[1] = Math.pow(10, -2.19);
                 K[2] = Math.pow(10, -6.94);
                 K[3] = Math.pow(10, -11.5);
-                break;
             case 11:
                 n = 3;
                 K = new double[n+1];
@@ -113,7 +104,6 @@ class User {
                 K[1] = Math.pow(10, -9.24);
                 K[2] = Math.pow(10, -12.4);
                 K[3] = Math.pow(10, -13.3);
-                break;
             case 12:
                 n = 3;
                 K = new double[n+1];
@@ -121,7 +111,6 @@ class User {
                 K[1] = Math.pow(10, -3.13);
                 K[2] = Math.pow(10, -4.76);
                 K[3] = Math.pow(10, -6.395);
-                break;
             case 13:
                 n = 4;
                 K = new double[n+1];
@@ -130,7 +119,8 @@ class User {
                 K[2] = Math.pow(10, -2.67);
                 K[3] = Math.pow(10, -6.16);
                 K[4] = Math.pow(10, -10.26);
-                break;
+            default:
+                ent = false;
         }
         Texts = Nvws;
         itt=0;

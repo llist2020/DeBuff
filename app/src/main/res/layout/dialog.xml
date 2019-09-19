@@ -102,7 +102,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:imeOptions="actionUnspecified"
+                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:imeOptions="actionUnspecified"
+                        android:imeOptions="actionNext"
                         android:inputType="numberDecimal"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
@@ -194,7 +194,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:imeOptions="actionUnspecified"
+                        android:imeOptions="actionDone"
                         android:inputType="numberDecimal"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
@@ -230,47 +230,54 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/Khead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Equilibrium constant pKa1"
-            android:textSize="16sp" />
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:animateLayoutChanges="true"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:animateLayoutChanges="true">
 
-            <EditText
-                android:id="@+id/KTxt"
+            <TextView
+                android:id="@+id/Khead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionUnspecified"
-                android:inputType="numberSigned|number|numberDecimal"
-                android:textAlignment="textEnd"
+                android:text="Equilibrium constant pKa1"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/NextBtn"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="Next" />
+                android:layout_gravity="end"
+                android:animateLayoutChanges="true"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/KTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberSigned|number|numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/NextBtn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="Next" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/okbtn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="oks" />
+            android:text="@android:string/cancel" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

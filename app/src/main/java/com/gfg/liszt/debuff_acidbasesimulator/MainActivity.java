@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         dialog = new BottomSheetDialog(this);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
         final Button TitBtn = findViewById(R.id.TitBtn);
@@ -68,31 +69,69 @@ public class MainActivity extends AppCompatActivity{
         final TextView cl7 = findViewById(R.id.cl7);
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        u1 = new User(choice, Nvws);
+        Rst(Nvws);
+        if(choice==0){
+            u1.ent = true;
+            fab.performClick();
+        }
+        else{
+            pHVw.setText("--");
+            solutionVol.setText("--");
+            cTxtx.setText("--");
+            AcidBaseSw.setEnabled(false);
+            TitTxt.setEnabled(false);
+            VolTitTxt.setEnabled(false);
+            TitBtn.setEnabled(false);
+            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                rBtnz.getChildAt(i).setEnabled(false);
+            }
+            fab.performClick();
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog);
-                final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
                 dialog.setTitle("Add a component");
-                dialog.findViewById(R.id.KTxt).setEnabled(false);
-                dialog.findViewById(R.id.NextBtn).setEnabled(false);
-                if (u1.citt != 0){
-                    dialog.findViewById(R.id.VTxt).setEnabled(false);
-                    ((TextView) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
-                }
-                for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
-
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
+                final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
                 final Button SaveBtn = dialog.findViewById(R.id.SaveBtn);
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
+                final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
+                dialog.findViewById(R.id.KTxt).setEnabled(false);
+                dialog.findViewById(R.id.NextBtn).setEnabled(false);
+                for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
+                if (u1.citt != 0){
+                    dialog.findViewById(R.id.VTxt).setEnabled(false);
+                    ((EditText) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
+                }
+                try{
+
+                } catch(Exception e){
+                }
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
+                        u1.ent = true;
+                    }
+                });
+
+                AutoBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try{
+                            AcidBaseSwInp.setChecked(!u1.acid);
+                            ((EditText) dialog.findViewById(R.id.KTxt)).setText(Double.toString(-Math.log10(u1.K[1])));
+                            ((EditText) dialog.findViewById(R.id.nTxt)).setText(Integer.toString(u1.n));
+                            for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
+                            u1.ent = false;
+                        } catch(Exception e){
+                        }
                     }
                 });
 
@@ -103,6 +142,8 @@ public class MainActivity extends AppCompatActivity{
                         int n = 0;
                         float cu = 0, cn = 0, V = 0;
 
+                        for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setEnabled(false);
+                        SaveBtn.setEnabled(false);
                         pHVw.setText("--");
                         solutionVol.setText("--");
                         cTxtx.setText("--");
@@ -183,9 +224,9 @@ public class MainActivity extends AppCompatActivity{
                             dialog.findViewById(R.id.nTxt).setEnabled(false);
                             dialog.findViewById(R.id.cuTxt).setEnabled(false);
                             dialog.findViewById(R.id.cnTxt).setEnabled(false);
-                            dialog.findViewById(R.id.ManBtn).setEnabled(false);
-                            dialog.findViewById(R.id.AutoBtn).setEnabled(false);
-                            dialog.findViewById(R.id.AcidBaseSwInp).setEnabled(false);
+                            ManBtn.setEnabled(false);
+                            AutoBtn.setEnabled(false);
+                            AcidBaseSwInp.setEnabled(false);
                             if (n>0){
                                 dialog.findViewById(R.id.KTxt).setEnabled(true);
                                 dialog.findViewById(R.id.NextBtn).setEnabled(true);
@@ -210,6 +251,9 @@ public class MainActivity extends AppCompatActivity{
                                 }
                                 dialog.dismiss();
                             }
+                        } else{
+                            for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setEnabled(true);
+                            SaveBtn.setEnabled(true);
                         }
                     }
                 });
@@ -217,22 +261,6 @@ public class MainActivity extends AppCompatActivity{
                 dialogBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
-                        else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
-
-                        p1 = new Poly(s1.GetDic());
-                        Rst(Nvws);
-                        u1.PrepareOutputs(Nvws, s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())]);
-                        pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                        s1.GetComps()[rbutt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
-                        u1.itt = 0;
-                        AcidBaseSw.setEnabled(true);
-                        TitTxt.setEnabled(true);
-                        VolTitTxt.setEnabled(true);
-                        TitBtn.setEnabled(true);
-                        for(int i = 0; i < rBtnz.getChildCount(); i++){
-                            rBtnz.getChildAt(i).setEnabled(true);
-                        }
                         dialog.dismiss();
                     }
                 });
@@ -247,7 +275,7 @@ public class MainActivity extends AppCompatActivity{
                                 if (u1.K[u1.itt] < Math.pow(10, -35) || u1.K[u1.itt] > Math.pow(10, 35)) {
                                     u1.itt--;
                                     Snackbar.make(mainLayout, "Constant too extreme.", Snackbar.LENGTH_LONG).show();
-                                    ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + String.valueOf(u1.itt) + ":");
+                                    ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + (u1.itt) + ":");
                                 }
                             } catch (Exception e) {
                                 if (((EditText) dialog.findViewById(R.id.KTxt)).getText().toString().equals(".")) {
@@ -279,34 +307,20 @@ public class MainActivity extends AppCompatActivity{
                                 dialog.dismiss();
                             }
                         }
-                        ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + String.valueOf(u1.itt+1) + ":");
+                        ((TextView) dialog.findViewById(R.id.Khead)).setText("Equilibrium constant pKa" + (u1.itt+1) + ":");
                         u1.itt++;
+                        if (!u1.ent){ // NEKEJ NE STIMA VAMO
+                            try{
+                                ((EditText) dialog.findViewById(R.id.KTxt)).setText(Double.toString(-Math.log10(u1.K[u1.itt])));
+                            }catch(Exception e){
+                            }
+                        }
                         if (u1.itt >= u1.n) NextBtn.setText("Go");
                     }
                 });
                 dialog.show();
             }
         });
-
-        u1 = new User(choice, Nvws);
-        Rst(Nvws);
-        if(choice==0){
-            u1.ent = true;
-            fab.performClick();
-        }
-        else{
-            pHVw.setText("--");
-            solutionVol.setText("--");
-            cTxtx.setText("--");
-            AcidBaseSw.setEnabled(false);
-            TitTxt.setEnabled(false);
-            VolTitTxt.setEnabled(false);
-            TitBtn.setEnabled(false);
-            for(int i = 0; i < rBtnz.getChildCount(); i++){
-                rBtnz.getChildAt(i).setEnabled(false);
-            }
-            fab.performClick();
-        }
 
         TitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
