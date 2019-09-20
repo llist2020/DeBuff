@@ -108,10 +108,6 @@ public class MainActivity extends AppCompatActivity{
                     dialog.findViewById(R.id.VTxt).setEnabled(false);
                     ((EditText) dialog.findViewById(R.id.VTxt)).setText(Double.toString(u1.V));
                 }
-                try{
-
-                } catch(Exception e){
-                }
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
