@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity{
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
+                final EditText nTxt = dialog.findViewById(R.id.nTxt);
+                final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
+                final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
+                final EditText KTxt = dialog.findViewById(R.id.KTxt);
+                final EditText VTxt =dialog.findViewById(R.id.VTxt);
                 dialog.findViewById(R.id.KTxt).setEnabled(false);
                 dialog.findViewById(R.id.NextBtn).setEnabled(false);
                 for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
@@ -134,6 +139,7 @@ public class MainActivity extends AppCompatActivity{
                 SaveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //nTxt.set
                         u1.allclr = true;
                         int n = 0;
                         float cu = 0, cn = 0, V = 0;
@@ -153,65 +159,78 @@ public class MainActivity extends AppCompatActivity{
                         }
 
                         try{
-                            n = Integer.parseInt(((EditText)dialog.findViewById(R.id.nTxt)).getText().toString());
+                            n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-                                Snackbar.make(mainLayout, "Your acid is not acidic.", Snackbar.LENGTH_LONG).show();
+                                nTxt.setError("Your acid is not acidic.");
+                                nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;
                                 u1.allclr = false;
-                                Snackbar.make(mainLayout, "DeBuff supports n€<0,7>", Snackbar.LENGTH_LONG).show();
+                                nTxt.setError("DeBuff supports n€<0,7>");
+                                nTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
-                            if (((EditText)dialog.findViewById(R.id.nTxt)).getText().toString().equals(".")) {
-                                Snackbar.make(mainLayout, "Invalid input. (src-n)", Snackbar.LENGTH_LONG).show();
+                            if (nTxt.getText().toString().equals(".")) {
+                                nTxt.setError("Invalid input.");
+                                nTxt.setText("");
                             } else {
-                                Snackbar.make(mainLayout, "An error occurred. (src-n)", Snackbar.LENGTH_LONG).show();
+                                nTxt.setError("An error occurred.");
+                                nTxt.setText("");
                             }
                         }
 
                         try {
-                            cu = Float.parseFloat(((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString());
+                            cu = Float.parseFloat(cuTxt.getText().toString());
                             if (cu > 100) {
                                 u1.allclr = false;
-                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cu)", Snackbar.LENGTH_LONG).show();
+                                cuTxt.setError("Concentrated solutions tend to differ from mathematical model.");
+                                cuTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
-                            if (((EditText) dialog.findViewById(R.id.cuTxt)).getText().toString().equals(".")) {
-                                Snackbar.make(mainLayout, "Invalid input. (src-cu)", Snackbar.LENGTH_LONG).show();
+                            if (cuTxt.getText().toString().equals(".")) {
+                                cuTxt.setError("Invalid input.");
+                                cuTxt.setText("");
                             } else {
-                                Snackbar.make(mainLayout, "An error occurred. (src-cu)", Snackbar.LENGTH_LONG).show();
+                                cuTxt.setError("An error occurred.");
+                                cuTxt.setText("");
                             }
                         }
 
                         try {
-                            cn = Float.parseFloat(((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString());
-                            if (cu > 100) {
+                            cn = Float.parseFloat(cnTxt.getText().toString());
+                            if (cn > 100) {
                                 u1.allclr = false;
-                                Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model. (src-cn)", Snackbar.LENGTH_LONG).show();
+                                cnTxt.setError("Concentrated solutions tend to differ from mathematical model.");
+                                cnTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
-                            if (((EditText) dialog.findViewById(R.id.cnTxt)).getText().toString().equals(".")) {
-                                Snackbar.make(mainLayout, "Invalid input. (src-cn)", Snackbar.LENGTH_LONG).show();
+                            if (cnTxt.getText().toString().equals(".")) {
+                                cnTxt.setError("Invalid input.");
+                                cnTxt.setText("");
                             } else {
-                                Snackbar.make(mainLayout, "An error occurred. (src-cn)", Snackbar.LENGTH_LONG).show();
+                                cnTxt.setError("An error occurred.");
+                                cnTxt.setText("");
                             }
                         }
 
                         try {
-                            V = Float.parseFloat(((EditText) dialog.findViewById(R.id.VTxt)).getText().toString());
+                            V = Float.parseFloat(VTxt.getText().toString());
                             if (V > 2000) {
                                 u1.allclr = false;
-                                Snackbar.make(mainLayout, "Do you really need more than 2L?", Snackbar.LENGTH_LONG).show();
+                                VTxt.setError("Do you really need more than 2L?");
+                                VTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
-                            if (((EditText) dialog.findViewById(R.id.VTxt)).getText().toString().equals(".")) {
-                                Snackbar.make(mainLayout, "Invalid input. (src-V)", Snackbar.LENGTH_LONG).show();
+                            if (VTxt.getText().toString().equals(".")) {
+                                VTxt.setError("Invalid input.");
+                                VTxt.setText("");
                             } else {
-                                Snackbar.make(mainLayout, "An error occurred. (src-V)", Snackbar.LENGTH_LONG).show();
+                                VTxt.setError("An error occurred.");
+                                VTxt.setText("");
                             }
                         }
 

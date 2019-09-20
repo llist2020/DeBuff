@@ -83,12 +83,6 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Number of acidic protons:"
-                    android:textSize="16sp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,41 +91,47 @@
                     android:gravity="end"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/nTxt"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:textAlignment="textEnd"
-                        android:textSize="16sp" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nTxt"
+                            android:hint="Number of acidic protons:"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:imeOptions="actionNext"
+                            android:textAlignment="textEnd"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Overall acid concentration:"
-                    android:textSize="16sp" />
+                    android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:animateLayoutChanges="true"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cuTxt"
-                        android:layout_width="wrap_content"
+                        android:hint="Overall acid concentration:"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:inputType="number|numberDecimal"
                         android:imeOptions="actionNext"
-                        android:inputType="numberDecimal"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,29 +142,28 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Overall cation concentration:"
-                    android:textSize="16sp" />
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:animateLayoutChanges="true"
-                    android:gravity="end"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cnTxt"
-                        android:layout_width="wrap_content"
+                        android:hint="Overall cation concentration:"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:imeOptions="actionUnspecified"
                         android:inputType="numberSigned|number|numberDecimal"
+                        android:imeOptions="actionUnspecified"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -175,27 +174,18 @@
 
                 </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Solution volume:"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:animateLayoutChanges="true"
-                    android:gravity="end"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/VTxt"
-                        android:layout_width="wrap_content"
+                        android:hint="Solution volume:"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:inputType="number|numberDecimal"
                         android:imeOptions="actionDone"
-                        android:inputType="numberDecimal"
                         android:textAlignment="textEnd"
                         android:textSize="16sp" />
 
@@ -205,6 +195,15 @@
                         android:text="ml"
                         android:textSize="16sp"
                         android:visibility="visible" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:animateLayoutChanges="true"
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
                 </LinearLayout>
 
@@ -255,7 +254,7 @@
                     android:id="@+id/KTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="100"
                     android:imeOptions="actionDone"
                     android:inputType="numberSigned|number|numberDecimal"
                     android:textAlignment="textEnd"
