@@ -235,40 +235,31 @@
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/Khead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Equilibrium constant pKa1"
-                android:textSize="16sp" />
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:animateLayoutChanges="true"
-                android:gravity="end"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/KTxtIL">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/KTxt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="100"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberSigned|number|numberDecimal"
+                    android:hint="Equilibrium constant pKa1"
+                    android:imeOptions="actionGo"
+                    android:inputType="number|numberDecimal|numberSigned"
                     android:textAlignment="textEnd"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/NextBtn"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:text="Next" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+            <Button
+                android:id="@+id/NextBtn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text="Next" />
 
         </LinearLayout>
 

@@ -18,16 +18,29 @@ class User {
     double V = 10;
 
     // constructors
-    User(int in, double icu, double icn, double iV, int i, int ci){
+    User(int in, double icu, double icn, double iV, boolean ient){
         cu = icu;
         cn = icn;
         n = in;
         K = new double[n+1];
         K[0] = 1;
         V = iV;
-        itt = i;
-        citt = ci;
-        ent = true;
+        ent = ient;
+    }
+    User(int in, double icu, double icn, User u1){
+        cu = icu;
+        cn = icn;
+        n = in;
+        K = new double[n+1];
+        System.out.println("debug");
+        System.out.println(K.length);
+        System.out.println(u1.K.length);
+        System.arraycopy(u1.K, 0, K, 0, n+1);
+        K[0] = 1;
+        V = u1.V;
+        itt = u1.itt;
+        citt = u1.citt;
+        ent = u1.ent;
     }
     User (int a, TextView[] Nvws){
         acid = true;

@@ -164,7 +164,6 @@ public class Solution {
                 }
                 System.out.println("Component application successful.");
             } catch(Exception e){
-                System.out.println(e.getMessage());
                 System.out.println("Collecting data: EComp"); //empty component
             }
         }
