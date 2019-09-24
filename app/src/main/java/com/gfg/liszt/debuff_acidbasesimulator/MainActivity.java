@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity{
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
                 final TextInputLayout KTxtIL = dialog.findViewById(R.id.KTxtIL);
                 final EditText KTxt = dialog.findViewById(R.id.KTxt);
-                final EditText VTxt =dialog.findViewById(R.id.VTxt);
+                final EditText VTxt = dialog.findViewById(R.id.VTxt);
                 dialog.findViewById(R.id.KTxt).setEnabled(false);
                 dialog.findViewById(R.id.NextBtn).setEnabled(false);
                 for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity{
                             for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
                             u1.ent = false;
                         } catch(Exception e){
+                            System.out.println("Input error (Auto btn)");
                         }
                     }
                 });
@@ -140,7 +142,6 @@ public class MainActivity extends AppCompatActivity{
                         u1.allclr = true;
                         int n = 0;
                         float cu = 0, cn = 0, V = 0;
-
                         for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setEnabled(false);
                         SaveBtn.setEnabled(false);
                         pHVw.setText("--");
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity{
                         try{
                             n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-                                nTxt.setError("Your acid is not acidic.");
+                                nTxt.setError("No dissotiation will be observed."); //potvrditi?
                                 nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;
@@ -241,8 +242,6 @@ public class MainActivity extends AppCompatActivity{
                             AutoBtn.setEnabled(false);
                             AcidBaseSwInp.setEnabled(false);
                             if (u1.n>0){
-                                System.out.println("save244");
-                                System.out.println(u1.itt);
                                 KTxt.setEnabled(true);
                                 NextBtn.setEnabled(true);
                                 NextBtn.performClick();
@@ -290,13 +289,11 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(View v) {
                         if (u1.itt != 0) {
                             try {
-                                System.out.println("next291");
-                                System.out.println(u1.itt);
                                 u1.K[u1.itt] = Math.pow(10, -Float.parseFloat(KTxt.getText().toString()));
                                 if (u1.K[u1.itt] < Math.pow(10, -35) || u1.K[u1.itt] > Math.pow(10, 35)) {
                                     u1.itt--;
                                     KTxt.setError("Constant too extreme.");
-                                    KTxtIL.setHint("Equilibrium constant pKa" + (u1.itt) + ":");
+                                    KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
                                 }
                             } catch (Exception e) {
                                 if (KTxt.getText().toString().equals(".")) {
@@ -333,7 +330,7 @@ public class MainActivity extends AppCompatActivity{
                                 dialog.dismiss();
                             }
                         }
-                        KTxtIL.setHint("Equilibrium constant pKa" + (u1.itt+1) + ":");
+                        KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt+1) + ":");
                         u1.itt++;
                         if (!u1.ent){
                             try{
@@ -345,6 +342,18 @@ public class MainActivity extends AppCompatActivity{
                         if (u1.itt >= u1.n) NextBtn.setText("Go");
                     }
                 });
+                AcidBaseSwInp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        u1.SetAcid(!isChecked);
+                        // NE HINTOVE NA EDITTEXT
+                        KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
+                        cuTxt.setHint("Overall " + u1.a + "  concentration:");
+                        if (isChecked) nTxt.setHint("Number of dissociable hydroxides:");
+                        else nTxt.setHint("Number of dissociable protons:");
+                    }
+                });
+
                 dialog.show();
             }
         });

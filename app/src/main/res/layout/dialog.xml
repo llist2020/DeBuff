@@ -98,11 +98,11 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/nTxt"
-                            android:hint="Number of acidic protons:"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:hint="Number of dissociable protons:"
                             android:imeOptions="actionNext"
+                            android:inputType="number"
                             android:textAlignment="textEnd"
                             android:textSize="16sp" />
 

@@ -14,7 +14,8 @@ class User {
     double cu, cn;
     int n, itt, citt=0;
     double[] K;
-    boolean ent=false, allclr = true, acid;
+    boolean ent, allclr = true, acid;
+    String a;
     double V = 10;
 
     // constructors
@@ -139,6 +140,11 @@ class User {
         itt=0;
     }
 
+    void SetAcid(boolean i){
+        acid = i;
+        if (acid) a = "a";
+        else a = "b";
+    }
     // defines species' tags
     private String AssignConcentrations(int i, @NonNull Component c){
         String out = "c(";
