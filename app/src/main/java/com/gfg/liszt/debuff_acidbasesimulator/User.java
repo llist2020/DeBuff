@@ -144,8 +144,8 @@ class User {
 
     void SetAcid(boolean i){
         acid = i;
-        if (acid) a = "a";
-        else a = "b";
+        if (acid) a = "acid";
+        else a = "base";
     }
     // defines species' tags
     private String AssignConcentrations(int i, @NonNull Component c){
