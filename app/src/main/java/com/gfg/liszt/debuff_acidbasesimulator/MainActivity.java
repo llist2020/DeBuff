@@ -347,14 +347,10 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                         u1.SetAcid(!isChecked);
-                        // NE HINTOVE NA EDITTEXT
                         KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
-                        u1.SetAcid(cuTxt.getParent());
-                        cuTxt.setHint("Overall " + u1.a + "  concentration:");
-                        (LinearLayout) ((ViewParent) cuTxt.getParent()).getParent()
-                        u1.SetAcid();
-                        if (isChecked) nTxt.setHint("Number of dissociable hydroxides:");
-                        else nTxt.setHint("Number of dissociable protons:");
+                        ((TextInputLayout) (cuTxt.getParent()).getParent()).setHint("Overall " + u1.a + "  concentration:");
+                        if (isChecked) ((TextInputLayout) (nTxt.getParent()).getParent()).setHint("Number of dissociable hydroxides:");
+                        else ((TextInputLayout) (nTxt.getParent()).getParent()).setHint("Number of dissociable protons:");
                     }
                 });
 

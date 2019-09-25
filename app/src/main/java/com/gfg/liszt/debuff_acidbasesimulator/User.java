@@ -27,6 +27,7 @@ class User {
         K[0] = 1;
         V = iV;
         ent = ient;
+        SetAcid(true);
     }
     User(int in, double icu, double icn, User u1){
         cu = icu;
@@ -42,9 +43,10 @@ class User {
         itt = u1.itt;
         citt = u1.citt;
         ent = u1.ent;
+        SetAcid(true);
     }
     User (int a, TextView[] Nvws){
-        acid = true;
+        SetAcid(true);
         switch(a){
             case 0:
                 cu=0;
