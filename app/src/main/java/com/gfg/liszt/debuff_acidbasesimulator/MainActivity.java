@@ -3,6 +3,7 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -348,7 +349,10 @@ public class MainActivity extends AppCompatActivity{
                         u1.SetAcid(!isChecked);
                         // NE HINTOVE NA EDITTEXT
                         KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
+                        u1.SetAcid(cuTxt.getParent());
                         cuTxt.setHint("Overall " + u1.a + "  concentration:");
+                        (LinearLayout) ((ViewParent) cuTxt.getParent()).getParent()
+                        u1.SetAcid();
                         if (isChecked) nTxt.setHint("Number of dissociable hydroxides:");
                         else nTxt.setHint("Number of dissociable protons:");
                     }
