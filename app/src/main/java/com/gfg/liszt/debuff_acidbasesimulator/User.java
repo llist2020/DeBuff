@@ -30,14 +30,15 @@ class User {
         SetAcid(true);
     }
     User(int in, double icu, double icn, User u1){
+        int l;
         cu = icu;
         cn = icn;
         n = in;
         K = new double[n+1];
-        System.out.println("debug");
-        System.out.println(K.length);
-        System.out.println(u1.K.length);
-        System.arraycopy(u1.K, 0, K, 0, n+1);
+        //for (double el: K) el = 0;
+        if ((n+1)>(u1.K.length)) l = u1.K.length;
+        else l = n+1;
+        System.arraycopy(u1.K, 0, K, 0, l);
         K[0] = 1;
         V = u1.V;
         itt = u1.itt;

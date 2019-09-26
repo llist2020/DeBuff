@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Add a component");
+                dialog.setTitle(R.string.DialogTitle);
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
                 final Button SaveBtn = dialog.findViewById(R.id.SaveBtn);
@@ -160,12 +160,12 @@ public class MainActivity extends AppCompatActivity{
                         try{
                             n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-                                nTxt.setError("No dissotiation will be observed."); //potvrditi?
+                                nTxt.setError("No dissociation will be observed"); //potvrditi?
                                 nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;
                                 u1.allclr = false;
-                                nTxt.setError("DeBuff supports n€<0,7>");
+                                nTxt.setError("DeBuff supports n€[0,6]");
                                 nTxt.setText("");
                             }
                         } catch (Exception e) {
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity{
                                 System.out.println("Next: error");
                             }
                         } else KTxt.setText("");
-                        if (u1.itt >= u1.n) NextBtn.setText("Go");
+                        if (u1.itt >= u1.n) NextBtn.setText(R.string.Go);
                     }
                 });
                 AcidBaseSwInp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -410,8 +410,8 @@ public class MainActivity extends AppCompatActivity{
             txts[i].setVisibility(View.VISIBLE);
         }
     }
-    public int RButt(int ajdi) {
-        switch (ajdi) {
+    public int RButt(int id) {
+        switch (id) {
             case R.id.rBtn0:
                 return (0);
             case R.id.rBtn1:
