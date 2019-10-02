@@ -3,7 +3,6 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity{
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
-                final LinearLayout nLay = dialog.findViewById(R.id.nLay);
+                final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
@@ -161,7 +160,7 @@ public class MainActivity extends AppCompatActivity{
                         try{
                             n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-                                nTxt.setError("No dissociation will be observed"); //potvrditi?
+                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?
                                 nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;
