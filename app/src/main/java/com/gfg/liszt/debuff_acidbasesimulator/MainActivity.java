@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.setContentView(R.layout.dialog);
+                try{
+                    dialog.setContentView(R.layout.dialog);
+                } catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
                 dialog.setTitle("Add a component");
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
-                final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
+                //final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
@@ -160,11 +164,8 @@ public class MainActivity extends AppCompatActivity{
                         try{
                             n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-<<<<<<< HEAD
-                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?
-=======
+                                //((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?
                                 nTxt.setError("No dissotiation will be observed."); //potvrditi?
->>>>>>> parent of 8a2b993... Bug fixes
                                 nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;

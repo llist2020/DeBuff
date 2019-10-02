@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">DeBuff</string>
-    <string name="Go">Go</string>
-    <string name="DialogTitle">Add a component</string>
 </resources>

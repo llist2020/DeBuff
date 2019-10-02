@@ -105,8 +105,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:textAlignment="textEnd"
-                            android:textSize="16sp"
-                            app:errorEnabled="true"/>
+                            android:textSize="16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,8 +123,7 @@
                         android:inputType="number|numberDecimal"
                         android:imeOptions="actionNext"
                         android:textAlignment="textEnd"
-                        android:textSize="16sp"
-                        app:errorEnabled="true"/>
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -155,10 +153,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned|number|numberDecimal"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionUnspecified"
                         android:textAlignment="textEnd"
-                        android:textSize="16sp"
-                        app:errorEnabled="true"/>
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -191,8 +188,7 @@
                         android:inputType="number|numberDecimal"
                         android:imeOptions="actionDone"
                         android:textAlignment="textEnd"
-                        android:textSize="16sp"
-                        app:errorEnabled="true"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,8 +240,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/KTxtIL"
-                app:errorEnabled="true">
+                android:id="@+id/KTxtIL">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/KTxt"
