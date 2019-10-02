@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity{
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
+                final LinearLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
