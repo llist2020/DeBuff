@@ -6,11 +6,9 @@ import androidx.annotation.NonNull;
 
 /**
  * @author L. List
- * @date 4.7.2018.
  */
 class Poly {
     double[] p;
-    private final double dx = 6;
 
     Poly(double[] poo){
         p = poo;
@@ -94,6 +92,7 @@ class Poly {
             System.out.println(el);
         }
         double x = s.cu*s.n+1, cache = x;
+        final double dx = 6;
         if (Check(dx, s)) {
             return (dx);
         } //just in case the lower border value is a root (the higher one cannot be a root)
@@ -114,8 +113,7 @@ class Poly {
                     if (x>0){
                         x = Math.pow(10, -15);
                     } else{
-                        System.out.println("newts fucked up");
-                        //return(-100);
+                        System.out.println("newts fucct up");
                         x = 100;
                     }
                 }

@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DecimalFormat;
 
 /**
- * @author AnaKranjcev
- * @date 6.8.2019.
+ * @author L. List
  */
 public class Component extends Solution{
     boolean acid;
@@ -18,6 +17,7 @@ public class Component extends Solution{
     private double cn;
     private double[] Concentrations;
     double[] up, down;
+    String ion;
 
     Component(@NotNull User u, @NotNull Solution s) {
         super();

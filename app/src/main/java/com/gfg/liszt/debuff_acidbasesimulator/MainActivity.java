@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity{
         final TextView cl7 = findViewById(R.id.cl7);
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
-        System.out.println("choice"+choice);
         u1 = new User(choice, Nvws);
         Rst(Nvws);
         if(choice==0){
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity{
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
                 final Button dialogBtn = dialog.findViewById(R.id.okBtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
-                final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
@@ -109,10 +107,9 @@ public class MainActivity extends AppCompatActivity{
                 final EditText KTxt = dialog.findViewById(R.id.KTxt);
                 final EditText VTxt = dialog.findViewById(R.id.VTxt);
                 final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
-                System.out.println("dialog up yes");
                 if (u1.citt != 0){
                     VTxt.setEnabled(false);
-                    VTxt.setText(Double.toString(u1.V));
+                    VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
                 }
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(View view) {
                         for (EditText el: ETs) el.setVisibility(View.VISIBLE);
                         SaveBtn.setVisibility(View.VISIBLE);
+                        u1.ion = "A";
                         u1.ent = true;
                     }
                 });
@@ -127,10 +125,6 @@ public class MainActivity extends AppCompatActivity{
                 AutoBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("u1 checkup");
-                        System.out.println(choice);
-                        System.out.println(u1.acid);
-                        System.out.println(u1.K[1]); // TU NEKJ NEVALJA
                         for (EditText el: ETs) el.setVisibility(View.VISIBLE);
                         SaveBtn.setVisibility(View.VISIBLE);
                         AcidBaseSwInp.setChecked(!u1.acid);
@@ -237,8 +231,12 @@ public class MainActivity extends AppCompatActivity{
                         }
 
                         if (u1.allclr){
-                            if (u1.citt == 0) u1 = new User(n, cu, cn, V, u1.ent);
-                            else u1 = new User(n, cu, cn, u1);
+                            if (u1.citt == 0){
+                                if(!u1.ent) {
+                                    u1.V = V;
+                                    u1 = new User(n, cu, cn, u1);
+                                } else u1 = new User(n, cu, cn, V, "Mjau", true);
+                            } else u1 = new User(n, cu, cn, u1);
                             for (EditText el: ETs){
                                 el.setEnabled(false);
                                 el.setError(null);
@@ -294,20 +292,20 @@ public class MainActivity extends AppCompatActivity{
                 NextBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        KTxt.setError(null);
+                        KTxtIL.setError(null);
                         if (u1.itt != 0) {
                             try {
                                 u1.K[u1.itt] = Math.pow(10, -Float.parseFloat(KTxt.getText().toString()));
                                 if (u1.K[u1.itt] < Math.pow(10, -35) || u1.K[u1.itt] > Math.pow(10, 35)) {
                                     u1.itt--;
-                                    KTxt.setError("Constant too extreme.");
+                                    KTxtIL.setError("Constant too extreme.");
                                     KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
                                 }
                             } catch (Exception e) {
                                 if (KTxt.getText().toString().equals(".")) {
-                                    KTxt.setError("Invalid input.");
+                                    KTxtIL.setError("Invalid input.");
                                 } else {
-                                    KTxt.setError("An error occurred.");
+                                    KTxtIL.setError("An error occurred.");
                                 }
                                 u1.itt--;
                             }
@@ -342,12 +340,12 @@ public class MainActivity extends AppCompatActivity{
                         u1.itt++;
                         if (!u1.ent){
                             try{
-                                KTxt.setText(Double.toString(-Math.log10(u1.K[u1.itt])));
+                                KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[u1.itt])));
                             }catch(Exception e){
                                 System.out.println("Next: error");
                             }
                         } else KTxt.setText("");
-                        if (u1.itt >= u1.n) NextBtn.setText("Go");
+                        if (u1.itt >= u1.n) NextBtn.setText(R.string.Go);
                     }
                 });
 
@@ -368,6 +366,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 try{
+                    ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
+                    ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l * Float.parseFloat(VolTitTxt.getText().toString()))/(Float.parseFloat(VolTitTxt.getText().toString()) + s1.V) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high!");
@@ -379,15 +379,12 @@ public class MainActivity extends AppCompatActivity{
                         u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())]);
                         s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                     }
-                } catch(Exception e){
-                    if(TitTxt.getText().toString().equals(".")||VolTitTxt.getText().toString().equals(".")){
-                        // DIFERENCIRAJ PORJKELO GRESKE
-                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
-                        Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
-                    } else{
-                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("An error occurred.");
-                        Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
-                    }
+                } catch(Exception e) {
+                    //  if(TitTxt.getText().toString().equals(".")||VolTitTxt.getText().toString().equals(".")){
+                    // DIFERENCIRAJ PORJKELO GRESKE
+                    ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
+                    Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
+                    //  ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("An error occurred.");
                 }
             }
         });

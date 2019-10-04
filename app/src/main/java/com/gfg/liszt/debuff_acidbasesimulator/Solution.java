@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 
 /**
  * @author L. List
- * @date 4.7.2018.
  */
 
 public class Solution {
@@ -33,6 +32,11 @@ public class Solution {
     h = cu*n+1;
     V = u.V;
     comps[0].acid = !sw;
+    if (u.ent){
+        u.ion = "A";
+        u.SetAcid(!sw);
+    }
+    comps[0].ion = u.ion;
 } // collecting inputs
 
     void AddComp(@NotNull User u, boolean sw){
@@ -48,6 +52,11 @@ public class Solution {
         for(int i=0; i<u.citt; i++){
             comps[i].SetCn(cn);
         }
+        if (u.ent){
+            u.ion = "A";
+        }
+        u.SetAcid(!sw);
+        comps[u.citt].ion = u.ion;
     }
 
     Component[] GetComps(){

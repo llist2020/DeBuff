@@ -193,8 +193,8 @@ public class chooseActivity extends AppCompatActivity {
       builder = new AlertDialog.Builder(this, 0);
       builder.setTitle("Welcome to DeBuff v1.5!")
               .setMessage("DeBuff is a simple acid-base simulator.\n" +
-                      "You can choose an acid and study its properties or you can manually input acid data (which is easily available on the Internet).\n" +
-                      "Afterwards, titration simulation is available.\n"+
+                      "You can choose an acid and study its properties or you can manually input acid or base data (which is easily available on the Internet).\n" +
+                      "Afterwards, addition of another solution component along with titration simulation is available.\n"+
                       "To keep the math going, some logical bounds have been set. For example, too concentrated solutions do not have a negligible ionic strength, which messes with equilibrium.\n\n" +
                       "Developed by Luka List\nDesign by Tin Prvčić\n© 2019")
               .setNeutralButton("Dismiss", new DialogInterface.OnClickListener() {
