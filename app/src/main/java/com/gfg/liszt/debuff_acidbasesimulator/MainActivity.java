@@ -89,17 +89,13 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    dialog.setContentView(R.layout.dialog);
-                } catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
+                dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
                 final Button SaveBtn = dialog.findViewById(R.id.SaveBtn);
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
-                final Button dialogBtn = dialog.findViewById(R.id.okbtn);
+                final Button dialogBtn = dialog.findViewById(R.id.okBtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
                 //final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
