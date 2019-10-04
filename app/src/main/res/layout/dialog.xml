@@ -96,7 +96,7 @@
                         android:id="@+id/nLay"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1" >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/nTxt"
@@ -114,11 +114,11 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cuTxt"
-                        android:hint="Overall acid concentration:"
+                        android:hint="Overall acid concentration [mol/l]:"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number|numberDecimal"
@@ -133,24 +133,15 @@
                     android:layout_gravity="end"
                     android:animateLayoutChanges="true"
                     android:gravity="end"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="M"
-                        android:textSize="16sp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
+                    android:orientation="horizontal"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cnTxt"
-                        android:hint="Overall cation concentration:"
+                        android:hint="Overall cation concentration [mol/l]:"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned|number|numberDecimal"
@@ -165,24 +156,15 @@
                     android:layout_gravity="end"
                     android:animateLayoutChanges="true"
                     android:gravity="end"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="M"
-                        android:textSize="16sp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
+                    android:orientation="horizontal"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
+					
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/VTxt"
-                        android:hint="Solution volume:"
+                        android:hint="Solution volume [ml]:"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number|numberDecimal"
@@ -241,7 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:id="@+id/KTxtIL">
+                android:id="@+id/KTxtIL" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/KTxt"
