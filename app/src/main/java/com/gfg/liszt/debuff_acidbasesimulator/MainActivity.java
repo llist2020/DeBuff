@@ -89,11 +89,7 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    dialog.setContentView(R.layout.dialog);
-                } catch(Exception e){
-                    System.out.println(e.getMessage());
-                }
+                dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity{
                 final Button dialogBtn = dialog.findViewById(R.id.okbtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
                 final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
-                //final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
+                final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
@@ -164,22 +160,21 @@ public class MainActivity extends AppCompatActivity{
                         try{
                             n = Integer.parseInt(nTxt.getText().toString());
                             if (n == 0) {
-                                //((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?
-                                nTxt.setError("No dissotiation will be observed."); //potvrditi?
+                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?; toast
                                 nTxt.setText("");
                             }
                             if (n > 6 || n < 0) { // math limit;
                                 u1.allclr = false;
-                                nTxt.setError("DeBuff supports n€<0,7>");
+                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("DeBuff supports n€<0,7>");
                                 nTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
                             if (nTxt.getText().toString().equals(".")) {
-                                nTxt.setError("Invalid input.");
+                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("Invalid input.");
                                 nTxt.setText("");
                             } else {
-                                nTxt.setError("An error occurred.");
+                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("An error occurred.");
                                 nTxt.setText("");
                             }
                         }
@@ -188,16 +183,16 @@ public class MainActivity extends AppCompatActivity{
                             cu = Float.parseFloat(cuTxt.getText().toString());
                             if (cu > 100) {
                                 u1.allclr = false;
-                                cuTxt.setError("Concentrated solutions tend to differ from mathematical model.");
+                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
                                 cuTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
                             if (cuTxt.getText().toString().equals(".")) {
-                                cuTxt.setError("Invalid input.");
+                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("Invalid input.");
                                 cuTxt.setText("");
                             } else {
-                                cuTxt.setError("An error occurred.");
+                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("An error occurred.");
                                 cuTxt.setText("");
                             }
                         }
@@ -206,16 +201,16 @@ public class MainActivity extends AppCompatActivity{
                             cn = Float.parseFloat(cnTxt.getText().toString());
                             if (cn > 100) {
                                 u1.allclr = false;
-                                cnTxt.setError("Concentrated solutions tend to differ from mathematical model.");
+                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
                                 cnTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
                             if (cnTxt.getText().toString().equals(".")) {
-                                cnTxt.setError("Invalid input.");
+                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("Invalid input.");
                                 cnTxt.setText("");
                             } else {
-                                cnTxt.setError("An error occurred.");
+                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("An error occurred.");
                                 cnTxt.setText("");
                             }
                         }
@@ -224,16 +219,16 @@ public class MainActivity extends AppCompatActivity{
                             V = Float.parseFloat(VTxt.getText().toString());
                             if (V > 2000) {
                                 u1.allclr = false;
-                                VTxt.setError("Do you really need more than 2L?");
+                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("Do you really need more than 2L?");
                                 VTxt.setText("");
                             }
                         } catch (Exception e) {
                             u1.allclr = false;
                             if (VTxt.getText().toString().equals(".")) {
-                                VTxt.setError("Invalid input.");
+                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("Invalid input.");
                                 VTxt.setText("");
                             } else {
-                                VTxt.setError("An error occurred.");
+                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("An error occurred.");
                                 VTxt.setText("");
                             }
                         }
