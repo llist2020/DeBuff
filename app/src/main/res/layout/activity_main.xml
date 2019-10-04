@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutaa"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#edf0f2"
@@ -63,7 +63,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="left"
+                            android:gravity="start"
                             android:text="Against: "
                             android:textSize="24sp" />
 
@@ -72,7 +72,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="right"
+                            android:gravity="end"
                             android:text="acid"
                             android:textSize="24sp" />
 
@@ -85,14 +85,14 @@
                             android:layout_weight="0.1"
                             android:checked="true"
                             android:enabled="false"
-                            android:gravity="right|center_vertical" />
+                            android:gravity="end|center_vertical" />
 
                         <TextView
                             android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
-                            android:gravity="right"
+                            android:gravity="end"
                             android:text="base"
                             android:textSize="24sp" />
 
@@ -106,7 +106,7 @@
 
                         <TextView
                             android:id="@+id/textView7"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Concentration:"
@@ -119,14 +119,22 @@
                             android:text="c = "
                             android:textSize="24sp" />
 
-                        <EditText
-                            android:id="@+id/TitTxt"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:inputType="numberDecimal"
-                            android:text="1.00"
-                            android:textSize="20sp" />
+                            android:layout_height="wrap_content" >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/TitTxt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"
+                                android:imeOptions="actionNext"
+                                android:textAlignment="textEnd"
+                                android:enabled="false"
+                                android:text="1.00"
+                                android:textSize="20dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:id="@+id/textView8"
@@ -145,7 +153,7 @@
 
                         <TextView
                             android:id="@+id/textView11"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Volume:"
@@ -158,14 +166,22 @@
                             android:text="V = "
                             android:textSize="24sp" />
 
-                        <EditText
-                            android:id="@+id/VolTitTxt"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:inputType="numberDecimal"
-                            android:text="1.00"
-                            android:textSize="20sp" />
+                            android:layout_height="wrap_content" >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/VolTitTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"
+                                android:imeOptions="actionNext"
+                                android:textAlignment="textEnd"
+                                android:enabled="false"
+                                android:text="1.00"
+                                android:textSize="20dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:id="@+id/textView19"
@@ -186,7 +202,7 @@
                         style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="end"
                         android:enabled="false"
                         android:text="Titrate" />
 
@@ -610,6 +626,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_add_white_24dp" />
 
 </RelativeLayout>

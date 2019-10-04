@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -17,6 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +32,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final RelativeLayout mainLayout = findViewById(R.id.layoutaa);
-        final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
         dialog = new BottomSheetDialog(this);
+        final RelativeLayout mainLayout = findViewById(R.id.activity_main);
+        final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
         FloatingActionButton fab = findViewById(R.id.fab);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity{
         final TextView cl7 = findViewById(R.id.cl7);
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
+        System.out.println("choice"+choice);
         u1 = new User(choice, Nvws);
         Rst(Nvws);
         if(choice==0){
@@ -89,15 +91,16 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog = new BottomSheetDialog(MainActivity.this);
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle("Add a component");
+                dialog.show();
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
                 final Button SaveBtn = dialog.findViewById(R.id.SaveBtn);
                 final Button NextBtn = dialog.findViewById(R.id.NextBtn);
                 final Button dialogBtn = dialog.findViewById(R.id.okBtn);
                 final Switch AcidBaseSwInp = dialog.findViewById(R.id.AcidBaseSwInp);
-                final LinearLayout InpLayout = dialog.findViewById(R.id.InpLayout);
                 final TextInputLayout nLay = dialog.findViewById(R.id.nLay);
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
@@ -105,9 +108,8 @@ public class MainActivity extends AppCompatActivity{
                 final TextInputLayout KTxtIL = dialog.findViewById(R.id.KTxtIL);
                 final EditText KTxt = dialog.findViewById(R.id.KTxt);
                 final EditText VTxt = dialog.findViewById(R.id.VTxt);
-                dialog.findViewById(R.id.KTxt).setEnabled(false);
-                dialog.findViewById(R.id.NextBtn).setEnabled(false);
-                for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.GONE);
+                final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
+                System.out.println("dialog up yes");
                 if (u1.citt != 0){
                     VTxt.setEnabled(false);
                     VTxt.setText(Double.toString(u1.V));
@@ -116,7 +118,8 @@ public class MainActivity extends AppCompatActivity{
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
+                        for (EditText el: ETs) el.setVisibility(View.VISIBLE);
+                        SaveBtn.setVisibility(View.VISIBLE);
                         u1.ent = true;
                     }
                 });
@@ -124,26 +127,26 @@ public class MainActivity extends AppCompatActivity{
                 AutoBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        try{
-                            AcidBaseSwInp.setChecked(!u1.acid);
-                            KTxt.setText(Double.toString(-Math.log10(u1.K[1])));
-                            nTxt.setText(Integer.toString(u1.n));
-                            for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setVisibility(View.VISIBLE);
-                            u1.ent = false;
-                        } catch(Exception e){
-                            System.out.println("Input error (Auto btn)");
-                        }
+                        System.out.println("u1 checkup");
+                        System.out.println(choice);
+                        System.out.println(u1.acid);
+                        System.out.println(u1.K[1]); // TU NEKJ NEVALJA
+                        for (EditText el: ETs) el.setVisibility(View.VISIBLE);
+                        SaveBtn.setVisibility(View.VISIBLE);
+                        AcidBaseSwInp.setChecked(!u1.acid);
+                        KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[1])));
+                        nTxt.setText(String.format(Locale.US, "%s", u1.n));
+                        u1.ent = false;
                     }
                 });
 
                 SaveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //nTxt.set
                         u1.allclr = true;
                         int n = 0;
                         float cu = 0, cn = 0, V = 0;
-                        for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setEnabled(false);
+                        for (EditText el: ETs) el.setEnabled(false);
                         SaveBtn.setEnabled(false);
                         pHVw.setText("--");
                         solutionVol.setText("--");
@@ -236,15 +239,16 @@ public class MainActivity extends AppCompatActivity{
                         if (u1.allclr){
                             if (u1.citt == 0) u1 = new User(n, cu, cn, V, u1.ent);
                             else u1 = new User(n, cu, cn, u1);
-                            dialog.findViewById(R.id.nTxt).setEnabled(false);
-                            dialog.findViewById(R.id.cuTxt).setEnabled(false);
-                            dialog.findViewById(R.id.cnTxt).setEnabled(false);
+                            for (EditText el: ETs){
+                                el.setEnabled(false);
+                                el.setError(null);
+                            }
                             ManBtn.setEnabled(false);
                             AutoBtn.setEnabled(false);
                             AcidBaseSwInp.setEnabled(false);
                             if (u1.n>0){
-                                KTxt.setEnabled(true);
-                                NextBtn.setEnabled(true);
+                                KTxt.setVisibility(View.VISIBLE);
+                                NextBtn.setVisibility(View.VISIBLE);
                                 NextBtn.performClick();
                             } else{
                                 if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
@@ -272,8 +276,10 @@ public class MainActivity extends AppCompatActivity{
                                 dialog.dismiss();
                             }
                         } else{
-                            for(int i = 0; i < InpLayout.getChildCount(); i++) InpLayout.getChildAt(i).setEnabled(true);
+                            for (EditText el: ETs) el.setEnabled(true);
                             SaveBtn.setEnabled(true);
+                            KTxt.setVisibility(View.GONE);
+                            NextBtn.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -288,6 +294,7 @@ public class MainActivity extends AppCompatActivity{
                 NextBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        KTxt.setError(null);
                         if (u1.itt != 0) {
                             try {
                                 u1.K[u1.itt] = Math.pow(10, -Float.parseFloat(KTxt.getText().toString()));
@@ -343,18 +350,17 @@ public class MainActivity extends AppCompatActivity{
                         if (u1.itt >= u1.n) NextBtn.setText("Go");
                     }
                 });
+
                 AcidBaseSwInp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                         u1.SetAcid(!isChecked);
                         KTxtIL.setHint("Equilibrium constant pK" + u1.a.charAt(0) + (u1.itt) + ":");
-                        ((TextInputLayout) (cuTxt.getParent()).getParent()).setHint("Overall " + u1.a + "  concentration:");
+                        ((TextInputLayout) (cuTxt.getParent()).getParent()).setHint("Overall " + u1.a + " concentration:");
                         if (isChecked) ((TextInputLayout) (nTxt.getParent()).getParent()).setHint("Number of dissociable hydroxides:");
                         else ((TextInputLayout) (nTxt.getParent()).getParent()).setHint("Number of dissociable protons:");
                     }
                 });
-
-                dialog.show();
             }
         });
 
@@ -364,6 +370,7 @@ public class MainActivity extends AppCompatActivity{
                 try{
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l * Float.parseFloat(VolTitTxt.getText().toString()))/(Float.parseFloat(VolTitTxt.getText().toString()) + s1.V) > 50) {
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high!");
                         Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
                     } else {
                         s1.tit(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
@@ -374,8 +381,11 @@ public class MainActivity extends AppCompatActivity{
                     }
                 } catch(Exception e){
                     if(TitTxt.getText().toString().equals(".")||VolTitTxt.getText().toString().equals(".")){
+                        // DIFERENCIRAJ PORJKELO GRESKE
+                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
                         Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
                     } else{
+                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("An error occurred.");
                         Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
                     }
                 }
@@ -391,7 +401,7 @@ public class MainActivity extends AppCompatActivity{
                     u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(id)]);
                     s1.GetComps()[RButt(id)].PrintConcentrations(Nvws);
                 } catch (Exception e){
-                    Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
+                    System.out.println("rButts error");
                     rBtn0.setChecked(true);
                 }
             }
@@ -410,8 +420,8 @@ public class MainActivity extends AppCompatActivity{
             txts[i].setVisibility(View.VISIBLE);
         }
     }
-    public int RButt(int ajdi) {
-        switch (ajdi) {
+    public int RButt(int id) {
+        switch (id) {
             case R.id.rBtn0:
                 return (0);
             case R.id.rBtn1:
