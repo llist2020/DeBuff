@@ -12,13 +12,14 @@ class Poly {
 
     Poly(double[] poo){
         p = poo;
-    } //constructor
+    }
 
     // returns the value of the polynomial at x
     private double Cal(double x){
         double out = 0;
         for (int i = 0; i<this.p.length; i++){
-            out += p[i]*Math.pow(x, i); // the coefficient's index is equal to exponent of x next to it
+            // the coefficient's index is equal to exponent of x next to it
+            out += p[i]*Math.pow(x, i);
         }
         return(out);
     }
@@ -27,7 +28,7 @@ class Poly {
     private boolean Check(double h, @NonNull Solution s) {
         System.out.println("Checking the offered root.");
         if (h<0){
-            System.out.println("Negative concentration");
+            // negative concentration - impossible
             return(false);
         }
         boolean mcons = true;
@@ -47,73 +48,88 @@ class Poly {
                         out += el.cstsb(i, el) * (Math.pow((h / el.kw), i));
                     }
                 }
-                c[0] = el.cu / out; // calculates the concentration of the not dissociated specie
+
+                // calculates the concentration of the not dissociated specie
+                c[0] = el.cu / out;
                 out = 0;
                 if (el.acid) {
+                    // defines concentrations' values
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] / h;
-                    } // defines concentrations' values
+                    }
+
+                    // calculates overall charge (acid)
                     for (int i = 0; i < c.length; i++) {
                         outa += c[i] * i;
-                    } // calculates overall charge (acid)
+                    }
                 } else{
+                    // defines concentrations' values
                     for (int i = 1; i < el.n + 1; i++) {
                         c[i] = c[i - 1] * el.K[i] * h / el.kw;
-                    } // defines concentrations' values
+                    }
+                    // calculates overall charge (base)
                     for (int i = 0; i < c.length; i++) {
-                        outb += c[i] * i; // VAMO MOZDA IPAK (n-i)
-                    } // calculates overall charge (base)
+                        outb += c[i] * i;
+                    }
                 }
+
+                // calculates overall concentration
                 for (double CurrC: c) {
                     out += CurrC;
-                } // calculates overall concentration
+                }
 
-                mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons; // law of conservation of mass
+                // the law of mass conservation
+                mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
 
                 if (mcons) el.SetConcentrations(c);
             } catch (Exception e) {
-                System.out.println("Check: EComp"); //empty component
+                // there is no Component at this index
             }
         }
-        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d)); // law of conservation of charge
 
-        if (mcons && chcons) return (true);
-        else {
-            System.out.println("Illegitimate root.");
-            return (false);
-        }
+        // the law of charge conservation
+        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d));
 
+        return(mcons && chcons);
     }
 
-    double Solve(Solution s) { // returns a legitimate root by Newton's method with given initial x
+    // returns a legitimate root, implementing Newton's method with given initial x
+    double Solve(Solution s) {
         System.out.println("Finding a legitimate root.");
         System.out.println("poly:");
         for (double el: p){
             System.out.println(el);
         }
+
         double x = s.cu*s.n+1, cache = x;
         final double dx = 6;
+        // in case the lower border value is a root
         if (Check(dx, s)) {
             return (dx);
-        } //just in case the lower border value is a root (the higher one cannot be a root)
+        }
+
+        // generating the derived polynomial P_der = d(p(x))/d(x)
         double[] der = new double [this.p.length-1];
         for (int i = 0; i<der.length; i++){
             der[i] = this.p[i+1];
             der[i] *= i+1;
         }
-        Poly P_der = new Poly(der); // creates a new polynomial P_der, where P_der = d(p(x))/d(x)
+        Poly P_der = new Poly(der);
+
+        // implementing the Newton's method
         x -= Cal(x)/P_der.Cal(x);
         while (true){
             x -= Cal(x)/P_der.Cal(x);
             if ((Math.abs(x-cache)<Math.pow(10, Math.log(Math.abs(x))/2.3-dx))||(x==cache)){
                 if (Check(x, s)){
                     System.out.println(x);
+                    // the root is stored at x now and is to be returned
                     return(x);
                 } else{
                     if (x>0){
                         x = Math.pow(10, -15);
                     } else{
-                        System.out.println("newts fucct up");
+                        // this outcome is not prefered
                         x = 100;
                     }
                 }
@@ -126,6 +142,8 @@ class Poly {
         }
     }
 
+    // functions for adding and multiplying polynomials, used at the genesis
+    // of the Poly p
     double[] Add(@NonNull double[] a, @NonNull double[] b){
         if (a.length<b.length){
             double[] out = b.clone();
@@ -141,7 +159,6 @@ class Poly {
             return(out);
         }
     }
-
     double[] Multiply(@NotNull double[] a, @NonNull double[] b){
         double[] out = new double[a.length+b.length-1];
         double[] outs;

@@ -2,6 +2,9 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.view.View;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.Contract;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -11,24 +14,24 @@ import androidx.annotation.NonNull;
 class User {
     TextView[] Texts;
     double cu, cn;
-    int n, itt, citt=0;
+    int n, itt, citt = 0;
     double[] K;
-    boolean ent, allclr = true, acid;
+    boolean ent, acid;
     String a;
     String ion;
     double V = 10;
+    int[] Valid = new int[] {0, 0, 0, 0};
 
-    // constructors
-    User(int in, double icu, double icn, double iV, String izz, boolean ient){
-        cu = icu;
-        cn = icn;
-        n = in;
+    User(int number, double OvC, double CatC, double Vol, String IonName, boolean Manual){
+        n = number;
+        cu = OvC;
+        cn = CatC;
         K = new double[n+1];
         K[0] = 1;
-        V = iV;
-        ent = ient;
+        V = Vol;
+        ent = Manual;
         if (ent) ion = "A";
-        else ion = izz;
+        else ion = IonName;
         SetAcid(true);
     }
     User(int in, double icu, double icn, User u1){
@@ -52,10 +55,7 @@ class User {
         ent = true;
         switch(a){
             case 0:
-                cu=0;
-                cn=0;
-                n=0;
-                K=new double[] {1};
+                K = new double[] {1};
                 ent = false;
                 break;
             case 1:
@@ -162,7 +162,7 @@ class User {
                 K[2] = Math.pow(10, -2.67);
                 K[3] = Math.pow(10, -6.16);
                 K[4] = Math.pow(10, -10.26);
-                ion = "C10H12N2O8";
+                ion = "EDTA";
                 break;
         }
         ent = !ent;
@@ -170,6 +170,7 @@ class User {
         itt=0;
     }
 
+    // setting the type of the Component which's data is being collected
     void SetAcid(boolean i){
         acid = i;
         if (acid){
@@ -180,7 +181,16 @@ class User {
             if (ion.equals("A") || ion.equals("B")) ion = "B";
         }
     }
-    // defines species' tags
+
+    // a simple function used at data collection
+    boolean AllInputsValid(){
+        for (int el: Valid) if (el == 0) return (false);
+        return(true);
+    }
+
+    // defines species' tags and displaying the right number of fields
+    // needed for the concentration printout
+    @Contract(pure = true)
     private String AssignConcentrations(int i, @NonNull Component c){
         String out = "c(";
         if (c.acid) {

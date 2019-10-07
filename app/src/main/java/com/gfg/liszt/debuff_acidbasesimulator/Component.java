@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 /**
  * @author L. List
  */
+
 public class Component extends Solution{
     boolean acid;
     int n;
@@ -43,7 +44,8 @@ public class Component extends Solution{
         Concentrations = c;
     }
 
-    void titComp(double v, double l){
+    // pulling the new Solution constitution
+    void TitComp(double v, double l){
         cu = cu*V/(V+v);
         try {
             cn = (cn * V + l * v) / (V + v);

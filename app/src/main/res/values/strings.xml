@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">DeBuff</string>
-    <string name="Go">Go</string>
+    <string name="Go">Submit</string>
     <!-- <string name=""></string> !-->
 </resources>

@@ -191,7 +191,7 @@ public class chooseActivity extends AppCompatActivity {
     if (id == R.id.infomenubtn) {
       AlertDialog.Builder builder;
       builder = new AlertDialog.Builder(this, 0);
-      builder.setTitle("Welcome to DeBuff v1.5!")
+      builder.setTitle("Welcome to DeBuff vmaloviše!")
               .setMessage("DeBuff is a simple acid-base simulator.\n" +
                       "You can choose an acid and study its properties or you can manually input acid or base data (which is easily available on the Internet).\n" +
                       "Afterwards, addition of another solution component along with titration simulation is available.\n"+

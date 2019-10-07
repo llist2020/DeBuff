@@ -16,9 +16,9 @@ public class Solution {
     private Component[] comps = new Component[4];
     private double[] dic;
     int n;
-    final double kw=Math.pow(10,-14);
-    double l=1.0, V, cu = 0;
-    private double cn = 0, h = 0;
+    final double kw=Math.pow(10, -14);
+    double cu = 0, l, V;
+    private double cn = 0, h;
 
     Solution(){
         n=0;
@@ -37,10 +37,9 @@ public class Solution {
         u.SetAcid(!sw);
     }
     comps[0].ion = u.ion;
-} // collecting inputs
+}
 
     void AddComp(@NotNull User u, boolean sw){
-        // KAJ AK JE CITT VECI OD 4
         comps[u.citt] = new Component(u, this);
         h += u.cu*u.n+1;
         n += u.n;
@@ -69,8 +68,8 @@ public class Solution {
         return(dic);
     }
 
-    // titrates the Solution against an ideal base (as default; could be an acid) of volume v & concentration l
-    void tit(double v, Switch s){
+    // updates the data describing the (ideal) acid/base content
+    void Titrate(double v, Switch s){
         if (l != 0) {
             if (s.isChecked()) {
                 l = Math.abs(l);
@@ -80,21 +79,22 @@ public class Solution {
         }
         for (Component el: comps) {
             try {
-                el.titComp(v, l);
+                el.TitComp(v, l);
             } catch (Exception e) {
-                System.out.println("EComp"); //empty component
+                // there is no Component at this index
             }
         }
         try {
             cn = (cn * V + l * v) / (V + v);
         } catch(Exception e){
-            cn = cn * V/ (V + v);
+            cn = cn * V / (V + v);
         }
         V += v;
     }
 
-    // some math functions following
-    @org.jetbrains.annotations.Contract(pure = true)
+    // functions used to manipulate the provided data and generate
+    // the building blocks of the polynomial
+    @Contract(pure = true)
     private double cstsa(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<c.n-i+1; j++){
@@ -153,60 +153,62 @@ public class Solution {
         return(out);
     }
 
-    // the most important function implementing all the math and functions involved in displaying of the Solution's properties
     String MainFunction(@NonNull Poly p, TextView[] t){
         System.out.println("Initializing simulation.");
+        // setting up the polynomial, begining with the permanent part
         dic = new double[n+3];
-        for (int i = 0; i<dic.length; i++){
-            dic[i] = 0;
-        }
-
-        // major redistribution required
-        for (Component el: comps) {
-            try {
-                if (el.acid){
-                    el.up = UpA(el.cu, el);
-                    el.down = DownA(1, el);
-                } else{
-                    el.up = UpB(el.cu, el);
-                    el.down = DownB(1, el);
-                }
-                System.out.println("Component application successful.");
-            } catch(Exception e){
-                System.out.println("Collecting data: EComp"); //empty component
-            }
-        }
+        for (int i = 0; i<dic.length; i++) dic[i] = 0;
         dic[0] = kw;
         dic[1] = -cn;
         dic[2] = -1;
-        for (Component el: comps){
+
+        // setting up the fractions describing the Components
+        for (Component component: comps) {
             try {
-                dic = p.Multiply(dic, el.down);
+                if (component.acid){
+                    component.up = UpA(component.cu, component);
+                    component.down = DownA(1, component);
+                } else{
+                    component.up = UpB(component.cu, component);
+                    component.down = DownB(1, component);
+                }
+                System.out.println("Component application successful.");
+            } catch(Exception e){
+                // there is no Component at this index
+            }
+        }
+
+        // getting rid of the denominators
+        for (Component component: comps){
+            try {
+                dic = p.Multiply(dic, component.down);
             }catch(Exception e){
-                System.out.println("Preparing poly1: EComp");
+                // there is no Component at this index
             }
         }
         for (int i = 0; i<4; i++){
             for (int j = 0; j<4; j++){
-                if (i!=j){
+                if (i != j){
                     try {
                         comps[i].up = p.Multiply(comps[i].up, comps[j].down);
                     }catch(Exception e){
-                        if(j==0) {
-                            System.out.println("Preparing poly2: EComp");
-                        }
+                        // there is no Component at this index
                     }
                 }
             }
         }
+
+        // generating the final polynomial
         for (int i = 0; i<4; i++){
             try{
                 dic = p.Add(comps[i].up, dic);
             }catch(Exception e){
-                System.out.println("Preparing poly3: EComp");
+                // there is no Component at this index
             }
         }
 
+        // the freshly generated polynomial is being transposed to the Poly format
+        // in order to find the positive root that satisfies the laws of conservation
         p.p = dic;
         try {
             h = -Math.log10(p.Solve(this));
@@ -214,6 +216,9 @@ public class Solution {
             h = -100;
             System.out.println(e.getMessage());
         }
+
+        // finally, the pH is returned
+        // by the way, conncentrations of the Component at index 0 are to be displayed
         comps[0].PrintConcentrations(t);
         return(String.valueOf((double)Math.round(h * 1000d) / 1000d));
     }

@@ -2,7 +2,12 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,6 +21,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.jetbrains.annotations.Contract;
 
 import java.util.Locale;
 
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
         dialog = new BottomSheetDialog(this);
         final RelativeLayout mainLayout = findViewById(R.id.activity_main);
         final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
         final Button TitBtn = findViewById(R.id.TitBtn);
@@ -103,14 +110,15 @@ public class MainActivity extends AppCompatActivity{
                 final EditText nTxt = dialog.findViewById(R.id.nTxt);
                 final EditText cuTxt = dialog.findViewById(R.id.cuTxt);
                 final EditText cnTxt = dialog.findViewById(R.id.cnTxt);
+                final EditText VTxt = dialog.findViewById(R.id.VTxt);
                 final TextInputLayout KTxtIL = dialog.findViewById(R.id.KTxtIL);
                 final EditText KTxt = dialog.findViewById(R.id.KTxt);
-                final EditText VTxt = dialog.findViewById(R.id.VTxt);
                 final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
                 if (u1.citt != 0){
                     VTxt.setEnabled(false);
                     VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
-                }
+                } else if (choice == 0) AutoBtn.setEnabled(false);
+                SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekj
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -119,6 +127,9 @@ public class MainActivity extends AppCompatActivity{
                         SaveBtn.setVisibility(View.VISIBLE);
                         u1.ion = "A";
                         u1.ent = true;
+                        nTxt.setEnabled(true);
+                        nTxt.setText("");
+                        if (!VTxt.getText().toString().matches("")) u1.Valid[3] = 1;
                     }
                 });
 
@@ -127,6 +138,7 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(View view) {
                         for (EditText el: ETs) el.setVisibility(View.VISIBLE);
                         SaveBtn.setVisibility(View.VISIBLE);
+                        nTxt.setEnabled(false);
                         AcidBaseSwInp.setChecked(!u1.acid);
                         KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[1])));
                         nTxt.setText(String.format(Locale.US, "%s", u1.n));
@@ -137,100 +149,28 @@ public class MainActivity extends AppCompatActivity{
                 SaveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        u1.allclr = true;
-                        int n = 0;
-                        float cu = 0, cn = 0, V = 0;
-                        for (EditText el: ETs) el.setEnabled(false);
-                        SaveBtn.setEnabled(false);
-                        pHVw.setText("--");
-                        solutionVol.setText("--");
-                        cTxtx.setText("--");
-                        Rst(Nvws);
-                        AcidBaseSwInp.setEnabled(false);
-                        TitTxt.setEnabled(false);
-                        VolTitTxt.setEnabled(false);
-                        TitBtn.setEnabled(false);
-                        for(int i = 0; i < rBtnz.getChildCount(); i++){
-                            rBtnz.getChildAt(i).setEnabled(false);
-                        }
+                        double[] Inputs = ValidateInputs();
+                        int n;
+                        double cu, cn, V;
+                        if (Inputs.length != 0){ // if all inputs are valid
+                            n = ((Double) Inputs[0]).intValue();
+                            cu = Inputs[1];
+                            cn = Inputs[2];
+                            V = Inputs[3];
+                            for (EditText el: ETs) el.setEnabled(false);
+                            SaveBtn.setEnabled(false);
+                            pHVw.setText("--");
+                            solutionVol.setText("--");
+                            cTxtx.setText("--");
+                            Rst(Nvws);
+                            AcidBaseSwInp.setEnabled(false);
+                            TitTxt.setEnabled(false);
+                            VolTitTxt.setEnabled(false);
+                            TitBtn.setEnabled(false);
+                            for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                rBtnz.getChildAt(i).setEnabled(false);
+                            }
 
-                        try{
-                            n = Integer.parseInt(nTxt.getText().toString());
-                            if (n == 0) {
-                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?; toast
-                                nTxt.setText("");
-                            }
-                            if (n > 6 || n < 0) { // math limit;
-                                u1.allclr = false;
-                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("DeBuff supports n€<0,7>");
-                                nTxt.setText("");
-                            }
-                        } catch (Exception e) {
-                            u1.allclr = false;
-                            if (nTxt.getText().toString().equals(".")) {
-                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("Invalid input.");
-                                nTxt.setText("");
-                            } else {
-                                ((TextInputLayout) (nTxt.getParent()).getParent()).setError("An error occurred.");
-                                nTxt.setText("");
-                            }
-                        }
-
-                        try {
-                            cu = Float.parseFloat(cuTxt.getText().toString());
-                            if (cu > 100) {
-                                u1.allclr = false;
-                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
-                                cuTxt.setText("");
-                            }
-                        } catch (Exception e) {
-                            u1.allclr = false;
-                            if (cuTxt.getText().toString().equals(".")) {
-                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("Invalid input.");
-                                cuTxt.setText("");
-                            } else {
-                                ((TextInputLayout) (cuTxt.getParent()).getParent()).setError("An error occurred.");
-                                cuTxt.setText("");
-                            }
-                        }
-
-                        try {
-                            cn = Float.parseFloat(cnTxt.getText().toString());
-                            if (cn > 100) {
-                                u1.allclr = false;
-                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
-                                cnTxt.setText("");
-                            }
-                        } catch (Exception e) {
-                            u1.allclr = false;
-                            if (cnTxt.getText().toString().equals(".")) {
-                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("Invalid input.");
-                                cnTxt.setText("");
-                            } else {
-                                ((TextInputLayout) (cnTxt.getParent()).getParent()).setError("An error occurred.");
-                                cnTxt.setText("");
-                            }
-                        }
-
-                        try {
-                            V = Float.parseFloat(VTxt.getText().toString());
-                            if (V > 2000) {
-                                u1.allclr = false;
-                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("Do you really need more than 2L?");
-                                VTxt.setText("");
-                            }
-                        } catch (Exception e) {
-                            u1.allclr = false;
-                            if (VTxt.getText().toString().equals(".")) {
-                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("Invalid input.");
-                                VTxt.setText("");
-                            } else {
-                                ((TextInputLayout) (VTxt.getParent()).getParent()).setError("An error occurred.");
-                                VTxt.setText("");
-                            }
-                        }
-
-                        if (u1.allclr){
                             if (u1.citt == 0){
                                 if(!u1.ent) {
                                     u1.V = V;
@@ -275,6 +215,10 @@ public class MainActivity extends AppCompatActivity{
                             }
                         } else{
                             for (EditText el: ETs) el.setEnabled(true);
+                            if (u1.citt != 0) {
+                                VTxt.setEnabled(false);
+                                VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
+                            }
                             SaveBtn.setEnabled(true);
                             KTxt.setVisibility(View.GONE);
                             NextBtn.setVisibility(View.GONE);
@@ -310,7 +254,7 @@ public class MainActivity extends AppCompatActivity{
                                 u1.itt--;
                             }
 
-                            if (u1.itt == u1.n && u1.allclr) {
+                            if (u1.itt == u1.n) {
                                 if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
                                 else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
@@ -342,7 +286,7 @@ public class MainActivity extends AppCompatActivity{
                             try{
                                 KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[u1.itt])));
                             }catch(Exception e){
-                                System.out.println("Next: error");
+                                System.out.println("An error occurred at loading a constant");
                             }
                         } else KTxt.setText("");
                         if (u1.itt >= u1.n) NextBtn.setText(R.string.Go);
@@ -359,6 +303,124 @@ public class MainActivity extends AppCompatActivity{
                         else ((TextInputLayout) (nTxt.getParent()).getParent()).setHint("Number of dissociable protons:");
                     }
                 });
+
+                nTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (nTxt.getText().toString().matches("")){
+                            SaveBtn.setEnabled(false);
+                            u1.Valid[0] = 0;
+                        } else u1.Valid[0] = 1;
+                        if (u1.AllInputsValid()) SaveBtn.setEnabled(true);
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) { }
+                });
+                cuTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (cuTxt.getText().toString().matches("") && cuTxt.getText().toString().matches(".")){
+                            SaveBtn.setEnabled(false);
+                            u1.Valid[1] = 0;
+                        } else u1.Valid[1] = 1;
+                        if (u1.AllInputsValid()) SaveBtn.setEnabled(true);
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) { }
+                });
+                cnTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (cnTxt.getText().toString().matches("") && cnTxt.getText().toString().matches(".")){
+                            SaveBtn.setEnabled(false);
+                            u1.Valid[2] = 0;
+                        } else u1.Valid[2] = 1;
+                        if (u1.AllInputsValid()) SaveBtn.setEnabled(true);
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) { }
+                });
+                VTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (cuTxt.getText().toString().matches("") && cuTxt.getText().toString().matches(".")){
+                            SaveBtn.setEnabled(false);
+                            u1.Valid[3] = 0;
+                        } else u1.Valid[3] = 1;
+                        if (u1.AllInputsValid()) SaveBtn.setEnabled(true);
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                    }
+                });
+
+                cnTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            System.out.println("nextkeyboard");
+                            if (u1.citt != 0){
+                                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                            } else{
+                                VTxt.requestFocus();
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+
+            @NonNull
+            @Contract(" -> new")
+            private double[] ValidateInputs(){
+                final EditText[] ETs = new EditText[] {dialog.findViewById(R.id.nTxt), dialog.findViewById(R.id.cuTxt), dialog.findViewById(R.id.cnTxt), dialog.findViewById(R.id.VTxt)};
+                for (EditText el: ETs) ((TextInputLayout) (el.getParent()).getParent()).setError(null);
+                double[] out = new double[4];
+
+                for (int i = 0; i<4; i++){
+                    try{
+                        out[i] = Double.parseDouble(ETs[i].getText().toString());
+                        if (i == 0){
+                            if (out[i] == 0.0) {
+                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?; toast
+                            }
+                            if (out[i] > 6 || out[i] < 0) { // math limit;
+                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>");
+                                ETs[0].setText("");
+                                return(new double[0]);
+                            }
+                        } else if (i == 3){
+                            if (out[3] > 2000) {
+                                ((TextInputLayout) (ETs[3].getParent()).getParent()).setError("Do you really need more than 2L?");
+                                ETs[3].setText("");
+                                return(new double[0]);
+                            }
+                        } else{
+                            if (out[i] > 100) {
+                                ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
+                                ETs[i].setText("");
+                                return(new double[0]);
+                            }
+                        }
+                    } catch (Exception e) {
+                        ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("An error occurred.");
+                        ETs[i].setText("");
+                        return(new double[0]);
+                    }
+                }
+                return(out);
             }
         });
 
@@ -373,18 +435,20 @@ public class MainActivity extends AppCompatActivity{
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high!");
                         Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
                     } else {
-                        s1.tit(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
+                        s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                         p1 = new Poly(s1.GetDic());
                         pHVw.setText(s1.MainFunction(p1, u1.Texts));
                         u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())]);
                         s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                     }
                 } catch(Exception e) {
-                    //  if(TitTxt.getText().toString().equals(".")||VolTitTxt.getText().toString().equals(".")){
-                    // DIFERENCIRAJ PORJKELO GRESKE
-                    ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
-                    Snackbar.make(mainLayout, "Invalid input.", Snackbar.LENGTH_LONG).show();
-                    //  ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("An error occurred.");
+                    if (TitTxt.getText().toString().matches(".") || (TitTxt.getText().toString().matches(""))){
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Invalid input.");
+                    }
+                    if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
+                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
+                    }
+                    Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
