@@ -1,5 +1,9 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,11 +67,20 @@ public class Component extends Solution{
             Texts[(n-i)*3+1].setText(String.valueOf(format.format(Concentrations[n-i])));
         }
         Texts[22].setText(String.valueOf(format.format(Math.abs(cn))));
+        SpannableStringBuilder out;
         if(cn<0){
-            Texts[21].setText("c(X-) = ");
+            out = new SpannableStringBuilder("c(X-) = ");
         } else{
-            Texts[21].setText("c(X+) = ");
+            out = new SpannableStringBuilder("c(X+) = ");
         }
+
+        try{
+            out.setSpan(new SuperscriptSpan(), 3, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new RelativeSizeSpan(0.75f), 3, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch(Exception e){
+            // no supers
+        }
+        Texts[21].setText(out);
         Texts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));
     }
 }

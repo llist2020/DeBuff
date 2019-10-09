@@ -1,5 +1,49 @@
 <resources>
     <string name="app_name">DeBuff</string>
     <string name="Go">Submit</string>
+    <string name="One">1</string>
+    <string name="OneStr">1.00</string>
+    <string name="Two">2</string>
+    <string name="Three">3</string>
+    <string name="Four">4</string>
+    <string name="Molar">M</string>
+    <string name="Cation_declaration">c(X<sup>+</sup>) =</string>
+    <string name="Vol_unit">ml</string>
+    <string name="Vol_declaration"><i>V</i> =</string>
+    <string name="Ph_declaration">pH =</string>
+    <string name="HeadB">Results</string>
+    <string name="HeadA">Titrate</string>
+    <string name="LineA">Against: </string>
+    <string name="LineB">Concentration: </string>
+    <string name="LineC">Volume: </string>
+    <string name="Acid">acid</string>
+    <string name="Base">base</string>
+    <string name="WorkingOn">--</string>
+    <string name="Concentration_declaration"><i>c</i> =</string>
+    <string name="Add">Add a component:</string>
+    <string name="AcidUpp">Acid</string>
+    <string name="BaseUpp">Base</string>
+    <string name="InputA">Number of dissociable protons:</string>
+    <string name="InputB">Overall acid concentration [mol/l]:</string>
+    <string name="InputC">Overall cation concentration [mol/l]:</string>
+    <string name="InputD">Solution volume [ml]:</string>
+    <string name="InputE">Equilibrium constant pKa1</string>
+    <string name="Next">Next</string>
+    <string name="Save">Save</string>
+    <string name="Manual">Manual</string>
+    <string name="Auto">Pre-saved</string>
+    <string name="hydrogen_chloride">HCl</string>
+    <string name="hydrogen_fluoride">HF</string>
+    <string name="hydrogen_cyanide">HCN</string>
+    <string name="acetic_acid">CH<sub>3</sub>COOH</string>
+    <string name="hydrogen_sulfide">H<sub>2</sub>S</string>
+    <string name="carbonic_acid">H<sub>2</sub>CO<sub>3</sub></string>
+    <string name="sulfuric_acid">H<sub>2</sub>SO<sub>4</sub></string>
+    <string name="oxalic_acid">(COOH)<sub>2</sub></string>
+    <string name="phosphoric_acid">H<sub>3</sub>PO<sub>4</sub></string>
+    <string name="arsenic_acid">H<sub>3</sub>AsO<sub>4</sub></string>
+    <string name="boric_acid">H<sub>3</sub>BO<sub>3</sub></string>
+    <string name="citric_acid">H<sub>3</sub>C<sub>6</sub>H<sub>5</sub>O<sub>7</sub></string>
+    <string name="edta">EDTA</string>
     <!-- <string name=""></string> !-->
 </resources>

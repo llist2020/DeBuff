@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
@@ -40,7 +40,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Titration"
+                        android:text="@string/HeadA"
                         android:textSize="16sp" />
 
                     <View
@@ -64,7 +64,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="start"
-                            android:text="Against: "
+                            android:text="@string/LineA"
                             android:textSize="24sp" />
 
                         <TextView
@@ -73,7 +73,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="acid"
+                            android:text="@string/Acid"
                             android:textSize="24sp" />
 
                         <Switch
@@ -93,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.1"
                             android:gravity="end"
-                            android:text="base"
+                            android:text="@string/Base"
                             android:textSize="24sp" />
 
                     </LinearLayout>
@@ -109,19 +109,20 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Concentration:"
+                            android:text="@string/LineB"
                             android:textSize="24sp" />
 
                         <TextView
                             android:id="@+id/textView9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c = "
+                            android:text="@string/Concentration_declaration"
                             android:textSize="24sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp" >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/TitTxt"
@@ -131,8 +132,8 @@
                                 android:imeOptions="actionNext"
                                 android:textAlignment="textEnd"
                                 android:enabled="false"
-                                android:text="1.00"
-                                android:textSize="20dp" />
+                                android:text="@string/OneStr"
+                                android:textSize="20sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,8 +141,9 @@
                             android:id="@+id/textView8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" M"
-                            android:textSize="24sp" />
+                            android:text="@string/Molar"
+                            android:textSize="24sp"
+                            android:layout_marginStart="5dp" />
 
                     </LinearLayout>
 
@@ -156,30 +158,31 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Volume:"
+                            android:text="@string/LineC"
                             android:textSize="24sp" />
 
                         <TextView
                             android:id="@+id/textView15"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="V = "
+                            android:text="@string/Vol_declaration"
                             android:textSize="24sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp" >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/VolTitTxt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:inputType="number|numberDecimal"
                                 android:imeOptions="actionNext"
                                 android:textAlignment="textEnd"
                                 android:enabled="false"
-                                android:text="1.00"
-                                android:textSize="20dp" />
+                                android:text="@string/OneStr"
+                                android:textSize="20sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,8 +190,9 @@
                             android:id="@+id/textView19"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" ml"
-                            android:textSize="24sp" />
+                            android:text="@string/Vol_unit"
+                            android:textSize="24sp"
+                            android:layout_marginStart="5dp" />
 
                     </LinearLayout>
 
@@ -204,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:enabled="false"
-                        android:text="Titrate" />
+                        android:text="@string/HeadA" />
 
                 </LinearLayout>
 
@@ -231,7 +235,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Results"
+                        android:text="@string/HeadB"
                         android:textSize="16sp" />
 
                     <View
@@ -252,14 +256,15 @@
                             android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="pH = "
+                            android:text="@string/Ph_declaration"
                             android:textSize="24sp" />
 
                         <TextView
                             android:id="@+id/pHVw"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="--"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/WorkingOn"
                             android:textSize="24sp" />
 
                     </LinearLayout>
@@ -272,23 +277,25 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="V = "
+                            android:text="@string/Vol_declaration"
                             android:textSize="24sp" />
 
                         <TextView
                             android:id="@+id/solutionVol"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="--"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/WorkingOn"
                             android:textSize="24sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text=" ml"
+                            android:text="@string/Vol_unit"
                             android:textSize="24sp"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:layout_marginStart="5dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -301,27 +308,30 @@
                             android:id="@+id/cVwx"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c(X+) ="
+                            android:text="@string/Cation_declaration"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:textAllCaps="false"  />
 
                         <TextView
-                            android:id="@+id/cTxtx"
+                            android:id="@+id/cTxtX"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:layout_marginStart="5dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="M"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            android:layout_marginStart="5dp" />
                     </LinearLayout>
 
                     <View
@@ -338,31 +348,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl1"
+                            android:id="@+id/cVw1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl1"
+                            android:id="@+id/m1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <LinearLayout
@@ -372,31 +384,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl2"
+                            android:id="@+id/cVw2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl2"
+                            android:id="@+id/m2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <LinearLayout
@@ -406,31 +420,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl3"
+                            android:id="@+id/cVw3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl3"
+                            android:id="@+id/m3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -440,31 +456,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl4"
+                            android:id="@+id/cVw4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl4"
+                            android:id="@+id/m4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <LinearLayout
@@ -474,31 +492,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl5"
+                            android:id="@+id/cVw5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl5"
+                            android:id="@+id/m5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <LinearLayout
@@ -508,31 +528,33 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl6"
+                            android:id="@+id/cVw6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false"  />
+
+                        <TextView
+                            android:id="@+id/cTxt6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl6"
+                            android:id="@+id/m6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <LinearLayout
@@ -542,35 +564,37 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/cVwl7"
+                            android:id="@+id/cVw7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="c() ="
+                            android:text=""
+                            android:textColor="#7f7f7f"
+                            android:textSize="24sp"
+                            android:visibility="gone"
+                            android:textAllCaps="false" />
+
+                        <TextView
+                            android:id="@+id/cTxt7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/cTxtl7"
+                            android:id="@+id/m7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/Molar"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/cl7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M"
-                            android:textColor="#7f7f7f"
-                            android:textSize="24sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            android:layout_marginStart="5dp"  />
                     </LinearLayout>
 
                     <RadioGroup
-                        android:id="@+id/rBtnz"
+                        android:id="@+id/rBtnGrp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="fill_horizontal"
@@ -582,28 +606,28 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:checked="true"
-                            android:text="1" />
+                            android:text="@string/One" />
 
                         <RadioButton
                             android:id="@+id/rBtn1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="2" />
+                            android:text="@string/Two" />
 
                         <RadioButton
                             android:id="@+id/rBtn2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="3" />
+                            android:text="@string/Three" />
 
                         <RadioButton
                             android:id="@+id/rBtn3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="4" />
+                            android:text="@string/Four" />
                     </RadioGroup>
 
 

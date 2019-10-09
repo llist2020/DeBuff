@@ -1,5 +1,10 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SubscriptSpan;
+import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,22 +19,28 @@ import androidx.annotation.NonNull;
 class User {
     TextView[] Texts;
     double cu, cn;
-    int n, itt, citt = 0;
+    int n, itt;
     double[] K;
     boolean ent, acid;
     String a;
     String ion;
     double V = 10;
     int[] Valid = new int[] {0, 0, 0, 0};
+    int[] Entered = new int[] {0, 0, 0, 0};
 
-    User(int number, double OvC, double CatC, double Vol, String IonName, boolean Manual){
+
+    User(int number, double OvC, double CatC, double Vol, String IonName, int[] inputs){
         n = number;
         cu = OvC;
         cn = CatC;
         K = new double[n+1];
         K[0] = 1;
         V = Vol;
-        ent = Manual;
+        Entered = inputs;
+
+        // PRIVREMENO
+        ent = true;
+
         if (ent) ion = "A";
         else ion = IonName;
         SetAcid(true);
@@ -43,7 +54,7 @@ class User {
         K[0] = 1;
         V = u1.V;
         itt = u1.itt;
-        citt = u1.citt;
+        Entered = u1.Entered;
         ent = u1.ent;
         if (ent) ion = "A";
         else ion = u1.ion;
@@ -182,6 +193,21 @@ class User {
         }
     }
 
+    // inputs entering another slot
+    int Slot(){
+        int k = Entered.length;
+        for (int i=0; i<Entered.length; i++){
+            if (Entered[i] == 0){
+                k = i;
+                break;
+            }
+        }
+        return(k);
+    }
+    void FillSlot(int i){
+        if (Math.abs(i)<Entered.length) Entered[i] = 1;
+    }
+
     // a simple function used at data collection
     boolean AllInputsValid(){
         for (int el: Valid) if (el == 0) return (false);
@@ -191,45 +217,76 @@ class User {
     // defines species' tags and displaying the right number of fields
     // needed for the concentration printout
     @Contract(pure = true)
-    private String AssignConcentrations(int i, @NonNull Component c){
-        String out = "c(";
+    private SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c){
+        int sups = 0, supe = 0;
+        int subs = 0, sube = 0;
+        String s = "c(";
         if (c.acid) {
-            if (i < c.n && c.n != 1) out += "[";
+            if (i < c.n && c.n != 1) s += "[";
             if (i != 0) {
-                out += "H";
+                s += "H";
                 if (i != 1) {
-                    out += i;
+                    subs = s.length();
+                    s += i;
+                    sube = s.length();
                 }
             }
-            out += c.ion;
+            s += c.ion;
             if (i != c.n) {
-                if (c.n != 1) out += "]";
+                if (c.n != 1) s += "]";
+                sups = s.length();
                 if (i != c.n - 1) {
-                    out += (c.n - i);
+                    s += (c.n - i);
                 }
-                out += "-";
+                s += "-";
+                supe = s.length();
             }
         } else{
             if (i != 0 && i != c.n){
-                out += "["+c.ion;
-                if (i != 1) out += "(OH)"+i;
-                else out += "(OH)";
-                out += "]";
-                if (i != c.n - 1) out += (c.n-i);
-                out += "+";
+                s += "["+c.ion;
+                if (i != 1){
+                    s += "(OH)"+i;
+                    subs = s.length()-1;
+                    sube = s.length();
+                }
+                else s += "(OH)";
+                s += "]";
+                sups = s.length();
+                if (i != c.n - 1) s += (c.n-i);
+                s += "+";
+                supe = s.length();
             } else{
-                out += c.ion;
+                s += c.ion;
                 if (i == 0){
-                    if (c.n != 1) out += c.n;
-                    out += "+";
+                    sups = s.length();
+                    if (c.n != 1) s += c.n;
+                    s += "+";
+                    supe = s.length();
                 }
                 else{
-                    out += "(OH)";
-                    if (c.n != 1) out += c.n;
+                    s += "(OH)";
+                    if (c.n != 1){
+                        subs = s.length();
+                        s += c.n;
+                        sube = s.length();
+                    }
                 }
             }
         }
-        out += ") = ";
+        s += ") = ";
+        SpannableStringBuilder out = new SpannableStringBuilder(s);
+        try{
+            out.setSpan(new SuperscriptSpan(), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new RelativeSizeSpan(0.75f), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch(Exception e){
+            // no supers
+        }
+        try{
+            out.setSpan(new SubscriptSpan(), subs, sube, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new RelativeSizeSpan(0.75f), subs, sube, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch(Exception e){
+            // no subs
+        }
         return(out);
     }
     void PrepareOutputs(TextView[] t, @NonNull Component c){
@@ -238,7 +295,7 @@ class User {
             Texts[i].setVisibility(View.VISIBLE);
         }
         for (int i=c.n; i>-1; i--){
-            Texts[(c.n-i)*3].setText(AssignConcentrations(i, c));
+            Texts[(c.n-i)*3].setText(AssignConcentrations(i, c), TextView.BufferType.SPANNABLE);
         }
     }
 }

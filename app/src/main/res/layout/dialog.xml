@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp"
-        android:layout_gravity="top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,22 +23,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="25pt"
-                android:text="Add a component:"
-                android:textSize="16sp" />
+                android:text="@string/Add"
+                android:textSize="16sp"/>
 
             <Switch
                 android:id="@+id/AcidBaseSwInp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="  Acid" />
+                android:layout_marginStart="35dp"
+                android:text="@string/AcidUpp" />
 
             <TextView
-                android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="25pt"
                 android:textSize="16sp"
-                android:text="Base" />
+                android:text="@string/BaseUpp" />
 
         </LinearLayout>
 
@@ -57,14 +55,14 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Manual" />
+                android:text="@string/Manual" />
 
             <Button
                 android:id="@+id/AutoBtn"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pre-saved" />
+                android:text="@string/Auto" />
 
         </LinearLayout>
 
@@ -90,7 +88,7 @@
                         android:id="@+id/nTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Number of dissociable protons:"
+                        android:hint="@string/InputA"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:textAlignment="textEnd"
@@ -105,7 +103,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cuTxt"
-                        android:hint="Overall acid concentration [mol/l]:"
+                        android:hint="@string/InputB"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -122,7 +120,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cnTxt"
-                        android:hint="Overall cation concentration [mol/l]:"
+                        android:hint="@string/InputC"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned|numberDecimal"
@@ -139,7 +137,7 @@
 					
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/VTxt"
-                        android:hint="Solution volume [ml]:"
+                        android:hint="@string/InputD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
@@ -163,7 +161,7 @@
                         style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Save"
+                        android:text="@string/Save"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -188,7 +186,7 @@
                     android:id="@+id/KTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Equilibrium constant pKa1"
+                    android:hint=""
                     android:imeOptions="actionGo"
                     android:inputType="numberDecimal|numberSigned"
                     android:textAlignment="textEnd"
@@ -203,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
-                android:text="Next"
+                android:text="@string/Next"
                 android:visibility="gone" />
 
         </LinearLayout>

@@ -40,22 +40,22 @@ public class Solution {
 }
 
     void AddComp(@NotNull User u, boolean sw){
-        comps[u.citt] = new Component(u, this);
+        comps[u.Slot()] = new Component(u, this);
         h += u.cu*u.n+1;
         n += u.n;
         cu += u.cu;
         cn += u.cn;
         dic = new double[n+3];
-        comps[u.citt].V = V;
-        comps[u.citt].acid = !sw;
-        for(int i=0; i<u.citt; i++){
+        comps[u.Slot()].V = V;
+        comps[u.Slot()].acid = !sw;
+        for(int i=0; i<u.Slot(); i++){
             comps[i].SetCn(cn);
         }
         if (u.ent){
             u.ion = "A";
         }
         u.SetAcid(!sw);
-        comps[u.citt].ion = u.ion;
+        comps[u.Slot()].ion = u.ion;
     }
 
     Component[] GetComps(){

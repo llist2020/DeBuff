@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.Contract;
@@ -46,34 +45,34 @@ public class MainActivity extends AppCompatActivity{
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
         final Button TitBtn = findViewById(R.id.TitBtn);
-        final RadioGroup rBtnz = findViewById(R.id.rBtnz);
+        final RadioGroup rBtnz = findViewById(R.id.rBtnGrp);
         final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
         final TextView pHVw = findViewById(R.id.pHVw);
         final TextView cVwx = findViewById(R.id.cVwx);
-        final TextView cTxtx = findViewById(R.id.cTxtx);
+        final TextView cTxtx = findViewById(R.id.cTxtX);
         final TextView solutionVol = findViewById(R.id.solutionVol);
-        final TextView cVwl1 = findViewById(R.id.cVwl1);
-        final TextView cVwl2 = findViewById(R.id.cVwl2);
-        final TextView cVwl3 = findViewById(R.id.cVwl3);
-        final TextView cVwl4 = findViewById(R.id.cVwl4);
-        final TextView cVwl5 = findViewById(R.id.cVwl5);
-        final TextView cVwl6 = findViewById(R.id.cVwl6);
-        final TextView cVwl7 = findViewById(R.id.cVwl7);
-        final TextView cTxtl1 = findViewById(R.id.cTxtl1);
-        final TextView cTxtl2 = findViewById(R.id.cTxtl2);
-        final TextView cTxtl3 = findViewById(R.id.cTxtl3);
-        final TextView cTxtl4 = findViewById(R.id.cTxtl4);
-        final TextView cTxtl5 = findViewById(R.id.cTxtl5);
-        final TextView cTxtl6 = findViewById(R.id.cTxtl6);
-        final TextView cTxtl7 = findViewById(R.id.cTxtl7);
-        final TextView cl1 = findViewById(R.id.cl1);
-        final TextView cl2 = findViewById(R.id.cl2);
-        final TextView cl3 = findViewById(R.id.cl3);
-        final TextView cl4 = findViewById(R.id.cl4);
-        final TextView cl5 = findViewById(R.id.cl5);
-        final TextView cl6 = findViewById(R.id.cl6);
-        final TextView cl7 = findViewById(R.id.cl7);
+        final TextView cVwl1 = findViewById(R.id.cVw1);
+        final TextView cVwl2 = findViewById(R.id.cVw2);
+        final TextView cVwl3 = findViewById(R.id.cVw3);
+        final TextView cVwl4 = findViewById(R.id.cVw4);
+        final TextView cVwl5 = findViewById(R.id.cVw5);
+        final TextView cVwl6 = findViewById(R.id.cVw6);
+        final TextView cVwl7 = findViewById(R.id.cVw7);
+        final TextView cTxtl1 = findViewById(R.id.cTxt1);
+        final TextView cTxtl2 = findViewById(R.id.cTxt2);
+        final TextView cTxtl3 = findViewById(R.id.cTxt3);
+        final TextView cTxtl4 = findViewById(R.id.cTxt4);
+        final TextView cTxtl5 = findViewById(R.id.cTxt5);
+        final TextView cTxtl6 = findViewById(R.id.cTxt6);
+        final TextView cTxtl7 = findViewById(R.id.cTxt7);
+        final TextView cl1 = findViewById(R.id.m1);
+        final TextView cl2 = findViewById(R.id.m2);
+        final TextView cl3 = findViewById(R.id.m3);
+        final TextView cl4 = findViewById(R.id.m4);
+        final TextView cl5 = findViewById(R.id.m5);
+        final TextView cl6 = findViewById(R.id.m6);
+        final TextView cl7 = findViewById(R.id.m7);
         final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
 
         u1 = new User(choice, Nvws);
@@ -114,7 +113,8 @@ public class MainActivity extends AppCompatActivity{
                 final TextInputLayout KTxtIL = dialog.findViewById(R.id.KTxtIL);
                 final EditText KTxt = dialog.findViewById(R.id.KTxt);
                 final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
-                if (u1.citt != 0){
+
+                if (u1.Slot() != 0){
                     VTxt.setEnabled(false);
                     VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
                 } else if (choice == 0) AutoBtn.setEnabled(false);
@@ -171,12 +171,15 @@ public class MainActivity extends AppCompatActivity{
                                 rBtnz.getChildAt(i).setEnabled(false);
                             }
 
-                            if (u1.citt == 0){
-                                if(!u1.ent) {
+                            if (u1.Slot() == 0){
+                                if (!u1.ent) {
                                     u1.V = V;
                                     u1 = new User(n, cu, cn, u1);
-                                } else u1 = new User(n, cu, cn, V, "Mjau", true);
-                            } else u1 = new User(n, cu, cn, u1);
+                                } else u1 = new User(n, cu, cn, V, "Mjau", new int[] {0,0,0,0});
+                            } else{
+                                if  (u1.ent) u1 = new User(n, cu, cn, u1.V, "Mjau", u1.Entered);
+                                else u1 = new User(n, cu, cn, u1);
+                            }
                             for (EditText el: ETs){
                                 el.setEnabled(false);
                                 el.setError(null);
@@ -189,8 +192,8 @@ public class MainActivity extends AppCompatActivity{
                                 NextBtn.setVisibility(View.VISIBLE);
                                 NextBtn.performClick();
                             } else{
-                                if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
-                                else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
+                                if (u1.Slot() == 0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
+                                else if (u1.Slot()<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -198,7 +201,7 @@ public class MainActivity extends AppCompatActivity{
                                 pHVw.setText(s1.MainFunction(p1, u1.Texts));
                                 s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = -1;
-                                u1.citt++;
+                                u1.FillSlot(u1.Slot());
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
@@ -215,7 +218,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                         } else{
                             for (EditText el: ETs) el.setEnabled(true);
-                            if (u1.citt != 0) {
+                            if (u1.Slot() != 0) {
                                 VTxt.setEnabled(false);
                                 VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
                             }
@@ -255,8 +258,8 @@ public class MainActivity extends AppCompatActivity{
                             }
 
                             if (u1.itt == u1.n) {
-                                if (u1.citt==0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
-                                else if (u1.citt<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
+                                if (u1.Slot() == 0) s1 = new Solution(u1, AcidBaseSwInp.isChecked());
+                                else if (u1.Slot()<4) s1.AddComp(u1, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
@@ -264,7 +267,7 @@ public class MainActivity extends AppCompatActivity{
                                 pHVw.setText(s1.MainFunction(p1, u1.Texts));
                                 s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = -1;
-                                u1.citt++;
+                                u1.FillSlot(u1.Slot());
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
@@ -369,7 +372,7 @@ public class MainActivity extends AppCompatActivity{
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
                             System.out.println("nextkeyboard");
-                            if (u1.citt != 0){
+                            if (u1.Slot() != 0){
                                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                             } else{
@@ -433,7 +436,6 @@ public class MainActivity extends AppCompatActivity{
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l * Float.parseFloat(VolTitTxt.getText().toString()))/(Float.parseFloat(VolTitTxt.getText().toString()) + s1.V) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high!");
-                        Snackbar.make(mainLayout, "Concentrated solutions tend to differ from mathematical model.", Snackbar.LENGTH_LONG).show();
                     } else {
                         s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                         p1 = new Poly(s1.GetDic());
@@ -448,7 +450,6 @@ public class MainActivity extends AppCompatActivity{
                     if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
                         ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
                     }
-                    Snackbar.make(mainLayout, "An error occurred.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
