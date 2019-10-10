@@ -1,5 +1,9 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -153,7 +157,7 @@ public class Solution {
         return(out);
     }
 
-    String MainFunction(@NonNull Poly p, TextView[] t){
+    SpannableStringBuilder MainFunction(@NonNull Poly p, TextView[] t){
         System.out.println("Initializing simulation.");
         // setting up the polynomial, begining with the permanent part
         dic = new double[n+3];
@@ -220,6 +224,8 @@ public class Solution {
         // finally, the pH is returned
         // by the way, conncentrations of the Component at index 0 are to be displayed
         comps[0].PrintConcentrations(t);
-        return(String.valueOf((double)Math.round(h * 1000d) / 1000d));
+        SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
+        out.setSpan(new StyleSpan(Typeface.BOLD), 0, out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return(out);
     }
 }

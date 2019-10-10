@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,148 +34,119 @@ public class chooseActivity extends AppCompatActivity {
     final Button btn12 = findViewById(R.id.button12);
     final Button btn13 = findViewById(R.id.button13);
     final Button btn14 = findViewById(R.id.button14);
-
+    final Intent intent = new Intent(getBaseContext(), MainActivity.class);
 
     btn1.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "0");
         startActivity(intent);
-
       }
     });
 
     btn2.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "1");
         startActivity(intent);
-
       }
     });
 
     btn3.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "2");
         startActivity(intent);
-
       }
     });
 
     btn4.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "3");
         startActivity(intent);
-
       }
     });
 
     btn5.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "4");
         startActivity(intent);
-
       }
     });
 
     btn6.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "5");
         startActivity(intent);
-
       }
     });
 
     btn7.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "6");
         startActivity(intent);
-
       }
     });
 
     btn8.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "7");
         startActivity(intent);
-
       }
     });
 
     btn9.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "8");
         startActivity(intent);
-
       }
     });
 
     btn10.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "9");
         startActivity(intent);
-
       }
     });
 
     btn11.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "10");
         startActivity(intent);
-
       }
     });
 
     btn12.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "11");
         startActivity(intent);
-
       }
     });
 
     btn13.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "12");
         startActivity(intent);
-
       }
     });
 
     btn14.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("buttonClicked", "13");
         startActivity(intent);
-
       }
     });
-
   }
 
   // create an action bar button
@@ -185,7 +158,7 @@ public class chooseActivity extends AppCompatActivity {
 
   // handle button activities
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  public boolean onOptionsItemSelected(@NotNull MenuItem item) {
     int id = item.getItemId();
 
     if (id == R.id.infomenubtn) {

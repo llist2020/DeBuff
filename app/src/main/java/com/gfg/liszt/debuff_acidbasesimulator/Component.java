@@ -1,8 +1,10 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.text.style.SuperscriptSpan;
 import android.widget.TextView;
 
@@ -77,8 +79,9 @@ public class Component extends Solution{
         try{
             out.setSpan(new SuperscriptSpan(), 3, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             out.setSpan(new RelativeSizeSpan(0.75f), 3, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch(Exception e){
-            // no supers
+            // no supers / other error
         }
         Texts[21].setText(out);
         Texts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));

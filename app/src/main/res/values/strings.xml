@@ -6,11 +6,11 @@
     <string name="Two">2</string>
     <string name="Three">3</string>
     <string name="Four">4</string>
-    <string name="Molar">M</string>
-    <string name="Cation_declaration">c(X<sup>+</sup>) =</string>
-    <string name="Vol_unit">ml</string>
-    <string name="Vol_declaration"><i>V</i> =</string>
-    <string name="Ph_declaration">pH =</string>
+    <string name="Molar" translatable="false">M</string>
+    <string name="Cation_declaration" translatable="false"><i>c</i>(X<sup>+</sup>) =</string>
+    <string name="Vol_unit" translatable="false">ml</string>
+    <string name="Vol_declaration" translatable="false"><i>V</i> =</string>
+    <string name="Ph_declaration" translatable="false"><b>pH =</b></string>
     <string name="HeadB">Results</string>
     <string name="HeadA">Titrate</string>
     <string name="LineA">Against: </string>
@@ -19,7 +19,7 @@
     <string name="Acid">acid</string>
     <string name="Base">base</string>
     <string name="WorkingOn">--</string>
-    <string name="Concentration_declaration"><i>c</i> =</string>
+    <string name="Concentration_declaration" translatable="false"><i>c</i> =</string>
     <string name="Add">Add a component:</string>
     <string name="AcidUpp">Acid</string>
     <string name="BaseUpp">Base</string>
@@ -27,23 +27,28 @@
     <string name="InputB">Overall acid concentration [mol/l]:</string>
     <string name="InputC">Overall cation concentration [mol/l]:</string>
     <string name="InputD">Solution volume [ml]:</string>
-    <string name="InputE">Equilibrium constant pKa1</string>
     <string name="Next">Next</string>
     <string name="Save">Save</string>
     <string name="Manual">Manual</string>
     <string name="Auto">Pre-saved</string>
-    <string name="hydrogen_chloride">HCl</string>
-    <string name="hydrogen_fluoride">HF</string>
-    <string name="hydrogen_cyanide">HCN</string>
-    <string name="acetic_acid">CH<sub>3</sub>COOH</string>
-    <string name="hydrogen_sulfide">H<sub>2</sub>S</string>
-    <string name="carbonic_acid">H<sub>2</sub>CO<sub>3</sub></string>
-    <string name="sulfuric_acid">H<sub>2</sub>SO<sub>4</sub></string>
-    <string name="oxalic_acid">(COOH)<sub>2</sub></string>
-    <string name="phosphoric_acid">H<sub>3</sub>PO<sub>4</sub></string>
-    <string name="arsenic_acid">H<sub>3</sub>AsO<sub>4</sub></string>
-    <string name="boric_acid">H<sub>3</sub>BO<sub>3</sub></string>
-    <string name="citric_acid">H<sub>3</sub>C<sub>6</sub>H<sub>5</sub>O<sub>7</sub></string>
-    <string name="edta">EDTA</string>
+    <string name="hydrogen_chloride" translatable="false">HCl</string>
+    <string name="hydrogen_fluoride" translatable="false">HF</string>
+    <string name="hydrogen_cyanide" translatable="false">HCN</string>
+    <string name="acetic_acid" translatable="false">CH<sub>3</sub>COOH</string>
+    <string name="hydrogen_sulfide" translatable="false">H<sub>2</sub>S</string>
+    <string name="carbonic_acid" translatable="false">H<sub>2</sub>CO<sub>3</sub></string>
+    <string name="sulfuric_acid" translatable="false">H<sub>2</sub>SO<sub>4</sub></string>
+    <string name="oxalic_acid" translatable="false">(COOH)<sub>2</sub></string>
+    <string name="phosphoric_acid" translatable="false">H<sub>3</sub>PO<sub>4</sub></string>
+    <string name="arsenic_acid" translatable="false">H<sub>3</sub>AsO<sub>4</sub></string>
+    <string name="boric_acid" translatable="false">H<sub>3</sub>BO<sub>3</sub></string>
+    <string name="citric_acid" translatable="false">H<sub>3</sub>C<sub>6</sub>H<sub>5</sub>O<sub>7</sub></string>
+    <string name="edta" translatable="false">EDTA</string>
+    <string name="ChooseA">MANUAL INPUT ACID DATA</string>
+    <string name="ChooseB">OR CHOOSE FROM EXISTING</string>
+    <string name="ChooseC">1-PROTIC</string>
+    <string name="ChooseD">2-PROTIC</string>
+    <string name="ChooseE">3-PROTIC</string>
+    <string name="ChooseF">4-PROTIC</string>
     <!-- <string name=""></string> !-->
 </resources>

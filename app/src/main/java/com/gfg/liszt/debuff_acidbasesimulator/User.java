@@ -1,8 +1,10 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.view.View;
@@ -221,6 +223,17 @@ class User {
         int sups = 0, supe = 0;
         int subs = 0, sube = 0;
         String s = "c(";
+        SpannableStringBuilder outIon = new SpannableStringBuilder(c.ion);
+        SpannableStringBuilder out;
+        for (int j = 0; j<c.ion.length(); j++){
+            try{
+                Integer.parseInt(String.valueOf(ion.charAt(j)));
+                outIon.setSpan(new SubscriptSpan(), j, j+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                outIon.setSpan(new RelativeSizeSpan(0.8f), j, j+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch(Exception e){
+                // not a digit
+            }
+        }
         if (c.acid) {
             if (i < c.n && c.n != 1) s += "[";
             if (i != 0) {
@@ -231,62 +244,70 @@ class User {
                     sube = s.length();
                 }
             }
-            s += c.ion;
+            out = new SpannableStringBuilder(s);
+            s = "";
+            out.append(outIon);
             if (i != c.n) {
                 if (c.n != 1) s += "]";
-                sups = s.length();
+                sups = s.length() + out.length();
                 if (i != c.n - 1) {
                     s += (c.n - i);
                 }
                 s += "-";
-                supe = s.length();
+                supe = s.length() + out.length();
             }
         } else{
             if (i != 0 && i != c.n){
-                s += "["+c.ion;
+                s += "[";
+                out = new SpannableStringBuilder(s);
+                s = "";
+                out.append(outIon);
                 if (i != 1){
                     s += "(OH)"+i;
-                    subs = s.length()-1;
-                    sube = s.length();
+                    subs = s.length() - 1 + out.length();
+                    sube = s.length() + out.length();
                 }
                 else s += "(OH)";
                 s += "]";
-                sups = s.length();
+                sups = s.length() + out.length();
                 if (i != c.n - 1) s += (c.n-i);
                 s += "+";
-                supe = s.length();
+                supe = s.length() + out.length();
             } else{
-                s += c.ion;
+                out = new SpannableStringBuilder(s);
+                s = "";
+                out.append(outIon);
                 if (i == 0){
-                    sups = s.length();
+                    sups = s.length() + out.length();
                     if (c.n != 1) s += c.n;
                     s += "+";
-                    supe = s.length();
+                    supe = s.length() + out.length();
                 }
                 else{
                     s += "(OH)";
                     if (c.n != 1){
-                        subs = s.length();
+                        subs = s.length() + out.length();
                         s += c.n;
-                        sube = s.length();
+                        sube = s.length() + out.length();
                     }
                 }
             }
         }
         s += ") = ";
-        SpannableStringBuilder out = new SpannableStringBuilder(s);
+        out.append(s);
         try{
             out.setSpan(new SuperscriptSpan(), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            out.setSpan(new RelativeSizeSpan(0.75f), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new RelativeSizeSpan(0.8f), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch(Exception e){
             // no supers
         }
         try{
             out.setSpan(new SubscriptSpan(), subs, sube, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            out.setSpan(new RelativeSizeSpan(0.75f), subs, sube, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            out.setSpan(new RelativeSizeSpan(0.8f), subs, sube, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch(Exception e){
             // no subs
         }
+        out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
     }
     void PrepareOutputs(TextView[] t, @NonNull Component c){

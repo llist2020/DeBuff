@@ -9,12 +9,12 @@
         android:id="@+id/title_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DeBuff"
+        android:text="@string/app_name"
         android:layout_centerVertical="true"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginStart="20dp"/>
 
 
     <Button
@@ -25,6 +25,6 @@
         android:text=""
         android:drawableBottom="@drawable/abc_menu_hardkey_panel_mtrl_mult"
         android:textColor="@android:color/white"
-        android:layout_marginLeft="5dp"
-        android:layout_alignParentRight="true"/>
+        android:layout_marginStart="5dp"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

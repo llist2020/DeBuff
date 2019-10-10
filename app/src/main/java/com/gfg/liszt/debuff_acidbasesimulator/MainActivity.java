@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,43 +38,43 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        dialog = new BottomSheetDialog(this);
         final RelativeLayout mainLayout = findViewById(R.id.activity_main);
+        setContentView(mainLayout);
+        dialog = new BottomSheetDialog(this);
         final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
         final FloatingActionButton fab = findViewById(R.id.fab);
         final EditText TitTxt = findViewById(R.id.TitTxt);
         final EditText VolTitTxt = findViewById(R.id.VolTitTxt);
         final Button TitBtn = findViewById(R.id.TitBtn);
-        final RadioGroup rBtnz = findViewById(R.id.rBtnGrp);
+        final RadioGroup rBtnGrp = findViewById(R.id.rBtnGrp);
         final RadioButton rBtn0 = findViewById(R.id.rBtn0);
         final Switch AcidBaseSw = findViewById(R.id.AcidBaseSw);
         final TextView pHVw = findViewById(R.id.pHVw);
         final TextView cVwx = findViewById(R.id.cVwx);
-        final TextView cTxtx = findViewById(R.id.cTxtX);
+        final TextView cTxtX = findViewById(R.id.cTxtX);
         final TextView solutionVol = findViewById(R.id.solutionVol);
-        final TextView cVwl1 = findViewById(R.id.cVw1);
-        final TextView cVwl2 = findViewById(R.id.cVw2);
-        final TextView cVwl3 = findViewById(R.id.cVw3);
-        final TextView cVwl4 = findViewById(R.id.cVw4);
-        final TextView cVwl5 = findViewById(R.id.cVw5);
-        final TextView cVwl6 = findViewById(R.id.cVw6);
-        final TextView cVwl7 = findViewById(R.id.cVw7);
-        final TextView cTxtl1 = findViewById(R.id.cTxt1);
-        final TextView cTxtl2 = findViewById(R.id.cTxt2);
-        final TextView cTxtl3 = findViewById(R.id.cTxt3);
-        final TextView cTxtl4 = findViewById(R.id.cTxt4);
-        final TextView cTxtl5 = findViewById(R.id.cTxt5);
-        final TextView cTxtl6 = findViewById(R.id.cTxt6);
-        final TextView cTxtl7 = findViewById(R.id.cTxt7);
-        final TextView cl1 = findViewById(R.id.m1);
-        final TextView cl2 = findViewById(R.id.m2);
-        final TextView cl3 = findViewById(R.id.m3);
-        final TextView cl4 = findViewById(R.id.m4);
-        final TextView cl5 = findViewById(R.id.m5);
-        final TextView cl6 = findViewById(R.id.m6);
-        final TextView cl7 = findViewById(R.id.m7);
-        final TextView[] Nvws = {cVwl1, cTxtl1, cl1, cVwl2, cTxtl2, cl2, cVwl3, cTxtl3, cl3, cVwl4, cTxtl4, cl4, cVwl5, cTxtl5, cl5, cVwl6, cTxtl6, cl6, cVwl7, cTxtl7, cl7, cVwx, cTxtx, solutionVol};
+        final TextView cVw1 = findViewById(R.id.cVw1);
+        final TextView cVw2 = findViewById(R.id.cVw2);
+        final TextView cVw3 = findViewById(R.id.cVw3);
+        final TextView cVw4 = findViewById(R.id.cVw4);
+        final TextView cVw5 = findViewById(R.id.cVw5);
+        final TextView cVw6 = findViewById(R.id.cVw6);
+        final TextView cVw7 = findViewById(R.id.cVw7);
+        final TextView cTxt1 = findViewById(R.id.cTxt1);
+        final TextView cTxt2 = findViewById(R.id.cTxt2);
+        final TextView cTxt3 = findViewById(R.id.cTxt3);
+        final TextView cTxt4 = findViewById(R.id.cTxt4);
+        final TextView cTxt5 = findViewById(R.id.cTxt5);
+        final TextView cTxt6 = findViewById(R.id.cTxt6);
+        final TextView cTxt7 = findViewById(R.id.cTxt7);
+        final TextView m1 = findViewById(R.id.m1);
+        final TextView m2 = findViewById(R.id.m2);
+        final TextView m3 = findViewById(R.id.m3);
+        final TextView m4 = findViewById(R.id.m4);
+        final TextView m5 = findViewById(R.id.m5);
+        final TextView m6 = findViewById(R.id.m6);
+        final TextView m7 = findViewById(R.id.m7);
+        final TextView[] Nvws = {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
 
         u1 = new User(choice, Nvws);
         Rst(Nvws);
@@ -83,13 +84,13 @@ public class MainActivity extends AppCompatActivity{
         else{
             pHVw.setText("--");
             solutionVol.setText("--");
-            cTxtx.setText("--");
+            cTxtX.setText("--");
             AcidBaseSw.setEnabled(false);
             TitTxt.setEnabled(false);
             VolTitTxt.setEnabled(false);
             TitBtn.setEnabled(false);
-            for(int i = 0; i < rBtnz.getChildCount(); i++){
-                rBtnz.getChildAt(i).setEnabled(false);
+            for(int i = 0; i < rBtnGrp.getChildCount(); i++){
+                rBtnGrp.getChildAt(i).setEnabled(false);
             }
         }
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 dialog = new BottomSheetDialog(MainActivity.this);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Add a component");
+                dialog.setTitle(R.string.Add);
                 dialog.show();
                 final Button ManBtn = dialog.findViewById(R.id.ManBtn);
                 final Button AutoBtn = dialog.findViewById(R.id.AutoBtn);
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity{
                     VTxt.setText(String.format(Locale.US, "%.2f", u1.V));
                 } else if (choice == 0) AutoBtn.setEnabled(false);
                 SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekj
+                AcidBaseSwInp.setEnabled(false);
+                if (u1.Slot() != 0) u1.Valid[3] = 1;
 
                 ManBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,6 +131,8 @@ public class MainActivity extends AppCompatActivity{
                         u1.ion = "A";
                         u1.ent = true;
                         nTxt.setEnabled(true);
+                        AcidBaseSwInp.setEnabled(true);
+                        AutoBtn.setEnabled(false);
                         nTxt.setText("");
                         if (!VTxt.getText().toString().matches("")) u1.Valid[3] = 1;
                     }
@@ -139,6 +144,8 @@ public class MainActivity extends AppCompatActivity{
                         for (EditText el: ETs) el.setVisibility(View.VISIBLE);
                         SaveBtn.setVisibility(View.VISIBLE);
                         nTxt.setEnabled(false);
+                        ManBtn.setEnabled(false);
+                        // privremeno
                         AcidBaseSwInp.setChecked(!u1.acid);
                         KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[1])));
                         nTxt.setText(String.format(Locale.US, "%s", u1.n));
@@ -161,21 +168,21 @@ public class MainActivity extends AppCompatActivity{
                             SaveBtn.setEnabled(false);
                             pHVw.setText("--");
                             solutionVol.setText("--");
-                            cTxtx.setText("--");
+                            cTxtX.setText("--");
                             Rst(Nvws);
                             AcidBaseSwInp.setEnabled(false);
                             TitTxt.setEnabled(false);
                             VolTitTxt.setEnabled(false);
                             TitBtn.setEnabled(false);
-                            for(int i = 0; i < rBtnz.getChildCount(); i++){
-                                rBtnz.getChildAt(i).setEnabled(false);
+                            for(int i = 0; i < rBtnGrp.getChildCount(); i++){
+                                rBtnGrp.getChildAt(i).setEnabled(false);
                             }
 
                             if (u1.Slot() == 0){
                                 if (!u1.ent) {
                                     u1.V = V;
                                     u1 = new User(n, cu, cn, u1);
-                                } else u1 = new User(n, cu, cn, V, "Mjau", new int[] {0,0,0,0});
+                                } else u1 = new User(n, cu, cn, V, "Mjau", new int[]{0, 0, 0, 0});
                             } else{
                                 if  (u1.ent) u1 = new User(n, cu, cn, u1.V, "Mjau", u1.Entered);
                                 else u1 = new User(n, cu, cn, u1);
@@ -197,21 +204,21 @@ public class MainActivity extends AppCompatActivity{
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
-                                u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())]);
+                                u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                                s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
+                                s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = -1;
                                 u1.FillSlot(u1.Slot());
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
                                 TitBtn.setEnabled(true);
-                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                for(int i = 0; i < rBtnGrp.getChildCount(); i++){
                                     try{
-                                        System.out.println(s1.GetComps()[i].n);
-                                        rBtnz.getChildAt(i).setEnabled(true);
+                                        String.valueOf(s1.GetComps()[i].n);
+                                        rBtnGrp.getChildAt(i).setEnabled(true);
                                     } catch(Exception e){
-                                        rBtnz.getChildAt(i).setEnabled(false);
+                                        rBtnGrp.getChildAt(i).setEnabled(false);
                                     }
                                 }
                                 dialog.dismiss();
@@ -263,21 +270,21 @@ public class MainActivity extends AppCompatActivity{
 
                                 p1 = new Poly(s1.GetDic());
                                 Rst(Nvws);
-                                u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())]);
+                                u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())]);
                                 pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                                s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
+                                s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
                                 u1.itt = -1;
                                 u1.FillSlot(u1.Slot());
                                 AcidBaseSw.setEnabled(true);
                                 TitTxt.setEnabled(true);
                                 VolTitTxt.setEnabled(true);
                                 TitBtn.setEnabled(true);
-                                for(int i = 0; i < rBtnz.getChildCount(); i++){
+                                for(int i = 0; i < rBtnGrp.getChildCount(); i++){
                                     try{
-                                        System.out.println(s1.GetComps()[i].n);
-                                        rBtnz.getChildAt(i).setEnabled(true);
+                                        String.valueOf(s1.GetComps()[i].n);
+                                        rBtnGrp.getChildAt(i).setEnabled(true);
                                     } catch(Exception e){
-                                        rBtnz.getChildAt(i).setEnabled(false);
+                                        rBtnGrp.getChildAt(i).setEnabled(false);
                                     }
                                 }
                                 dialog.dismiss();
@@ -289,7 +296,7 @@ public class MainActivity extends AppCompatActivity{
                             try{
                                 KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u1.K[u1.itt])));
                             }catch(Exception e){
-                                System.out.println("An error occurred at loading a constant");
+                                // couldn't load a constant
                             }
                         } else KTxt.setText("");
                         if (u1.itt >= u1.n) NextBtn.setText(R.string.Go);
@@ -359,7 +366,9 @@ public class MainActivity extends AppCompatActivity{
                         if (cuTxt.getText().toString().matches("") && cuTxt.getText().toString().matches(".")){
                             SaveBtn.setEnabled(false);
                             u1.Valid[3] = 0;
-                        } else u1.Valid[3] = 1;
+                        } else{
+                            u1.Valid[3] = 1;
+                        }
                         if (u1.AllInputsValid()) SaveBtn.setEnabled(true);
                     }
                     @Override
@@ -370,11 +379,10 @@ public class MainActivity extends AppCompatActivity{
                 cnTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            System.out.println("nextkeyboard");
+                        if (actionId == EditorInfo.IME_ACTION_NEXT) {
                             if (u1.Slot() != 0){
-                                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                                InputMethodManager inputManager = (InputMethodManager) MainActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                                inputManager.hideSoftInputFromWindow(cuTxt.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                             } else{
                                 VTxt.requestFocus();
                             }
@@ -397,10 +405,10 @@ public class MainActivity extends AppCompatActivity{
                         out[i] = Double.parseDouble(ETs[i].getText().toString());
                         if (i == 0){
                             if (out[i] == 0.0) {
-                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed"); //potvrditi?; toast
+                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!"); //potvrditi?; toast
                             }
                             if (out[i] > 6 || out[i] < 0) { // math limit;
-                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>");
+                                ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>!");
                                 ETs[0].setText("");
                                 return(new double[0]);
                             }
@@ -412,13 +420,13 @@ public class MainActivity extends AppCompatActivity{
                             }
                         } else{
                             if (out[i] > 100) {
-                                ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("Concentrated solutions tend to differ from mathematical model.");
+                                ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("Concentrated solutions tend to differ from the mathematical model!");
                                 ETs[i].setText("");
                                 return(new double[0]);
                             }
                         }
                     } catch (Exception e) {
-                        ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("An error occurred.");
+                        ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("An error occurred!");
                         ETs[i].setText("");
                         return(new double[0]);
                     }
@@ -434,36 +442,39 @@ public class MainActivity extends AppCompatActivity{
                     ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
-                    if (Math.abs(s1.l * Float.parseFloat(VolTitTxt.getText().toString()))/(Float.parseFloat(VolTitTxt.getText().toString()) + s1.V) > 50) {
-                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high!");
+                    if (Math.abs(s1.l) > 50) {
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too concentrated!");
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high volume!");
                     } else {
-                        s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
-                        p1 = new Poly(s1.GetDic());
-                        pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                        u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())]);
-                        s1.GetComps()[RButt(rBtnz.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high volume!");
+                        else{
+                            s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
+                            p1 = new Poly(s1.GetDic());
+                            pHVw.setText(s1.MainFunction(p1, u1.Texts));
+                            u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())]);
+                            s1.GetComps()[RButt(rBtnGrp.getCheckedRadioButtonId())].PrintConcentrations(Nvws);
+                        }
                     }
                 } catch(Exception e) {
                     if (TitTxt.getText().toString().matches(".") || (TitTxt.getText().toString().matches(""))){
-                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Invalid input.");
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
                     if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
-                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input.");
+                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
                 }
             }
         });
 
-        rBtnz.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rBtnGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                int id = rBtnz.getCheckedRadioButtonId();
+                int id = rBtnGrp.getCheckedRadioButtonId();
                 try {
                     Rst(Nvws);
                     u1.PrepareOutputs(Nvws, s1.GetComps()[RButt(id)]);
                     s1.GetComps()[RButt(id)].PrintConcentrations(Nvws);
                 } catch (Exception e){
-                    System.out.println("rButts error");
                     rBtn0.setChecked(true);
                 }
             }
