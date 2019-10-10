@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -38,8 +37,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final RelativeLayout mainLayout = findViewById(R.id.activity_main);
-        setContentView(mainLayout);
+        setContentView(R.layout.activity_main);
         dialog = new BottomSheetDialog(this);
         final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
         final FloatingActionButton fab = findViewById(R.id.fab);

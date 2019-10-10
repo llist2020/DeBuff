@@ -26,7 +26,6 @@ class Poly {
 
     // reviews the offered polynomial root (H+ concentration)
     private boolean Check(double h, @NonNull Solution s) {
-        System.out.println("Checking the offered root.");
         if (h<0){
             // negative concentration - impossible
             return(false);
