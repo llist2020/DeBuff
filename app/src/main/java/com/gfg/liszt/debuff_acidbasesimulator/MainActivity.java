@@ -2,6 +2,7 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog = new BottomSheetDialog(MainActivity.this);
+                /*dialog = new BottomSheetDialog(MainActivity.this);
                 dialog.setContentView(R.layout.dialog);
                 dialog.setTitle(R.string.Add);
                 dialog.show();
@@ -429,7 +430,9 @@ public class MainActivity extends AppCompatActivity{
                         return(new double[0]);
                     }
                 }
-                return(out);
+                return(out);*/
+                Intent intent = new Intent(MainActivity.this, addSolutionActivity.class);
+                startActivity(intent);
             }
         });
 
