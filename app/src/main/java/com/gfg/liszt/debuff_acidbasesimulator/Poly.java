@@ -2,12 +2,15 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 
 /**
  * @author L. List
  */
-class Poly {
+class Poly implements Serializable {
     double[] p;
 
     Poly(double[] poo){
@@ -32,10 +35,11 @@ class Poly {
         }
         boolean mcons = true;
         double outa = 0, outb = 0;
-        Component[] comps = s.GetComps();
+        List<Component> comps = s.GetComps();
 
-        for (Component el: comps) {
+        for (int j = 0; j<s.Entered.size(); j++) {
             try {
+                Component el = comps.get(j);
                 double[] c = new double[el.n+1];
                 double out = 0;
                 if (el.acid) {
@@ -72,6 +76,7 @@ class Poly {
                     }
                 }
 
+
                 // calculates overall concentration
                 for (double CurrC: c) {
                     out += CurrC;
@@ -100,7 +105,7 @@ class Poly {
             System.out.println(el);
         }
 
-        double x = s.cu*s.n+1, cache = x;
+        double x = s.cu*s.n+1, cache = x*2;
         final double dx = 6;
         // in case the lower border value is a root
         if (Check(dx, s)) {
@@ -108,9 +113,9 @@ class Poly {
         }
 
         // generating the derived polynomial P_der = d(p(x))/d(x)
-        double[] der = new double [this.p.length-1];
+        double[] der = new double [p.length-1];
         for (int i = 0; i<der.length; i++){
-            der[i] = this.p[i+1];
+            der[i] = p[i+1];
             der[i] *= i+1;
         }
         Poly P_der = new Poly(der);
@@ -118,10 +123,11 @@ class Poly {
         // implementing the Newton's method
         x -= Cal(x)/P_der.Cal(x);
         while (true){
+
             x -= Cal(x)/P_der.Cal(x);
+
             if ((Math.abs(x-cache)<Math.pow(10, Math.log(Math.abs(x))/2.3-dx))||(x==cache)){
                 if (Check(x, s)){
-                    System.out.println(x);
                     // the root is stored at x now and is to be returned
                     return(x);
                 } else{

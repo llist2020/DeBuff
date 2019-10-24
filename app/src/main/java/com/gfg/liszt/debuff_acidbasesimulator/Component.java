@@ -1,6 +1,8 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.graphics.Typeface;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
@@ -16,7 +18,7 @@ import java.text.DecimalFormat;
  * @author L. List
  */
 
-public class Component extends Solution{
+public class Component extends Solution implements Parcelable {
     boolean acid;
     int n;
     double[] K;
@@ -31,7 +33,7 @@ public class Component extends Solution{
         cu = u.cu;
         cn = 0;
         try{
-            cn = u.cn+s.GetComps()[0].cn;
+            cn = u.cn+s.GetComps().get(0).cn;
         } catch (Exception e){
             cn = u.cn;
         }
@@ -85,5 +87,51 @@ public class Component extends Solution{
         }
         Texts[21].setText(out);
         Texts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));
+    }
+
+    // 99.9% of the time you can just ignore this
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // write your object's data to the passed-in Parcel
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(acid ? 1 : 0);
+        out.writeInt(n);
+        out.writeDoubleArray(K);
+        out.writeDouble(V);
+        out.writeDouble(cu);
+        out.writeDouble(cn);
+        out.writeDoubleArray(Concentrations);
+        out.writeDoubleArray(up);
+        out.writeDoubleArray(down);
+        out.writeString(ion);
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<Component> CREATOR = new Parcelable.Creator<Component>() {
+        public Component createFromParcel(Parcel in) {
+            return new Component(in);
+        }
+
+        public Component[] newArray(int size) {
+            return new Component[size];
+        }
+    };
+
+    // constructor that takes a Parcel and gives you an object populated with it's values
+    private Component(Parcel in) {
+        acid = in.readInt() == 1;
+        n = in.readInt();
+        K = in.createDoubleArray();
+        V = in.readDouble();
+        cu = in.readDouble();
+        cn = in.readDouble();
+        Concentrations = in.createDoubleArray();
+        up = in.createDoubleArray();
+        down = in.createDoubleArray();
+        ion = in.readString();
     }
 }

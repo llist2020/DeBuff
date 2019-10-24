@@ -12,33 +12,34 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 
 /**
  * @author L. List
  */
 
-class User {
-    TextView[] Texts;
+class User implements  Serializable {
+    transient TextView[] Texts;
     double cu, cn;
     int n, itt;
-    double[] K;
-    boolean ent, acid;
+    transient double[] K;
+    transient boolean ent, acid;
     String a;
     String ion;
     double V = 10;
-    int[] Valid = new int[] {0, 0, 0, 0};
-    int[] Entered = new int[] {0, 0, 0, 0};
+    transient int[] Valid;
 
-
-    User(int number, double OvC, double CatC, double Vol, String IonName, int[] inputs){
+    User(int number, double OvC, double CatC, double Vol, String IonName){
+        System.out.println("u-constr1");
         n = number;
         cu = OvC;
         cn = CatC;
         K = new double[n+1];
         K[0] = 1;
         V = Vol;
-        Entered = inputs;
+        ResetValids();
 
         // PRIVREMENO
         ent = true;
@@ -48,6 +49,7 @@ class User {
         SetAcid(true);
     }
     User(int in, double icu, double icn, User u1){
+        System.out.println("u-constr2");
         cu = icu;
         cn = icn;
         n = in;
@@ -56,20 +58,21 @@ class User {
         K[0] = 1;
         V = u1.V;
         itt = u1.itt;
-        Entered = u1.Entered;
+        ResetValids();
         ent = u1.ent;
         if (ent) ion = "A";
         else ion = u1.ion;
-        SetAcid(true);
+        SetAcid(u1.acid);
     }
-    User (int a, TextView[] Nvws){
+    User (int a){
+        System.out.println("u-constr3");
         ion = "A";
         SetAcid(true);
-        ent = true;
+        ent = false;
         switch(a){
             case 0:
                 K = new double[] {1};
-                ent = false;
+                ent = true;
                 break;
             case 1:
                 n = 1;
@@ -178,9 +181,8 @@ class User {
                 ion = "EDTA";
                 break;
         }
-        ent = !ent;
-        Texts = Nvws;
         itt=0;
+        ResetValids();
     }
 
     // setting the type of the Component which's data is being collected
@@ -195,25 +197,14 @@ class User {
         }
     }
 
-    // inputs entering another slot
-    int Slot(){
-        int k = Entered.length;
-        for (int i=0; i<Entered.length; i++){
-            if (Entered[i] == 0){
-                k = i;
-                break;
-            }
-        }
-        return(k);
-    }
-    void FillSlot(int i){
-        if (Math.abs(i)<Entered.length) Entered[i] = 1;
-    }
-
     // a simple function used at data collection
     boolean AllInputsValid(){
         for (int el: Valid) if (el == 0) return (false);
         return(true);
+    }
+
+    private void ResetValids(){
+         Valid = new int[] {0, 0, 0, 0};
     }
 
     // defines species' tags and displaying the right number of fields

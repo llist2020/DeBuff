@@ -6,7 +6,7 @@
     android:background="#edf0f2"
     android:gravity="center"
 
-    tools:context=".chooseActivity">
+    tools:context=".ChooseActivity">
 
     <ScrollView
         android:layout_width="match_parent"
