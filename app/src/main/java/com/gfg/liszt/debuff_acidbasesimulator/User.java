@@ -12,27 +12,25 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 
-import java.io.Serializable;
-
 import androidx.annotation.NonNull;
 
 /**
  * @author L. List
  */
 
-class User implements  Serializable {
-    transient TextView[] Texts;
+class User {
+    TextView[] Texts;
     double cu, cn;
     int n, itt;
-    transient double[] K;
-    transient boolean ent, acid;
+    double[] K;
+    boolean ent, acid;
     String a;
     String ion;
     double V = 10;
-    transient int[] Valid;
+    int[] Valid;
+    int slot;
 
-    User(int number, double OvC, double CatC, double Vol, String IonName){
-        System.out.println("u-constr1");
+    User(int number, double OvC, double CatC, double Vol, String IonName, int Slot){
         n = number;
         cu = OvC;
         cn = CatC;
@@ -47,9 +45,9 @@ class User implements  Serializable {
         if (ent) ion = "A";
         else ion = IonName;
         SetAcid(true);
+        slot = Slot;
     }
     User(int in, double icu, double icn, User u1){
-        System.out.println("u-constr2");
         cu = icu;
         cn = icn;
         n = in;
@@ -63,9 +61,9 @@ class User implements  Serializable {
         if (ent) ion = "A";
         else ion = u1.ion;
         SetAcid(u1.acid);
+        slot = u1.slot;
     }
-    User (int a){
-        System.out.println("u-constr3");
+    User (int a, int Slot){
         ion = "A";
         SetAcid(true);
         ent = false;
@@ -182,6 +180,7 @@ class User implements  Serializable {
                 break;
         }
         itt=0;
+        slot = Slot;
         ResetValids();
     }
 

@@ -35,8 +35,8 @@ public class Solution implements Parcelable {
     }
     Solution(@NotNull User u, boolean sw){
     comps = new ArrayList<>();
-    comps.add(0, new Component(u, this));
-    FillSlot(0);
+    comps.add(new Component(u, this));
+    FillSlot(u.slot);
     cu = u.cu;
     cn = u.cn;
     n = u.n;
@@ -49,12 +49,18 @@ public class Solution implements Parcelable {
         u.SetAcid(!sw);
     }
     comps.get(0).ion = u.ion;
-    // privremeno nula
 }
 
-    void AddComp(@NotNull User u, boolean sw, int ind){
-        if(FillSlot(ind)){
-            comps.add(ind, new Component(u, this));
+    void AddComp(@NotNull User u, boolean sw){
+        if (FillSlot(u.slot)){
+            int ind;
+            try{
+                comps.add(new Component(u, this));
+                ind = comps.size()-1;
+            } catch(Exception e){
+                comps.set(u.slot, new Component(u, this));
+                ind = u.slot;
+            }
             h += u.cu*u.n+1;
             n += u.n;
             cu += u.cu;
@@ -74,7 +80,12 @@ public class Solution implements Parcelable {
     }
 
     // inputs entering another slot
-    int Slot(){ return(Entered.size()); }
+    int Slot(){
+        if (Entered.size()==0) return (0);
+        else{
+            for (int i = 1; i<4; i++) if (!Entered.contains(i)) return(i);
+        }
+    }
     private boolean FillSlot(int i){
         if (Math.abs(i)<4){
             Entered.add(i);

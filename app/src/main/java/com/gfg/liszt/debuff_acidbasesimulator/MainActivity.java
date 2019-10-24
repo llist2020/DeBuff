@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity{
         final TextView m6 = findViewById(R.id.m6);
         final TextView m7 = findViewById(R.id.m7);
         Nvws = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
-        u1 = new User(0);
+        u1 = new User(0, 0);
         u1.Texts = Nvws;
         s1 = new Solution();
 
@@ -97,11 +97,6 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
                 intent.putExtra("Solution", s1);
-                /*if (!u1.ent) {
-                    System.out.println("proslo");
-                    //intent.putExtra("com.gfg.liszt.debuff_acidbasesimulator.User", u1);
-                    intent.putExtra("Solution", s1);
-                }*/
                 startActivityForResult(intent, REQUEST_CODE_1);
             }
         });
@@ -112,6 +107,7 @@ public class MainActivity extends AppCompatActivity{
                 try{
                     ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
+                    int id = rBtnGrp.getCheckedRadioButtonId();
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too concentrated!");
@@ -122,8 +118,8 @@ public class MainActivity extends AppCompatActivity{
                             s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
                             pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                            u1.PrepareOutputs(Nvws, s1.GetComps().get(RButt(rBtnGrp.getCheckedRadioButtonId())));
-                            s1.GetComps().get(RButt(rBtnGrp.getCheckedRadioButtonId())).PrintConcentrations(Nvws);
+                            u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws);
                         }
                     }
                 } catch(Exception e) {
@@ -143,8 +139,8 @@ public class MainActivity extends AppCompatActivity{
                 int id = rBtnGrp.getCheckedRadioButtonId();
                 try {
                     Rst(Nvws);
-                    u1.PrepareOutputs(Nvws, s1.GetComps().get(RButt(id)));
-                    s1.GetComps().get(RButt(id)).PrintConcentrations(Nvws);
+                    u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                    s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws);
                 } catch (Exception e){
                     rBtn0.setChecked(true);
                 }
@@ -167,25 +163,29 @@ public class MainActivity extends AppCompatActivity{
                 if(resultCode == RESULT_OK) {
                     System.out.println("Resumed");
                     s1 = dataIntent.getParcelableExtra("Solution");
-                    System.out.println("mjau");
+                    System.out.println("Entered indexes");
                     for (int el: s1.Entered) System.out.println(el);
                     p1 = new Poly(s1.GetDic());
                     AcidBaseSw.setEnabled(true);
                     TitTxt.setEnabled(true);
                     VolTitTxt.setEnabled(true);
                     TitBtn.setEnabled(true);
-                    for (int i = 0; i < rBtnGrp.getChildCount(); i++) {
+                    for (int i = rBtnGrp.getChildCount()-1; i > -1; i--) {
                         try {
-                            String.valueOf(s1.GetComps().get(i).n);
-                            rBtnGrp.getChildAt(s1.Entered.get(i)).setEnabled(true);
+                            if (s1.Entered.contains(i)){
+                                rBtnGrp.clearCheck();
+                                rBtnGrp.getChildAt(i).setEnabled(true);
+                                rBtnGrp.check(rBtnGrp.getChildAt(i).getId());
+                            } else rBtnGrp.getChildAt(i).setEnabled(false);
+                            //String.valueOf(s1.GetComps().get(s1.Entered.get(i)).n);
                         } catch (Exception e) {
                             rBtnGrp.getChildAt(i).setEnabled(false);
                         }
                     }
                     Rst(Nvws);
-                    u1.PrepareOutputs(Nvws, s1.GetComps().get(RButt(rBtnGrp.getCheckedRadioButtonId())));
+                    u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))));
                     pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                    s1.GetComps().get(RButt(rBtnGrp.getCheckedRadioButtonId())).PrintConcentrations(Nvws);
+                    s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))).PrintConcentrations(Nvws);
                     // String messageReturn = dataIntent.getStringExtra("message_return");
                 }
                 break;

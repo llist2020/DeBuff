@@ -77,9 +77,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/Auto"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintEnd_toStartOf="@id/button15"
         app:layout_constraintStart_toEndOf="@+id/ManBtn"
         app:layout_constraintTop_toBottomOf="@id/textView13" />
+
+    <Button
+        android:id="@+id/button15"
+        style="@android:style/Widget.Holo.Light.Button.Small"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Slot"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/AutoBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -184,7 +195,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/Save"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/til4" />
 
     <!--android:visibility="gone" /-->

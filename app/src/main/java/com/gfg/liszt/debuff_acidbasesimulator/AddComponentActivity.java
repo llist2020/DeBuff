@@ -1,5 +1,7 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AddComponentActivity extends AppCompatActivity {
     private Solution s1;
     private User u2;
+    AlertDialog dialogA;
+    int checkedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class AddComponentActivity extends AppCompatActivity {
         final Button AutoBtn = findViewById(R.id.AutoBtn);
         final Button SaveBtn = findViewById(R.id.SaveBtn);
         final Button NextBtn =  findViewById(R.id.NextBtn);
+        final Button SlotBtn = findViewById(R.id.button15);
         final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
         final EditText nTxt =  findViewById(R.id.nTxt);
         final EditText cuTxt =  findViewById(R.id.cuTxt);
@@ -41,10 +46,10 @@ public class AddComponentActivity extends AppCompatActivity {
         final TextInputLayout KTxtIL = findViewById(R.id.KTxtIL);
         final EditText KTxt = findViewById(R.id.KTxt);
         final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
-        u2 = new User(0);
 
         try{
             s1 = getIntent().getParcelableExtra("Solution");
+            u2 = new User(0, s1.Slot());
             if (s1.Slot() != 0) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
@@ -120,9 +125,9 @@ public class AddComponentActivity extends AppCompatActivity {
                         if (!u2.ent) {
                             u2.V = V;
                             u2 = new User(n, cu, cn, u2);
-                        } else u2 = new User(n, cu, cn, V, "Mjau");
+                        } else u2 = new User(n, cu, cn, V, "Mjau", u2.slot);
                     } else {
-                        if (u2.ent) u2 = new User(n, cu, cn, u2.V, "Mjau");
+                        if (u2.ent) u2 = new User(n, cu, cn, u2.V, "Mjau", u2.slot);
                         else u2 = new User(n, cu, cn, u2);
                     }
                     u2.SetAcid(!AcidBaseSwInp.isChecked());
@@ -140,7 +145,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     } else {
                         if (s1.Slot() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
                         else if (s1.Slot() < 4)
-                            s1.AddComp(u2, AcidBaseSwInp.isChecked(), s1.Slot()); // VAMO KOD ZA OVERWRITANJE
+                            s1.AddComp(u2, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                         u2.itt = -1;
 
@@ -187,7 +192,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     if (u2.itt == u2.n) {
                         if (s1.Slot() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
                         else if (s1.Slot() < 4)
-                            s1.AddComp(u2, AcidBaseSwInp.isChecked(), s1.Slot()); // VAMO KOD ZA OVERWRITANJE
+                            s1.AddComp(u2, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
 
                         u2.itt = -1;
                         Intent intent = new Intent();
@@ -314,6 +319,67 @@ public class AddComponentActivity extends AppCompatActivity {
                 return false;
             }
         });*/
+
+        SlotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // setup the alert builder
+                AlertDialog.Builder builderA = new AlertDialog.Builder(AddComponentActivity.this);
+                builderA.setTitle("Choose a slot to write on");
+
+                // add a radio button list
+                String[] slots = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
+                checkedItem = 0; // Slot 1
+                builderA.setSingleChoiceItems(slots, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        checkedItem = which;
+                    }
+                });
+
+                // add OK and Cancel buttons
+                builderA.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try{
+                            if (s1.Entered.contains(checkedItem)){
+                                // setup the alert builder
+                                AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
+                                builder.setTitle("Notice");
+                                builder.setMessage("There is a component at the selected slot. Do you want to overwrite?");
+
+                                builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        System.out.println("B "+checkedItem);
+                                        u2.slot = checkedItem;
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialogA.show();
+                                    }
+                                });
+
+                                // create and show the alert dialog
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                            } else{
+                                u2.slot = checkedItem;
+                            }
+                        } catch(Exception e){
+                            // nekej ne valja
+                        }
+                    }
+                });
+                builderA.setNegativeButton("Cancel", null);
+
+                // create and show the alert dialog
+                dialogA = builderA.create();
+                dialogA.show();
+            }
+        });
     }
 
     @NonNull
