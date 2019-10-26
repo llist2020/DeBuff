@@ -3,6 +3,7 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("mainact");
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
         fab = findViewById(R.id.fab);
         TitTxt = findViewById(R.id.TitTxt);
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity{
         final TextView m7 = findViewById(R.id.m7);
         Nvws = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
         u1 = new User(0, 0);
-        u1.Texts = Nvws;
         s1 = new Solution();
 
         /*u1 = new User(choice, Nvws);
@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity{
                         else{
                             s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
-                            pHVw.setText(s1.MainFunction(p1, u1.Texts));
+                            pHVw.setText(s1.MainFunction(p1));
                             u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws);
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
                         }
                     }
                 } catch(Exception e) {
@@ -135,14 +135,14 @@ public class MainActivity extends AppCompatActivity{
 
         rBtnGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                int id = rBtnGrp.getCheckedRadioButtonId();
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 try {
                     Rst(Nvws);
                     u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                    s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws);
+                    s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
                 } catch (Exception e){
-                    rBtn0.setChecked(true);
+                    System.out.println(e.getMessage());
+                    ((RadioButton) rBtnGrp.getChildAt(s1.Entered.get(0))).setChecked(true);
                 }
             }
         });
@@ -173,19 +173,17 @@ public class MainActivity extends AppCompatActivity{
                     for (int i = rBtnGrp.getChildCount()-1; i > -1; i--) {
                         try {
                             if (s1.Entered.contains(i)){
-                                rBtnGrp.clearCheck();
                                 rBtnGrp.getChildAt(i).setEnabled(true);
                                 rBtnGrp.check(rBtnGrp.getChildAt(i).getId());
                             } else rBtnGrp.getChildAt(i).setEnabled(false);
-                            //String.valueOf(s1.GetComps().get(s1.Entered.get(i)).n);
                         } catch (Exception e) {
                             rBtnGrp.getChildAt(i).setEnabled(false);
                         }
                     }
                     Rst(Nvws);
                     u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))));
-                    pHVw.setText(s1.MainFunction(p1, u1.Texts));
-                    s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))).PrintConcentrations(Nvws);
+                    pHVw.setText(s1.MainFunction(p1));
+                    s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))).PrintConcentrations(Nvws, s1);
                     // String messageReturn = dataIntent.getStringExtra("message_return");
                 }
                 break;

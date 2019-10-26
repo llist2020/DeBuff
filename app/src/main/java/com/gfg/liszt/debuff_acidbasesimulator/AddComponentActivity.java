@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -26,13 +30,14 @@ public class AddComponentActivity extends AppCompatActivity {
     private Solution s1;
     private User u2;
     AlertDialog dialogA;
-    int checkedItem;
+    AlertDialog dialogB;
+    EditText[] ETs;
+    boolean allright;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_solution);
-        System.out.println("AddCompAct");
         final Button ManBtn = findViewById(R.id.ManBtn);
         final Button AutoBtn = findViewById(R.id.AutoBtn);
         final Button SaveBtn = findViewById(R.id.SaveBtn);
@@ -45,18 +50,18 @@ public class AddComponentActivity extends AppCompatActivity {
         final EditText VTxt = findViewById(R.id.VTxt);
         final TextInputLayout KTxtIL = findViewById(R.id.KTxtIL);
         final EditText KTxt = findViewById(R.id.KTxt);
-        final EditText[] ETs = {nTxt, cuTxt, cnTxt, VTxt};
+        ETs = new EditText[] {nTxt, cuTxt, cnTxt, VTxt};
 
         try{
             s1 = getIntent().getParcelableExtra("Solution");
             u2 = new User(0, s1.Slot());
-            if (s1.Slot() != 0) {
+            SlotBtn.setText("Slot "+(u2.slot+1));
+            if (s1.Entered.size() != 0) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
             }// else if (choice == 0) AutoBtn.setEnabled(false);
             SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
             AcidBaseSwInp.setEnabled(false);
-            if (s1.Slot() != 0) u2.Valid[3] = 1;
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -67,14 +72,13 @@ public class AddComponentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try{
-                    if (s1.Slot() != 0) {
+                    if (s1.Entered.size() != 0) {
                         VTxt.setEnabled(false);
                         VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
                     }// else if (choice == 0) AutoBtn.setEnabled(false);
                     SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
                     AcidBaseSwInp.setEnabled(false);
                 } catch (Exception e){
-                    System.out.println("eroor");
                     System.out.println(e.getMessage());
                 }
 
@@ -82,6 +86,7 @@ public class AddComponentActivity extends AppCompatActivity {
                 SaveBtn.setVisibility(View.VISIBLE);
                 u2.ion = "A";
                 u2.ent = true;
+                if (s1.Entered.size() != 0) u2.Valid[3] = 1;
                 nTxt.setEnabled(true);
                 AcidBaseSwInp.setEnabled(true);
                 AutoBtn.setEnabled(false);
@@ -93,16 +98,36 @@ public class AddComponentActivity extends AppCompatActivity {
         AutoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // KOD ZA OTVARANJE DIALOGA VAMO
-                for (EditText el : ETs) el.setVisibility(View.VISIBLE);
-                SaveBtn.setVisibility(View.VISIBLE);
-                nTxt.setEnabled(false);
-                ManBtn.setEnabled(false);
-                // privremeno
-                AcidBaseSwInp.setChecked(!u2.acid);
-                KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
-                nTxt.setText(String.format(Locale.US, "%s", u2.n));
-                u2.ent = false;
+                AlertDialog.Builder builderB = new AlertDialog.Builder(AddComponentActivity.this);
+                builderB.setTitle("Choose an acid");
+
+                String[] slots = {getResources().getString(R.string.hydrogen_chloride), getResources().getString(R.string.hydrogen_fluoride), getResources().getString(R.string.hydrogen_cyanide), getResources().getString(R.string.acetic_acid), getResources().getString(R.string.hydrogen_sulfide), getResources().getString(R.string.carbonic_acid), getResources().getString(R.string.sulfuric_acid), getResources().getString(R.string.oxalic_acid), getResources().getString(R.string.phosphoric_acid), getResources().getString(R.string.arsenic_acid), getResources().getString(R.string.boric_acid), getResources().getString(R.string.citric_acid), getResources().getString(R.string.edta)};
+                builderB.setItems(slots, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        u2 = new User(which+1, u2.slot);
+                        for (EditText el : ETs) el.setVisibility(View.VISIBLE);
+                        nTxt.setEnabled(false);
+                        ManBtn.setEnabled(false);
+                        // privremeno
+                        AcidBaseSwInp.setChecked(!u2.acid);
+                        KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
+                        nTxt.setText(String.format(Locale.US, "%s", u2.n));
+                        u2.ent = false;
+                        if (s1.Entered.size() != 0) u2.Valid[3] = 1;
+                    }
+                });
+
+                builderB.setNegativeButton("Switch to manual", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ManBtn.performClick();
+                    }
+                });
+
+                // create and show the alert dialog
+                dialogB = builderB.create();
+                dialogB.show();
             }
         });
 
@@ -121,7 +146,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     SaveBtn.setEnabled(false);
                     AcidBaseSwInp.setEnabled(false);
 
-                    if (s1.Slot() == 0) {
+                    if (s1.Entered.size() == 0) {
                         if (!u2.ent) {
                             u2.V = V;
                             u2 = new User(n, cu, cn, u2);
@@ -139,14 +164,12 @@ public class AddComponentActivity extends AppCompatActivity {
                     AutoBtn.setEnabled(false);
                     AcidBaseSwInp.setEnabled(false);
                     if (u2.n > 0) {
-                        KTxt.setVisibility(View.VISIBLE);
+                        KTxtIL.setVisibility(View.VISIBLE);
                         NextBtn.setVisibility(View.VISIBLE);
                         NextBtn.performClick();
                     } else {
-                        if (s1.Slot() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4)
-                            s1.AddComp(u2, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
-
+                        if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
+                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked());
                         u2.itt = -1;
 
                         Intent intent = new Intent();
@@ -157,12 +180,12 @@ public class AddComponentActivity extends AppCompatActivity {
                     }
                 } else {
                     for (EditText el : ETs) el.setEnabled(true);
-                    if (s1.Slot() != 0) {
+                    if (s1.Entered.size() != 0) {
                         VTxt.setEnabled(false);
                         VTxt.setText(String.format(Locale.US, "%.2f", u2.V));
                     }
                     SaveBtn.setEnabled(true);
-                    KTxt.setVisibility(View.GONE);
+                    KTxtIL.setVisibility(View.GONE);
                     NextBtn.setVisibility(View.GONE);
                 }
             }
@@ -190,9 +213,8 @@ public class AddComponentActivity extends AppCompatActivity {
                     }
 
                     if (u2.itt == u2.n) {
-                        if (s1.Slot() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4)
-                            s1.AddComp(u2, AcidBaseSwInp.isChecked()); // VAMO KOD ZA OVERWRITANJE
+                        if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
+                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked());
 
                         u2.itt = -1;
                         Intent intent = new Intent();
@@ -304,7 +326,7 @@ public class AddComponentActivity extends AppCompatActivity {
             }
         });
 
-        /*cnTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        cnTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -318,7 +340,7 @@ public class AddComponentActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });*/
+        });
 
         SlotBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,11 +351,10 @@ public class AddComponentActivity extends AppCompatActivity {
 
                 // add a radio button list
                 String[] slots = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
-                checkedItem = 0; // Slot 1
-                builderA.setSingleChoiceItems(slots, checkedItem, new DialogInterface.OnClickListener() {
+                builderA.setSingleChoiceItems(slots, u2.slot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        checkedItem = which;
+                        u2.slot = which;
                     }
                 });
 
@@ -342,7 +363,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try{
-                            if (s1.Entered.contains(checkedItem)){
+                            if (s1.Entered.contains(u2.slot)){
                                 // setup the alert builder
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
                                 builder.setTitle("Notice");
@@ -351,8 +372,7 @@ public class AddComponentActivity extends AppCompatActivity {
                                 builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        System.out.println("B "+checkedItem);
-                                        u2.slot = checkedItem;
+                                        SlotBtn.setText("Slot "+(u2.slot+1));
                                     }
                                 });
                                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -366,7 +386,7 @@ public class AddComponentActivity extends AppCompatActivity {
                                 AlertDialog alert = builder.create();
                                 alert.show();
                             } else{
-                                u2.slot = checkedItem;
+                                SlotBtn.setText("Slot "+(u2.slot+1));
                             }
                         } catch(Exception e){
                             // nekej ne valja
@@ -385,42 +405,59 @@ public class AddComponentActivity extends AppCompatActivity {
     @NonNull
     @Contract(" -> new")
     private double[] ValidateInputs() {
-        final EditText[] ETs = new EditText[]{findViewById(R.id.nTxt), findViewById(R.id.cuTxt), findViewById(R.id.cnTxt), findViewById(R.id.VTxt)};
         for (EditText el : ETs) ((TextInputLayout) (el.getParent()).getParent()).setError(null);
         double[] out = new double[4];
+        allright = true;
 
         for (int i = 0; i < 4; i++) {
             try {
                 out[i] = Double.parseDouble(ETs[i].getText().toString());
                 if (i == 0) {
                     if (out[i] == 0.0) {
-                        ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!"); //potvrditi?; toast
+                        ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!");
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
+                        builder.setTitle("Notice");
+                        builder.setMessage("No dissociation will be observed!");
+
+                        builder.setPositiveButton("Continue", null);
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                allright = false;
+                            }
+                        });
+
+                        // create and show the alert dialog
+                        AlertDialog alert = builder.create();
+                        alert.show();
                     }
                     if (out[i] > 6 || out[i] < 0) { // math limit;
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>!");
                         ETs[0].setText("");
-                        return (new double[0]);
+                        allright = false;
                     }
                 } else if (i == 3) {
                     if (out[3] > 2000) {
                         ((TextInputLayout) (ETs[3].getParent()).getParent()).setError("Do you really need more than 2L?");
                         ETs[3].setText("");
-                        return (new double[0]);
+                        allright = false;
                     }
                 } else {
                     if (out[i] > 100) {
                         ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("Concentrated solutions tend to differ from the mathematical model!");
                         ETs[i].setText("");
-                        return (new double[0]);
+                        allright = false;
                     }
                 }
             } catch (Exception e) {
                 ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("An error occurred!");
                 ETs[i].setText("");
-                return (new double[0]);
+                allright = false;
             }
         }
-        return (out);
+        if (allright) return (out);
+        else return (new double[0]);
     }
 
     @Override

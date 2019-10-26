@@ -44,11 +44,11 @@ class Poly implements Serializable {
                 double out = 0;
                 if (el.acid) {
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.cstsb(i, el) / (Math.pow(h, i));
+                        out += el.ConstantsB(i, el) / (Math.pow(h, i));
                     }
                 } else{
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.cstsb(i, el) * (Math.pow((h / el.kw), i));
+                        out += el.ConstantsB(i, el) * (Math.pow((h / el.kw), i));
                     }
                 }
 

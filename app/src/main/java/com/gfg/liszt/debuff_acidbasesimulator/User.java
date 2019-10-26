@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
  */
 
 class User {
-    TextView[] Texts;
     double cu, cn;
     int n, itt;
     double[] K;
@@ -38,12 +37,9 @@ class User {
         K[0] = 1;
         V = Vol;
         ResetValids();
-
-        // PRIVREMENO
         ent = true;
-
-        if (ent) ion = "A";
-        else ion = IonName;
+        ion = "A";
+        if (!IonName.matches("Mjau")) ion = IonName;
         SetAcid(true);
         slot = Slot;
     }
@@ -98,7 +94,7 @@ class User {
                 K = new double[n+1];
                 K[0] = 1;
                 K[1] = Math.pow(10, -4.756);
-                ion = "CH3COO";
+                ion = "AcO";
                 break;
             case 5:
                 n = 2;
@@ -217,7 +213,7 @@ class User {
         SpannableStringBuilder out;
         for (int j = 0; j<c.ion.length(); j++){
             try{
-                Integer.parseInt(String.valueOf(ion.charAt(j)));
+                Integer.parseInt(String.valueOf(c.ion.charAt(j)));
                 outIon.setSpan(new SubscriptSpan(), j, j+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 outIon.setSpan(new RelativeSizeSpan(0.8f), j, j+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             } catch(Exception e){
@@ -301,12 +297,11 @@ class User {
         return(out);
     }
     void PrepareOutputs(TextView[] t, @NonNull Component c){
-        Texts = t;
         for (int i=0; i<3*(c.n+1); i++){
-            Texts[i].setVisibility(View.VISIBLE);
+            t[i].setVisibility(View.VISIBLE);
         }
         for (int i=c.n; i>-1; i--){
-            Texts[(c.n-i)*3].setText(AssignConcentrations(i, c), TextView.BufferType.SPANNABLE);
+            t[(c.n-i)*3].setText(AssignConcentrations(i, c), TextView.BufferType.SPANNABLE);
         }
     }
 }

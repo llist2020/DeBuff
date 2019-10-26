@@ -31,12 +31,7 @@ public class Component extends Solution implements Parcelable {
     Component(@NotNull User u, @NotNull Solution s) {
         super();
         cu = u.cu;
-        cn = 0;
-        try{
-            cn = u.cn+s.GetComps().get(0).cn;
-        } catch (Exception e){
-            cn = u.cn;
-        }
+        cn = u.cn;
         n = u.n;
         K = u.K;
         V = u.V;
@@ -55,24 +50,20 @@ public class Component extends Solution implements Parcelable {
     // pulling the new Solution constitution
     void TitComp(double v, double l){
         cu = cu*V/(V+v);
-        try {
-            cn = (cn * V + l * v) / (V + v);
-        } catch(Exception e){
-            cn = cn * V/ (V + v);
-        }
+        cn = cn * V/ (V + v);
         V += v;
         System.out.println("Solution constitution updated successfully.");
     }
 
     // a function setting the viewable concentration values
-    void PrintConcentrations(TextView[] Texts){
+    void PrintConcentrations(TextView[] Texts, Solution solution){
         DecimalFormat format = new DecimalFormat("0.###E0");
         for (int i=n; i>-1; i--){
             Texts[(n-i)*3+1].setText(String.valueOf(format.format(Concentrations[n-i])));
         }
-        Texts[22].setText(String.valueOf(format.format(Math.abs(cn))));
+        Texts[22].setText(String.valueOf(format.format(Math.abs(solution.GetCn()))));
         SpannableStringBuilder out;
-        if(cn<0){
+        if(solution.GetCn()<0){
             out = new SpannableStringBuilder("c(X-) = ");
         } else{
             out = new SpannableStringBuilder("c(X+) = ");
@@ -122,7 +113,7 @@ public class Component extends Solution implements Parcelable {
     };
 
     // constructor that takes a Parcel and gives you an object populated with it's values
-    private Component(Parcel in) {
+    private Component(@NotNull Parcel in) {
         acid = in.readInt() == 1;
         n = in.readInt();
         K = in.createDoubleArray();

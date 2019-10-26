@@ -196,7 +196,8 @@
         android:text="@string/Save"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/til4" />
+        app:layout_constraintTop_toBottomOf="@+id/til4"
+        android:focusable="true"/>
 
     <!--android:visibility="gone" /-->
 
@@ -209,7 +210,8 @@
         app:layout_constraintEnd_toStartOf="@+id/NextBtn"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/SaveBtn">
+        app:layout_constraintTop_toBottomOf="@id/SaveBtn"
+        android:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/KTxt"
@@ -220,7 +222,6 @@
             android:inputType="numberDecimal|numberSigned"
             android:textAlignment="textEnd"
             android:textSize="16sp" />
-        <!--android:visibility="gone" /-->
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -233,6 +234,7 @@
         android:gravity="bottom"
         android:text="@string/Next"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/SaveBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/SaveBtn"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

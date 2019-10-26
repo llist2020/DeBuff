@@ -7,7 +7,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -52,14 +51,23 @@ public class Solution implements Parcelable {
 }
 
     void AddComp(@NotNull User u, boolean sw){
-        if (FillSlot(u.slot)){
-            int ind;
+        if (u.slot<4){
+            int ind = 0;
             try{
-                comps.add(new Component(u, this));
-                ind = comps.size()-1;
+                if (!Entered.contains(u.slot)){
+                    // adding a new component
+                    comps.add(new Component(u, this));
+                    ind = comps.size()-1;
+                    FillSlot(u.slot);
+                } else{
+                    // overwriting the component
+                    cn -= comps.get(Entered.indexOf(u.slot)).GetCn();
+                    comps.set(Entered.indexOf(u.slot), new Component(u, this));
+                    ind = Entered.indexOf(u.slot);
+                }
             } catch(Exception e){
-                comps.set(u.slot, new Component(u, this));
-                ind = u.slot;
+                // error
+                System.out.println(e.getMessage());
             }
             h += u.cu*u.n+1;
             n += u.n;
@@ -81,16 +89,11 @@ public class Solution implements Parcelable {
 
     // inputs entering another slot
     int Slot(){
-        if (Entered.size()==0) return (0);
-        else{
-            for (int i = 1; i<4; i++) if (!Entered.contains(i)) return(i);
-        }
+        for (int i = 0; i<4; i++) if (!Entered.contains(i)) return(i);
+        return(4);
     }
-    private boolean FillSlot(int i){
-        if (Math.abs(i)<4){
-            Entered.add(i);
-            return(true);
-        } else return(false);
+    private void FillSlot(int i){
+        Entered.add(i);
     }
 
     List<Component> GetComps(){
@@ -112,25 +115,28 @@ public class Solution implements Parcelable {
                 l = -Math.abs(l);
             }
         }
-        for (Component el: comps) {
+        for (Component C: comps) {
             try {
-                el.TitComp(v, l);
+                C.TitComp(v, l);
             } catch (Exception e) {
-                // there is no Component at this index
+                // component error
             }
         }
         try {
             cn = (cn * V + l * v) / (V + v);
         } catch(Exception e){
             cn = cn * V / (V + v);
+            System.out.println(e.getMessage());
         }
+        System.out.println("cn");
+        System.out.println(cn);
         V += v;
     }
 
     // functions used to manipulate the provided data and generate
     // the building blocks of the polynomial
     @Contract(pure = true)
-    private double cstsa(int i, @NonNull Component c){
+    private double ConstantsA(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<c.n-i+1; j++){
             out *= c.K[j];
@@ -138,7 +144,7 @@ public class Solution implements Parcelable {
         return(out);
     }
     @Contract(pure = true)
-    double cstsb(int i, @NonNull Component c){
+    double ConstantsB(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<(i+1); j++){
             out *= c.K[j];
@@ -146,50 +152,51 @@ public class Solution implements Parcelable {
         return(out);
     }
     @Contract(pure = true)
-    private double[] UpA(double co, @NonNull Component c){
+    private void SetUpA(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<c.n ; i++){
-            out[i+1] += co * (c.n-i) * (cstsa(i, c));
+            out[i+1] += c.cu * (c.n-i) * (ConstantsA(i, c));
         }
-        return(out);
+        c.up = out;
     }
     @Contract(pure = true)
-    private double[] DownA(double co, @NonNull Component c){
+    private void SetDownA(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[c.n-i] += co * (cstsb(i, c));
+            out[c.n-i] += ConstantsB(i, c);
         }
-        return(out);
+        c.down = out;
     }
-    private double[] UpB(double co, @NonNull Component c){
+    private void SetUpB(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=1; i<(c.n+1); i++){
-            out[i+1] -= i * co * (cstsb(i, c)) / Math.pow(c.kw, i);
+            out[i+1] -= i * c.cu * (ConstantsB(i, c)) / Math.pow(c.kw, i);
         }
-        return(out);
+        c.up = out;
     }
-    private double[] DownB(double co, @NonNull Component c){
+    private void SetDownB(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
         }
         for (int i=0; i<(c.n+1); i++){
-            out[i] += co * (cstsb(i, c)) / Math.pow(c.kw, i);
+            out[i] += ConstantsB(i, c) / Math.pow(c.kw, i);
         }
-        return(out);
+        c.down = out;
     }
 
-    SpannableStringBuilder MainFunction(@NonNull Poly p, TextView[] t){
+    SpannableStringBuilder MainFunction(@NonNull Poly p){
         System.out.println("Initializing simulation.");
+
         // setting up the polynomial, beginning with the permanent part
         dic = new double[n+3];
         for (int i = 0; i<dic.length; i++) dic[i] = 0;
@@ -198,27 +205,27 @@ public class Solution implements Parcelable {
         dic[2] = -1;
 
         // setting up the fractions describing the Components
-        for (int i = 0; i<4; i++) {
+        for (Component C: comps) {
             try {
-                if (comps.get(i).acid){
-                    comps.get(i).up = UpA(comps.get(i).cu, comps.get(i));
-                    comps.get(i).down = DownA(1, comps.get(i));
+                if (C.acid){
+                    SetUpA(C);
+                    SetDownA(C);
                 } else{
-                    comps.get(i).up = UpB(comps.get(i).cu, comps.get(i));
-                    comps.get(i).down = DownB(1, comps.get(i));
+                    SetUpB(C);
+                    SetDownB(C);
                 }
                 System.out.println("Component application successful.");
             } catch(Exception e){
-                // there is no Component at this index
+                // component error
             }
         }
 
         // getting rid of the denominators
-        for (int i = 0; i<4; i++) {
+        for (Component C: comps) {
             try {
-                dic = p.Multiply(dic, comps.get(i).down);
+                dic = p.Multiply(dic, C.down);
             }catch(Exception e){
-                // there is no Component at this index
+                // component error
             }
         }
         for (int i = 0; i<4; i++){
@@ -234,9 +241,9 @@ public class Solution implements Parcelable {
         }
 
         // generating the final polynomial
-        for (int i = 0; i<4; i++){
+        for (Component C: comps){
             try{
-                dic = p.Add(comps.get(i).up, dic);
+                dic = p.Add(C.up, dic);
             }catch(Exception e){
                 // there is no Component at this index
             }
@@ -254,7 +261,6 @@ public class Solution implements Parcelable {
 
         // finally, the pH is returned
         // the concentrations of the Component at index 0 are to be displayed
-        comps.get(0).PrintConcentrations(t);
         SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
         out.setSpan(new StyleSpan(Typeface.BOLD), 0, out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
@@ -291,7 +297,7 @@ public class Solution implements Parcelable {
     };
 
     // constructor that takes a Parcel and gives you an object populated with it's values
-    private Solution(Parcel in) {
+    private Solution(@NotNull Parcel in) {
         comps = new ArrayList<>();
         in.readList(comps, Component.class.getClassLoader());
         dic = in.createDoubleArray();
