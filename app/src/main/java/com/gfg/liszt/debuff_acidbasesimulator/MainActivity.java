@@ -136,13 +136,20 @@ public class MainActivity extends AppCompatActivity{
         rBtnGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
-                try {
-                    Rst(Nvws);
-                    u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                    s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
-                } catch (Exception e){
-                    System.out.println(e.getMessage());
-                    ((RadioButton) rBtnGrp.getChildAt(s1.Entered.get(0))).setChecked(true);
+                if (id!=-1){
+                    try {
+                        System.out.println("checked changed");
+                        if (s1.Entered.contains(RButt(id))){
+                            System.out.println(s1.Entered.indexOf(RButt(id)));
+                            Rst(Nvws);
+                            u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
+                        }
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                        rBtnGrp.clearCheck();
+                        ((RadioButton) rBtnGrp.getChildAt(s1.Entered.get(0))).setChecked(true);
+                    }
                 }
             }
         });
@@ -170,20 +177,22 @@ public class MainActivity extends AppCompatActivity{
                     TitTxt.setEnabled(true);
                     VolTitTxt.setEnabled(true);
                     TitBtn.setEnabled(true);
+                    int ch = -1;
                     for (int i = rBtnGrp.getChildCount()-1; i > -1; i--) {
                         try {
-                            if (s1.Entered.contains(i)){
+                            if (s1.Entered.contains(i)) {
+                                ch = i;
                                 rBtnGrp.getChildAt(i).setEnabled(true);
-                                rBtnGrp.check(rBtnGrp.getChildAt(i).getId());
                             } else rBtnGrp.getChildAt(i).setEnabled(false);
                         } catch (Exception e) {
                             rBtnGrp.getChildAt(i).setEnabled(false);
                         }
                     }
                     Rst(Nvws);
-                    u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))));
                     pHVw.setText(s1.MainFunction(p1));
-                    s1.GetComps().get(s1.Entered.indexOf(RButt(rBtnGrp.getCheckedRadioButtonId()))).PrintConcentrations(Nvws, s1);
+                    rBtnGrp.clearCheck();
+                    rBtnGrp.getChildAt(ch).setEnabled(true);
+                    rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
                     // String messageReturn = dataIntent.getStringExtra("message_return");
                 }
                 break;
