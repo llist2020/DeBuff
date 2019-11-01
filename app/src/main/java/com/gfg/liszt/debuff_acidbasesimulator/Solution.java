@@ -34,7 +34,7 @@ public class Solution implements Parcelable {
     }
     Solution(@NotNull User u, boolean sw){
     comps = new ArrayList<>();
-    comps.add(new Component(u, this));
+    comps.add(new Component(u));
     FillSlot(u.slot);
     cu = u.cu;
     cn = u.cn;
@@ -56,13 +56,13 @@ public class Solution implements Parcelable {
             try{
                 if (!Entered.contains(u.slot)){
                     // adding a new component
-                    comps.add(new Component(u, this));
+                    comps.add(new Component(u));
                     ind = comps.size()-1;
                     FillSlot(u.slot);
                 } else{
                     // overwriting the component
                     cn -= comps.get(Entered.indexOf(u.slot)).GetCn();
-                    comps.set(Entered.indexOf(u.slot), new Component(u, this));
+                    comps.set(Entered.indexOf(u.slot), new Component(u));
                     ind = Entered.indexOf(u.slot);
                 }
             } catch(Exception e){
@@ -117,7 +117,7 @@ public class Solution implements Parcelable {
         }
         for (Component C: comps) {
             try {
-                C.TitComp(v, l);
+                C.TitComp(v);
             } catch (Exception e) {
                 // component error
             }
@@ -128,9 +128,8 @@ public class Solution implements Parcelable {
             cn = cn * V / (V + v);
             System.out.println(e.getMessage());
         }
-        System.out.println("cn");
-        System.out.println(cn);
         V += v;
+        System.out.println("Solution constitution updated successfully.");
     }
 
     // functions used to manipulate the provided data and generate
@@ -260,19 +259,18 @@ public class Solution implements Parcelable {
         }
 
         // finally, the pH is returned
-        // the concentrations of the Component at index 0 are to be displayed
+        // the concentrations of the Component at comps index 0 are to be displayed
         SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
         out.setSpan(new StyleSpan(Typeface.BOLD), 0, out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
     }
 
-    // 99.9% of the time you can just ignore this
+    // The code for passing Solution objects' data between activities
     @Override
     public int describeContents() {
         return 0;
     }
 
-    // write your object's data to the passed-in Parcel
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeList(comps);
@@ -285,7 +283,6 @@ public class Solution implements Parcelable {
         out.writeList(Entered);
     }
 
-    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
     public static final Parcelable.Creator<Solution> CREATOR = new Parcelable.Creator<Solution>() {
         public Solution createFromParcel(Parcel in) {
             return new Solution(in);
@@ -296,7 +293,6 @@ public class Solution implements Parcelable {
         }
     };
 
-    // constructor that takes a Parcel and gives you an object populated with it's values
     private Solution(@NotNull Parcel in) {
         comps = new ArrayList<>();
         in.readList(comps, Component.class.getClassLoader());

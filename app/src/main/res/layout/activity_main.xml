@@ -318,7 +318,7 @@
                             android:id="@+id/cTxtX"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
+                            android:text="@string/WorkingOn"
                             android:textColor="#7f7f7f"
                             android:textSize="24sp"
                             android:visibility="visible"

@@ -50,5 +50,6 @@
     <string name="ChooseD">2-PROTIC</string>
     <string name="ChooseE">3-PROTIC</string>
     <string name="ChooseF">4-PROTIC</string>
+    <string name="slot">Slot</string>
     <!-- <string name=""></string> !-->
 </resources>

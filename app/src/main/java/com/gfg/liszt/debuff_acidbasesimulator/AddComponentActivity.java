@@ -32,12 +32,12 @@ public class AddComponentActivity extends AppCompatActivity {
     AlertDialog dialogA;
     AlertDialog dialogB;
     EditText[] ETs;
-    boolean allright;
+    boolean AllRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_solution);
+        setContentView(R.layout.activity_add_component);
         final Button ManBtn = findViewById(R.id.ManBtn);
         final Button AutoBtn = findViewById(R.id.AutoBtn);
         final Button SaveBtn = findViewById(R.id.SaveBtn);
@@ -55,7 +55,7 @@ public class AddComponentActivity extends AppCompatActivity {
         try{
             s1 = getIntent().getParcelableExtra("Solution");
             u2 = new User(0, s1.Slot());
-            SlotBtn.setText("Slot "+(u2.slot+1));
+            SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
             if (s1.Entered.size() != 0) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
@@ -298,7 +298,6 @@ public class AddComponentActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -330,7 +329,7 @@ public class AddComponentActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if (s1.Slot() != 0) {
+                    if (s1.Entered.size() != 0) {
                         InputMethodManager inputManager = (InputMethodManager) AddComponentActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow(cuTxt.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     } else {
@@ -372,7 +371,7 @@ public class AddComponentActivity extends AppCompatActivity {
                                 builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        SlotBtn.setText("Slot "+(u2.slot+1));
+                                        SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
                                     }
                                 });
                                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -386,7 +385,7 @@ public class AddComponentActivity extends AppCompatActivity {
                                 AlertDialog alert = builder.create();
                                 alert.show();
                             } else{
-                                SlotBtn.setText("Slot "+(u2.slot+1));
+                                SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
                             }
                         } catch(Exception e){
                             // nekej ne valja
@@ -407,7 +406,7 @@ public class AddComponentActivity extends AppCompatActivity {
     private double[] ValidateInputs() {
         for (EditText el : ETs) ((TextInputLayout) (el.getParent()).getParent()).setError(null);
         double[] out = new double[4];
-        allright = true;
+        AllRight = true;
 
         for (int i = 0; i < 4; i++) {
             try {
@@ -424,7 +423,7 @@ public class AddComponentActivity extends AppCompatActivity {
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                allright = false;
+                                AllRight = false;
                             }
                         });
 
@@ -435,28 +434,28 @@ public class AddComponentActivity extends AppCompatActivity {
                     if (out[i] > 6 || out[i] < 0) { // math limit;
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>!");
                         ETs[0].setText("");
-                        allright = false;
+                        AllRight = false;
                     }
                 } else if (i == 3) {
                     if (out[3] > 2000) {
                         ((TextInputLayout) (ETs[3].getParent()).getParent()).setError("Do you really need more than 2L?");
                         ETs[3].setText("");
-                        allright = false;
+                        AllRight = false;
                     }
                 } else {
                     if (out[i] > 100) {
                         ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("Concentrated solutions tend to differ from the mathematical model!");
                         ETs[i].setText("");
-                        allright = false;
+                        AllRight = false;
                     }
                 }
             } catch (Exception e) {
                 ((TextInputLayout) (ETs[i].getParent()).getParent()).setError("An error occurred!");
                 ETs[i].setText("");
-                allright = false;
+                AllRight = false;
             }
         }
-        if (allright) return (out);
+        if (AllRight) return (out);
         else return (new double[0]);
     }
 

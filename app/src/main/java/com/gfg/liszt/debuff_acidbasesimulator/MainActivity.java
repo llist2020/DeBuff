@@ -1,7 +1,10 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,7 +17,10 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity{
@@ -27,7 +33,6 @@ public class MainActivity extends AppCompatActivity{
     private EditText VolTitTxt;
     private Button TitBtn;
     private RadioGroup rBtnGrp;
-    private RadioButton rBtn0;
     private Switch AcidBaseSw;
     private TextView pHVw;
     private final static int REQUEST_CODE_1 = 1;
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity{
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
-        rBtn0 = findViewById(R.id.rBtn0);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
         final TextView cVwx = findViewById(R.id.cVwx);
@@ -110,16 +114,16 @@ public class MainActivity extends AppCompatActivity{
                     int id = rBtnGrp.getCheckedRadioButtonId();
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l) > 50) {
-                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too concentrated!");
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high volume!");
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
                     } else {
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Too high volume!");
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
                         else{
                             s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
                             pHVw.setText(s1.MainFunction(p1));
                             u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1.GetCn());
                         }
                     }
                 } catch(Exception e) {
@@ -138,12 +142,10 @@ public class MainActivity extends AppCompatActivity{
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 if (id!=-1){
                     try {
-                        System.out.println("checked changed");
                         if (s1.Entered.contains(RButt(id))){
-                            System.out.println(s1.Entered.indexOf(RButt(id)));
                             Rst(Nvws);
                             u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1);
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1.GetCn());
                         }
                     } catch (Exception e){
                         System.out.println(e.getMessage());
@@ -163,40 +165,77 @@ public class MainActivity extends AppCompatActivity{
 
         // The returned result data is identified by requestCode.
         // The request code is specified in startActivityForResult(intent, REQUEST_CODE_1); method.
-        switch (requestCode)
-        {
-            // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
-            case REQUEST_CODE_1:
-                if(resultCode == RESULT_OK) {
-                    System.out.println("Resumed");
-                    s1 = dataIntent.getParcelableExtra("Solution");
-                    System.out.println("Entered indexes");
-                    for (int el: s1.Entered) System.out.println(el);
-                    p1 = new Poly(s1.GetDic());
-                    AcidBaseSw.setEnabled(true);
-                    TitTxt.setEnabled(true);
-                    VolTitTxt.setEnabled(true);
-                    TitBtn.setEnabled(true);
-                    int ch = -1;
-                    for (int i = rBtnGrp.getChildCount()-1; i > -1; i--) {
-                        try {
-                            if (s1.Entered.contains(i)) {
-                                ch = i;
-                                rBtnGrp.getChildAt(i).setEnabled(true);
-                            } else rBtnGrp.getChildAt(i).setEnabled(false);
-                        } catch (Exception e) {
-                            rBtnGrp.getChildAt(i).setEnabled(false);
-                        }
-                    }
-                    Rst(Nvws);
-                    pHVw.setText(s1.MainFunction(p1));
-                    rBtnGrp.clearCheck();
-                    rBtnGrp.getChildAt(ch).setEnabled(true);
-                    rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
-                    // String messageReturn = dataIntent.getStringExtra("message_return");
+        // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
+        // String messageReturn = dataIntent.getStringExtra("message_return");
+
+        if (requestCode == REQUEST_CODE_1) {
+            System.out.println("Resumed");
+            if (resultCode == RESULT_OK) {
+                s1 = dataIntent.getParcelableExtra("Solution");
+                System.out.println("Entered indexes");
+                for (int el : s1.Entered) System.out.println(el);
+                p1 = new Poly(s1.GetDic());
+            }
+            AcidBaseSw.setEnabled(true);
+            TitTxt.setEnabled(true);
+            VolTitTxt.setEnabled(true);
+            TitBtn.setEnabled(true);
+            int ch;
+            try{
+                ch = s1.Entered.get(s1.Entered.size()-1);
+            } catch(Exception e){
+                ch = -1;
+            }
+            for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
+                try {
+                    if (s1.Entered.contains(i)) {
+                        rBtnGrp.getChildAt(i).setEnabled(true);
+                    } else rBtnGrp.getChildAt(i).setEnabled(false);
+                } catch (Exception e) {
+                    rBtnGrp.getChildAt(i).setEnabled(false);
                 }
-                break;
+            }
+            if (resultCode == RESULT_OK) {
+                Rst(Nvws);
+                pHVw.setText(s1.MainFunction(p1));
+            }
+            rBtnGrp.clearCheck();
+            if (ch != -1) {
+                rBtnGrp.getChildAt(ch).setEnabled(true);
+                rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
+            }
         }
+    }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_info, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.infomenubtn) {
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this, 0);
+            // SLIKU PRIMJERA INPUTA ??
+            builder.setTitle("Welcome to DeBuff v69!")
+                    .setMessage("DeBuff is an acid/base solution simulator.\n" +
+                            "You can choose an acid and study its properties or you can manually input acid or base data (which is available on the Internet).\n" +
+                            "Afterwards, addition of another solution component (tap the plus button), along with titration simulation is available.\n" +
+                            "*Some logical bounds have been set, so you will be warned if you try to cross them. For more info google 'ionic strength'.\n\n" +
+                            "Developed by Luka List\nDesign by Tin Prvčić\n© 2019")
+                    .setNeutralButton("Dismiss", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void Rst(@NonNull TextView[] txts){

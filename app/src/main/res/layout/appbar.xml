@@ -14,7 +14,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:layout_marginStart="20dp"/>
+        android:layout_toEndOf="@id/back_btn"/>
 
 
     <Button
@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text=""
         android:drawableBottom="@drawable/abc_menu_hardkey_panel_mtrl_mult"
         android:textColor="@android:color/white"
         android:layout_marginStart="5dp"
