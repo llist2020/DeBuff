@@ -600,6 +600,13 @@
                         android:layout_marginBottom="4dp"
                         android:background="#e1e1e1" />
 
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/chart1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="200dp">
+                        <!-- android:visibility="gone" /-->
+                    </com.github.mikephil.charting.charts.BarChart>
+
                     <RadioGroup
                         android:id="@+id/rBtnGrp"
                         android:layout_width="match_parent"

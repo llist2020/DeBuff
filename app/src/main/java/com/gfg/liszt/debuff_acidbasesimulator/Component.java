@@ -40,6 +40,9 @@ public class Component extends Solution implements Parcelable {
     public double GetCn(){
         return(cn);
     }
+    double[] GetConcentrations(){
+        return(Concentrations);
+    }
     void SetCn(double c) {
         cn = c;
     }

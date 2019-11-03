@@ -14,27 +14,36 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity{
-    public transient User u1;
+public class MainActivity extends AppCompatActivity {
+    public User u1;
     private Poly p1;
     private Solution s1;
-    private TextView[] Nvws;
-    private FloatingActionButton fab;
+    private TextView[] ConcentrationTextViews;
     private EditText TitTxt;
     private EditText VolTitTxt;
     private Button TitBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
     private TextView pHVw;
+    private BarChart barChart;
+    private String[] species;
     private final static int REQUEST_CODE_1 = 1;
 
     @Override
@@ -42,8 +51,6 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        //final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
-        fab = findViewById(R.id.fab);
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
@@ -74,12 +81,14 @@ public class MainActivity extends AppCompatActivity{
         final TextView m5 = findViewById(R.id.m5);
         final TextView m6 = findViewById(R.id.m6);
         final TextView m7 = findViewById(R.id.m7);
-        Nvws = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
+        ConcentrationTextViews = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
         u1 = new User(0, 0);
         s1 = new Solution();
 
-        /*u1 = new User(choice, Nvws);
-        Rst(Nvws);
+        barChart = findViewById(R.id.chart1);
+
+        /*u1 = new User(choice, ConcentrationTextViews);
+        Rst(ConcentrationTextViews);
         if(choice==0){
             u1.ent = true;
         }
@@ -96,7 +105,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }*/
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
@@ -122,8 +131,22 @@ public class MainActivity extends AppCompatActivity{
                             s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
                             pHVw.setText(s1.MainFunction(p1));
-                            u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1.GetCn());
+                            u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
+
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff comps");
+                            barDataSet.setBarBorderWidth(0.9f);
+                            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                            BarData barData = new BarData(barDataSet);
+                            XAxis xAxis = barChart.getXAxis();
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
+                            xAxis.setGranularity(1f);
+                            xAxis.setValueFormatter(formatter);
+                            barChart.setData(barData);
+                            barChart.setFitBars(true);
+                            barChart.animateY(500);
+                            barChart.invalidate();
                         }
                     }
                 } catch(Exception e) {
@@ -143,9 +166,23 @@ public class MainActivity extends AppCompatActivity{
                 if (id!=-1){
                     try {
                         if (s1.Entered.contains(RButt(id))){
-                            Rst(Nvws);
-                            u1.PrepareOutputs(Nvws, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(Nvws, s1.GetCn());
+                            Rst(ConcentrationTextViews);
+                            u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
+
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff comps");
+                            barDataSet.setBarBorderWidth(0.9f);
+                            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                            BarData barData = new BarData(barDataSet);
+                            XAxis xAxis = barChart.getXAxis();
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
+                            xAxis.setGranularity(1f);
+                            xAxis.setValueFormatter(formatter);
+                            barChart.setData(barData);
+                            barChart.setFitBars(true);
+                            barChart.animateY(500);
+                            barChart.invalidate();
                         }
                     } catch (Exception e){
                         System.out.println(e.getMessage());
@@ -155,7 +192,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-        fab.performClick();
+        findViewById(R.id.fab).performClick();
     }
 
     // This method is invoked when target activity return result data back.
@@ -196,7 +233,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
             if (resultCode == RESULT_OK) {
-                Rst(Nvws);
+                Rst(ConcentrationTextViews);
                 pHVw.setText(s1.MainFunction(p1));
             }
             rBtnGrp.clearCheck();
@@ -238,15 +275,15 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public void Rst(@NonNull TextView[] txts){
-        for (TextView el : txts) {
+    public void Rst(@NonNull TextView[] Texts){
+        for (TextView el : Texts) {
             el.setVisibility(View.GONE); // Remove the yet-to-calculate values
         }
-        for (int i=1; i<(txts.length)-3; i+=3){
-            txts[i].setText("0");
+        for (int i=1; i<(Texts.length)-3; i+=3){
+            Texts[i].setText("0");
         }
-        for (int i=(txts.length)-3; i<txts.length; i++){
-            txts[i].setVisibility(View.VISIBLE);
+        for (int i=(Texts.length)-3; i<Texts.length; i++){
+            Texts[i].setVisibility(View.VISIBLE);
         }
     }
     public int RButt(int id) {
@@ -262,5 +299,20 @@ public class MainActivity extends AppCompatActivity{
             default:
                 return(5555);
         }
+    }
+    private ArrayList getData(Component Comp){
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        species = new String[Comp.n+1];
+        for (int i = 0; i<Comp.n+1; i++){
+            entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
+            species[i] = "sp"+i;
+        }
+        /*entries.add(new BarEntry(0f, 30f));
+        entries.add(new BarEntry(1f, 80f));
+        entries.add(new BarEntry(2f, 60f));
+        entries.add(new BarEntry(3f, 50f));
+        entries.add(new BarEntry(4f, 70f));
+        entries.add(new BarEntry(5f, 60f));*/
+        return entries;
     }
 }
