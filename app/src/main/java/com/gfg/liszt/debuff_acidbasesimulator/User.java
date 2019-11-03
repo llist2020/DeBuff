@@ -205,10 +205,10 @@ class User {
     // defines species' tags and displaying the right number of fields
     // needed for the concentration printout
     @Contract(pure = true)
-    private SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c){
+    SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c, boolean span){
         int sups = 0, supe = 0;
         int subs = 0, sube = 0;
-        String s = "c(";
+        String s = "";
         SpannableStringBuilder outIon = new SpannableStringBuilder(c.ion);
         SpannableStringBuilder out;
         for (int j = 0; j<c.ion.length(); j++){
@@ -221,7 +221,7 @@ class User {
             }
         }
         if (c.acid) {
-            if (i < c.n && c.n != 1) s += "[";
+            if (!span && (c.n != 1) && (i < c.n)) s += "[";
             if (i != 0) {
                 s += "H";
                 if (i != 1) {
@@ -234,7 +234,7 @@ class User {
             s = "";
             out.append(outIon);
             if (i != c.n) {
-                if (c.n != 1) s += "]";
+                if (!span && (c.n != 1)) s += "]";
                 sups = s.length() + out.length();
                 if (i != c.n - 1) {
                     s += (c.n - i);
@@ -244,7 +244,7 @@ class User {
             }
         } else{
             if (i != 0 && i != c.n){
-                s += "[";
+                if (!span) s += "[";
                 out = new SpannableStringBuilder(s);
                 s = "";
                 out.append(outIon);
@@ -254,7 +254,7 @@ class User {
                     sube = s.length() + out.length();
                 }
                 else s += "(OH)";
-                s += "]";
+                if (!span) s += "]";
                 sups = s.length() + out.length();
                 if (i != c.n - 1) s += (c.n-i);
                 s += "+";
@@ -279,7 +279,6 @@ class User {
                 }
             }
         }
-        s += ") = ";
         out.append(s);
         try{
             out.setSpan(new SuperscriptSpan(), sups, supe, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -293,7 +292,6 @@ class User {
         } catch(Exception e){
             // no subs
         }
-        out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
     }
     void PrepareOutputs(TextView[] t, @NonNull Component c){
@@ -301,7 +299,11 @@ class User {
             t[i].setVisibility(View.VISIBLE);
         }
         for (int i=c.n; i>-1; i--){
-            t[(c.n-i)*3].setText(AssignConcentrations(i, c), TextView.BufferType.SPANNABLE);
+            SpannableStringBuilder out = new SpannableStringBuilder("c(");
+            out.append(AssignConcentrations(i, c, true));
+            out.append(") = ");
+            out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            t[(c.n-i)*3].setText(out, TextView.BufferType.SPANNABLE);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -15,6 +17,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -39,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText TitTxt;
     private EditText VolTitTxt;
     private Button TitBtn;
+    private Button GraphBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
     private TextView pHVw;
     private BarChart barChart;
     private String[] species;
+    private ArrayList<BarEntry> entries;
+    private ArrayList<BarEntry> oldentries;
+    private Dialog GraphShow;
     private final static int REQUEST_CODE_1 = 1;
 
     @Override
@@ -54,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
+        GraphBtn = findViewById(R.id.GraphBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
+        barChart = findViewById(R.id.ConcentrationChart);
         final TextView cVwx = findViewById(R.id.cVwx);
         final TextView cTxtX = findViewById(R.id.cTxtX);
         final TextView solutionVol = findViewById(R.id.solutionVol);
@@ -84,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
         ConcentrationTextViews = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
         u1 = new User(0, 0);
         s1 = new Solution();
-
-        barChart = findViewById(R.id.chart1);
 
         /*u1 = new User(choice, ConcentrationTextViews);
         Rst(ConcentrationTextViews);
@@ -124,9 +131,13 @@ public class MainActivity extends AppCompatActivity {
                     s1.l = Float.parseFloat(TitTxt.getText().toString());
                     if (Math.abs(s1.l) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        }
                     } else {
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000) ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        }
                         else{
                             s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
@@ -134,19 +145,9 @@ public class MainActivity extends AppCompatActivity {
                             u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
                             s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
 
-                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff comps");
-                            barDataSet.setBarBorderWidth(0.9f);
-                            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                            BarData barData = new BarData(barDataSet);
-                            XAxis xAxis = barChart.getXAxis();
-                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                            IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
-                            xAxis.setGranularity(1f);
-                            xAxis.setValueFormatter(formatter);
-                            barChart.setData(barData);
-                            barChart.setFitBars(true);
-                            barChart.animateY(500);
-                            barChart.invalidate();
+                            getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            AnimateDataSetChanged changer = new AnimateDataSetChanged(600, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
+                            changer.run();
                         }
                     }
                 } catch(Exception e) {
@@ -157,6 +158,86 @@ public class MainActivity extends AppCompatActivity {
                         ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
                 }
+            }
+        });
+
+        GraphBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GraphShow = new Dialog(MainActivity.this);
+                GraphShow.setContentView(R.layout.dialog);
+                GraphShow.setTitle("Titration diagram");
+                GraphShow.show();
+
+                LineChart TitChart = findViewById(R.id.TitChart);
+                //TitChart.setPinchZoom(true);
+
+                /*ArrayList<Entry> values = new ArrayList<>();
+                values.add(new Entry(1, 50));
+                values.add(new Entry(2, 100));
+
+                LineDataSet set1;
+                if (TitChart.getData() != null &&
+                        TitChart.getData().getDataSetCount() > 0) {
+                    set1 = (LineDataSet) TitChart.getData().getDataSetByIndex(0);
+                    set1.setValues(values);
+                    TitChart.getData().notifyDataChanged();
+                    TitChart.notifyDataSetChanged();
+                } else {
+                    set1 = new LineDataSet(values, "Sample Data");
+                    set1.setDrawIcons(false);
+                    set1.setColor(Color.DKGRAY);
+                    set1.setCircleColor(Color.DKGRAY);
+                    set1.setLineWidth(1f);
+                    set1.setCircleRadius(3f);
+                    set1.setDrawCircleHole(false);
+                    set1.setValueTextSize(9f);
+                    set1.setDrawFilled(true);
+                    set1.setFormLineWidth(1f);
+                    set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+                    set1.setFormSize(15.f);
+                    set1.setFillColor(Color.DKGRAY);
+
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set1);
+                    LineData data = new LineData(dataSets);
+                    TitChart.setData(data);
+                }
+                if (TitChart.getData() != null &&
+                        TitChart.getData().getDataSetCount() > 0) {
+                    set1 = (LineDataSet) TitChart.getData().getDataSetByIndex(0);
+                    set1.setValues(values);
+                    TitChart.getData().notifyDataChanged();
+                    TitChart.notifyDataSetChanged();
+                } else {
+                    set1 = new LineDataSet(values, "Sample Data");
+                    set1.setDrawIcons(false);
+                    set1.setColor(Color.DKGRAY);
+                    set1.setCircleColor(Color.DKGRAY);
+                    set1.setLineWidth(1f);
+                    set1.setCircleRadius(3f);
+                    set1.setDrawCircleHole(false);
+                    set1.setValueTextSize(9f);
+                    set1.setDrawFilled(true);
+                    set1.setFormLineWidth(1f);
+                    set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+                    set1.setFormSize(15.f);
+                    set1.setFillColor(Color.DKGRAY);
+
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set1);
+                    LineData data = new LineData(dataSets);
+                    TitChart.setData(data);
+                }*/
+
+                //dataSet.setDrawCubic(true);
+
+                findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GraphShow.dismiss();
+                    }
+                });
             }
         });
 
@@ -300,19 +381,14 @@ public class MainActivity extends AppCompatActivity {
                 return(5555);
         }
     }
-    private ArrayList getData(Component Comp){
-        ArrayList<BarEntry> entries = new ArrayList<>();
+    private ArrayList getData(@NotNull Component Comp){
+        oldentries = entries;
+        entries = new ArrayList<>();
         species = new String[Comp.n+1];
         for (int i = 0; i<Comp.n+1; i++){
             entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
-            species[i] = "sp"+i;
+            species[i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
         }
-        /*entries.add(new BarEntry(0f, 30f));
-        entries.add(new BarEntry(1f, 80f));
-        entries.add(new BarEntry(2f, 60f));
-        entries.add(new BarEntry(3f, 50f));
-        entries.add(new BarEntry(4f, 70f));
-        entries.add(new BarEntry(5f, 60f));*/
         return entries;
     }
 }
