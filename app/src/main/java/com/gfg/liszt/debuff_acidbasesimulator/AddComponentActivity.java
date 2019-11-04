@@ -441,6 +441,10 @@ public class AddComponentActivity extends AppCompatActivity {
                         ((TextInputLayout) (ETs[3].getParent()).getParent()).setError("Do you really need more than 2L?");
                         ETs[3].setText("");
                         AllRight = false;
+                    } else if (out[3] == 0){
+                        ((TextInputLayout) (ETs[3].getParent()).getParent()).setError("You can't add a solution with no volume!");
+                        ETs[3].setText("");
+                        AllRight = false;
                     }
                 } else {
                     if (out[i] > 100) {
