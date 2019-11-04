@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.BarEntry;
 
@@ -65,13 +64,14 @@ public class AnimateDataSetChanged {
                 chart.getData().getDataSetByIndex(0).addEntry(e);
             }
             // chart.getXAxis().resetAxisMaximum();
-            chart.getXAxis().resetAxisMinimum();
-            chart.notifyDataSetChanged();
+            // chart.getXAxis().resetAxisMinimum();
+            // chart.notifyDataSetChanged();
             chart.refreshDrawableState();
             chart.invalidate();
-            if (chart instanceof BarLineChartBase){
+            /*if (chart instanceof BarLineChartBase){
                 ((BarLineChartBase)chart).setAutoScaleMinMaxEnabled(true);
-            }
+            }*/
+
             if (increment < 1f){
                 timerHandler.postDelayed(this, 1000/fps);
             }

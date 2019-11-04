@@ -8,6 +8,8 @@ import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.widget.Switch;
 
+import com.github.mikephil.charting.data.Entry;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -130,6 +132,41 @@ public class Solution implements Parcelable {
         }
         V += v;
         System.out.println("Solution constitution updated successfully.");
+    }
+
+    ArrayList<Entry> GenerateTitrationGraphData(Switch s){
+        ArrayList<Entry> lineEntries = new ArrayList<>();
+        double cnCache = cn;
+        cn = 0;
+        Poly p2;
+        double v = V*GetEq()/l/40;
+        if (l != 0) {
+            if (s.isChecked()) {
+                l = Math.abs(l);
+            } else {
+                cn = GetEq();
+                l = -Math.abs(l);
+            }
+        }
+        // stavi oznaku di je cn, paralelno s y osi ,bil, a posle vrati na taj cn
+
+        for (int i = 1; i<51; i++){
+            Titrate(v, s);
+            p2 = new Poly(GetDic());
+            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)),
+                    Float.parseFloat(String.valueOf(MainFunction(p2)))));
+        }
+        Titrate(-50*v, s);
+        cn = cnCache;
+        return(lineEntries);
+    }
+
+    double GetEq(){
+        double fin = 0;
+        for (Component comp: comps){
+            fin += comp.n*comp.cu;
+        }
+        return(fin);
     }
 
     // functions used to manipulate the provided data and generate
@@ -261,7 +298,8 @@ public class Solution implements Parcelable {
         // finally, the pH is returned
         // the concentrations of the Component at comps index 0 are to be displayed
         SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
-        out.setSpan(new StyleSpan(Typeface.BOLD), 0, out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        out.setSpan(new StyleSpan(Typeface.BOLD), 0,
+                out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
     }
 

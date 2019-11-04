@@ -76,14 +76,14 @@ class Poly implements Serializable {
                     }
                 }
 
-
                 // calculates overall concentration
                 for (double CurrC: c) {
                     out += CurrC;
                 }
 
                 // the law of mass conservation
-                mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) || ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
+                mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) ||
+                        ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
 
                 if (mcons) el.SetConcentrations(c);
             } catch (Exception e) {
@@ -92,7 +92,8 @@ class Poly implements Serializable {
         }
 
         // the law of charge conservation
-        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) || ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d));
+        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) ||
+                ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d));
 
         return(mcons && chcons);
     }
@@ -126,7 +127,7 @@ class Poly implements Serializable {
 
             x -= Cal(x)/P_der.Cal(x);
 
-            if ((Math.abs(x-cache)<Math.pow(10, Math.log(Math.abs(x))/2.3-dx))||(x==cache)){
+            if ((Math.abs(x-cache) < Math.pow(10, Math.log(Math.abs(x)) / 2.3 - dx)) || (x==cache)){
                 if (Check(x, s)){
                     // the root is stored at x now and is to be returned
                     return(x);

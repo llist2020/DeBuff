@@ -3,6 +3,7 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,11 +20,15 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +38,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     public User u1;
@@ -42,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText TitTxt;
     private EditText VolTitTxt;
     private Button TitBtn;
-    private Button GraphBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
     private TextView pHVw;
@@ -61,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
-        GraphBtn = findViewById(R.id.GraphBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
@@ -93,24 +97,11 @@ public class MainActivity extends AppCompatActivity {
         ConcentrationTextViews = new TextView[] {cVw1, cTxt1, m1, cVw2, cTxt2, m2, cVw3, cTxt3, m3, cVw4, cTxt4, m4, cVw5, cTxt5, m5, cVw6, cTxt6, m6, cVw7, cTxt7, m7, cVwx, cTxtX, solutionVol};
         u1 = new User(0, 0);
         s1 = new Solution();
+        barChart.setScaleYEnabled(false);
+        barChart.getAxisLeft().mAxisMaximum = 1f;
+        barChart.getAxisLeft().mAxisMinimum = 0f;
+        barChart.getDescription().setText("Species percent composition diagram");
 
-        /*u1 = new User(choice, ConcentrationTextViews);
-        Rst(ConcentrationTextViews);
-        if(choice==0){
-            u1.ent = true;
-        }
-        else{
-            pHVw.setText("--");
-            solutionVol.setText("--");
-            cTxtX.setText("--");
-            AcidBaseSw.setEnabled(false);
-            TitTxt.setEnabled(false);
-            VolTitTxt.setEnabled(false);
-            TitBtn.setEnabled(false);
-            for(int i = 0; i < rBtnGrp.getChildCount(); i++){
-                rBtnGrp.getChildAt(i).setEnabled(false);
-            }
-        }*/
 
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
 
                             getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            AnimateDataSetChanged changer = new AnimateDataSetChanged(600, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
+                            AnimateDataSetChanged changer = new AnimateDataSetChanged(300, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
                             changer.run();
                         }
                     }
@@ -161,78 +152,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        GraphBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.GraphBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GraphShow = new Dialog(MainActivity.this);
+                GraphShow = new BottomSheetDialog(MainActivity.this);
+
+                s1.l = Float.parseFloat(TitTxt.getText().toString());
+                LineDataSet lineDataSet = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw), "pH");
+                lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+                lineDataSet.setHighlightEnabled(true);
+                lineDataSet.setLineWidth(2);
+                // lineDataSet.setColor(getColor("defaultBlue"));
+                lineDataSet.setDrawHighlightIndicators(true);
+                lineDataSet.setHighLightColor(Color.RED);
+                lineDataSet.setValueTextSize(12);
+                // lineDataSet.setValueTextColor(getColor("primaryDark"));
+                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                lineDataSet.setDrawFilled(true);
+                lineDataSet.setDrawValues(false);
+                lineDataSet.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.pale_green));
+                lineDataSet.setColor(ContextCompat.getColor(MainActivity.this, R.color.pale_green));
+                lineDataSet.setFillAlpha(50);
+                lineDataSet.setDrawCircles(false);
+
                 GraphShow.setContentView(R.layout.dialog);
                 GraphShow.setTitle("Titration diagram");
                 GraphShow.show();
 
-                LineChart TitChart = findViewById(R.id.TitChart);
-                //TitChart.setPinchZoom(true);
+                LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
 
-                /*ArrayList<Entry> values = new ArrayList<>();
-                values.add(new Entry(1, 50));
-                values.add(new Entry(2, 100));
+                LineData lineData = new LineData(lineDataSet);
 
-                LineDataSet set1;
-                if (TitChart.getData() != null &&
-                        TitChart.getData().getDataSetCount() > 0) {
-                    set1 = (LineDataSet) TitChart.getData().getDataSetByIndex(0);
-                    set1.setValues(values);
-                    TitChart.getData().notifyDataChanged();
-                    TitChart.notifyDataSetChanged();
-                } else {
-                    set1 = new LineDataSet(values, "Sample Data");
-                    set1.setDrawIcons(false);
-                    set1.setColor(Color.DKGRAY);
-                    set1.setCircleColor(Color.DKGRAY);
-                    set1.setLineWidth(1f);
-                    set1.setCircleRadius(3f);
-                    set1.setDrawCircleHole(false);
-                    set1.setValueTextSize(9f);
-                    set1.setDrawFilled(true);
-                    set1.setFormLineWidth(1f);
-                    set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-                    set1.setFormSize(15.f);
-                    set1.setFillColor(Color.DKGRAY);
+                TitChart.getDescription().setText("pH-V titration diagram");
+                TitChart.getDescription().setTextSize(12);
+                TitChart.setDrawMarkers(true);
+                // TitChart.setMarker(markerView(MainActivity.this));
+                // TitChart.getAxisLeft().addLimitLine(lowerLimitLine(2,"Lower Limit",2,12, getColor("defaultOrange"),getColor("defaultOrange")));
+                // TitChart.getAxisLeft().addLimitLine(upperLimitLine(5,"Upper Limit",2,12, getColor("defaultGreen"),getColor("defaultGreen")));
 
-                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                    dataSets.add(set1);
-                    LineData data = new LineData(dataSets);
-                    TitChart.setData(data);
-                }
-                if (TitChart.getData() != null &&
-                        TitChart.getData().getDataSetCount() > 0) {
-                    set1 = (LineDataSet) TitChart.getData().getDataSetByIndex(0);
-                    set1.setValues(values);
-                    TitChart.getData().notifyDataChanged();
-                    TitChart.notifyDataSetChanged();
-                } else {
-                    set1 = new LineDataSet(values, "Sample Data");
-                    set1.setDrawIcons(false);
-                    set1.setColor(Color.DKGRAY);
-                    set1.setCircleColor(Color.DKGRAY);
-                    set1.setLineWidth(1f);
-                    set1.setCircleRadius(3f);
-                    set1.setDrawCircleHole(false);
-                    set1.setValueTextSize(9f);
-                    set1.setDrawFilled(true);
-                    set1.setFormLineWidth(1f);
-                    set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-                    set1.setFormSize(15.f);
-                    set1.setFillColor(Color.DKGRAY);
+                TitChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+                TitChart.animateX(600);
+                TitChart.getXAxis().setGranularityEnabled(true);
+                TitChart.getXAxis().setGranularity(Float.parseFloat(String.valueOf(s1.GetEq()*s1.V/s1.l/4)));
+                TitChart.getXAxis().setLabelCount(5);
 
-                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                    dataSets.add(set1);
-                    LineData data = new LineData(dataSets);
-                    TitChart.setData(data);
-                }*/
+                TitChart.setData(lineData);
 
-                //dataSet.setDrawCubic(true);
-
-                findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
+                GraphShow.findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         GraphShow.dismiss();
@@ -251,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
                             s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
 
-                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff comps");
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff Component's species");
                             barDataSet.setBarBorderWidth(0.9f);
                             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                             BarData barData = new BarData(barDataSet);
