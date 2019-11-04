@@ -63,7 +63,7 @@ public class Component extends Solution implements Parcelable {
         for (int i=n; i>-1; i--){
             Texts[(n-i)*3+1].setText(String.valueOf(format.format(Concentrations[n-i])));
         }
-        Texts[22].setText(String.valueOf(format.format(Cn)));
+        Texts[22].setText(String.valueOf(format.format(Math.abs(Cn))));
         SpannableStringBuilder out;
         if (Cn<0){
             out = new SpannableStringBuilder("c(X-) = ");
