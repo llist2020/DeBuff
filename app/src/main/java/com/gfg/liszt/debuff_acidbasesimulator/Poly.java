@@ -99,12 +99,12 @@ class Poly implements Serializable {
     }
 
     // returns a legitimate root, implementing Newton's method with given initial x
-    double Solve(Solution s) {
-        System.out.println("Finding a legitimate root.");
-        System.out.println("poly:");
+    double Solve(@NotNull Solution s) {
+
+        /*System.out.println("poly:");
         for (double el: p){
             System.out.println(el);
-        }
+        }*/
 
         double x = s.cu*s.n+1, cache = x*2;
         final double dx = 6;

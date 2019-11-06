@@ -25,7 +25,7 @@ public class AnimateDataSetChanged {
     private List<BarEntry> newData;
     private Interpolator interpolator;
 
-    public AnimateDataSetChanged(int duration, Chart chart, List<BarEntry> oldData, List<BarEntry> newData){
+    AnimateDataSetChanged(int duration, Chart chart, List<BarEntry> oldData, List<BarEntry> newData){
         this.duration = duration;
         this.chart = chart;
         this.oldData = new ArrayList<>(oldData);
@@ -33,7 +33,7 @@ public class AnimateDataSetChanged {
         interpolator = new LinearInterpolator();
     }
 
-    public void setInterpolator(Interpolator interpolator){
+    void setInterpolator(Interpolator interpolator){
         this.interpolator = interpolator;
     }
 
@@ -42,7 +42,7 @@ public class AnimateDataSetChanged {
         run();
     }
 
-    public void run(){
+    void run(){
         startTime = Calendar.getInstance().getTimeInMillis();
         timerHandler = new Handler();
         Runner runner = new Runner();
@@ -61,7 +61,7 @@ public class AnimateDataSetChanged {
                 float newX = newData.get(i).getX();
                 float newY = newData.get(i).getY();
                 BarEntry e = new BarEntry(oldX + (newX - oldX) * increment, oldY + (newY - oldY) * increment);
-                chart.getData().getDataSetByIndex(0).addEntry(e);
+                boolean entry = chart.getData().getDataSetByIndex(0).addEntry(e);
             }
             // chart.getXAxis().resetAxisMaximum();
             // chart.getXAxis().resetAxisMinimum();

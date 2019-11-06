@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -193,8 +195,8 @@ class User {
     }
 
     // a simple function used at data collection
-    boolean AllInputsValid(){
-        for (int el: Valid) if (el == 0) return (false);
+    boolean AllInputsValid(ArrayList<Integer> IgnList){
+        for (int t: Valid) if ((t == 0) && !IgnList.contains(t)) return (false);
         return(true);
     }
 

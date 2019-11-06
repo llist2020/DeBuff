@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch AcidBaseSw;
     private TextView pHVw;
     private BarChart barChart;
+    private XAxis bChartX;
     private String[] species;
     private ArrayList<BarEntry> entries;
     private ArrayList<BarEntry> oldentries;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
+        Button graphBtn = findViewById(R.id.GraphBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
@@ -98,9 +100,15 @@ public class MainActivity extends AppCompatActivity {
         u1 = new User(0, 0);
         s1 = new Solution();
         barChart.setScaleYEnabled(false);
-        barChart.getAxisLeft().mAxisMaximum = 1f;
-        barChart.getAxisLeft().mAxisMinimum = 0f;
-        barChart.getDescription().setText("Species percent composition diagram");
+        barChart.getAxisLeft().setAxisMaximum(1f);
+        barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.setDescription(null);
+        bChartX = barChart.getXAxis();
+        bChartX.setPosition(XAxis.XAxisPosition.BOTTOM);
+        bChartX.setDrawGridLines(false);
+        bChartX.setGranularity(1f);
 
 
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -119,25 +127,25 @@ public class MainActivity extends AppCompatActivity {
                     ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     int id = rBtnGrp.getCheckedRadioButtonId();
-                    s1.l = Float.parseFloat(TitTxt.getText().toString());
+                    s1.l = Double.parseDouble(TitTxt.getText().toString());
                     if (Math.abs(s1.l) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000){
-                            ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
                         }
                     } else {
-                        if (Float.parseFloat(VolTitTxt.getText().toString())>2000){
-                            ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
                         }
                         else{
-                            s1.Titrate(Float.parseFloat(VolTitTxt.getText().toString()), AcidBaseSw);
+                            s1.Titrate(Double.parseDouble(VolTitTxt.getText().toString()), AcidBaseSw);
                             p1 = new Poly(s1.GetDic());
                             pHVw.setText(s1.MainFunction(p1));
                             u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
                             s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
 
                             getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            AnimateDataSetChanged changer = new AnimateDataSetChanged(300, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
+                            AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
                             changer.run();
                         }
                     }
@@ -152,58 +160,84 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.GraphBtn).setOnClickListener(new View.OnClickListener() {
+        graphBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GraphShow = new BottomSheetDialog(MainActivity.this);
-
-                s1.l = Float.parseFloat(TitTxt.getText().toString());
-                LineDataSet lineDataSet = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw), "pH");
-                lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-                lineDataSet.setHighlightEnabled(true);
-                lineDataSet.setLineWidth(2);
-                // lineDataSet.setColor(getColor("defaultBlue"));
-                lineDataSet.setDrawHighlightIndicators(true);
-                lineDataSet.setHighLightColor(Color.RED);
-                lineDataSet.setValueTextSize(12);
-                // lineDataSet.setValueTextColor(getColor("primaryDark"));
-                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                lineDataSet.setDrawFilled(true);
-                lineDataSet.setDrawValues(false);
-                lineDataSet.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.pale_green));
-                lineDataSet.setColor(ContextCompat.getColor(MainActivity.this, R.color.pale_green));
-                lineDataSet.setFillAlpha(50);
-                lineDataSet.setDrawCircles(false);
-
                 GraphShow.setContentView(R.layout.dialog);
                 GraphShow.setTitle("Titration diagram");
-                GraphShow.show();
-
-                LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
-
-                LineData lineData = new LineData(lineDataSet);
-
-                TitChart.getDescription().setText("pH-V titration diagram");
-                TitChart.getDescription().setTextSize(12);
-                TitChart.setDrawMarkers(true);
-                // TitChart.setMarker(markerView(MainActivity.this));
-                // TitChart.getAxisLeft().addLimitLine(lowerLimitLine(2,"Lower Limit",2,12, getColor("defaultOrange"),getColor("defaultOrange")));
-                // TitChart.getAxisLeft().addLimitLine(upperLimitLine(5,"Upper Limit",2,12, getColor("defaultGreen"),getColor("defaultGreen")));
-
-                TitChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-                TitChart.animateX(600);
-                TitChart.getXAxis().setGranularityEnabled(true);
-                TitChart.getXAxis().setGranularity(Float.parseFloat(String.valueOf(s1.GetEq()*s1.V/s1.l/4)));
-                TitChart.getXAxis().setLabelCount(5);
-
-                TitChart.setData(lineData);
-
                 GraphShow.findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         GraphShow.dismiss();
                     }
                 });
+
+                try{
+                    ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
+                    ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
+                    s1.l = Double.parseDouble(TitTxt.getText().toString());
+                    if (Math.abs(s1.l) > 50 || String.valueOf(s1.l).matches("0.0")) {
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
+                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
+                        } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))){
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
+                        }
+                    } else {
+                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
+                        } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))) {
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
+                        } else{
+                            LineDataSet LDS = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString())), "pH");
+                            LDS.setAxisDependency(YAxis.AxisDependency.LEFT);
+                            LDS.setHighlightEnabled(true);
+                            LDS.setLineWidth(2);
+                            // lineDataSet.setColor(getColor("defaultBlue"));
+                            LDS.setDrawHighlightIndicators(true);
+                            LDS.setHighLightColor(Color.RED);
+                            LDS.setValueTextSize(12);
+                            // lineDataSet.setValueTextColor(getColor("primaryDark"));
+                            LDS.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                            LDS.setDrawFilled(true);
+                            LDS.setDrawValues(false);
+                            LDS.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                            LDS.setColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                            LDS.setFillAlpha(25);
+                            LDS.setDrawCircles(false);
+
+                            LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
+
+                            LineData lineData = new LineData(LDS);
+                            GraphShow.show();
+
+                            TitChart.getDescription().setText("pH-V titration diagram");
+                            TitChart.getDescription().setTextSize(12);
+                            TitChart.setDrawMarkers(true);
+                            // TitChart.setMarker(markerView(MainActivity.this));
+                            // TitChart.getAxisLeft().addLimitLine(lowerLimitLine(2,"Lower Limit",2,12, getColor("defaultOrange"),getColor("defaultOrange")));
+                            // TitChart.getAxisLeft().addLimitLine(upperLimitLine(5,"Upper Limit",2,12, getColor("defaultGreen"),getColor("defaultGreen")));
+
+                            TitChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+                            TitChart.animateX(600);
+                            TitChart.getXAxis().setGranularityEnabled(true);
+                            TitChart.getXAxis().setDrawGridLines(false);
+                            TitChart.getXAxis().setGranularity(Float.parseFloat(String.valueOf(
+                                    s1.V*(s1.GetEq()[0]-s1.GetEq()[1])/s1.l/5)));
+                            TitChart.getXAxis().setLabelCount(6);
+
+                            TitChart.setData(lineData);
+                        }
+                    }
+                } catch(Exception e) {
+                    if (TitTxt.getText().toString().matches(".") || (TitTxt.getText().toString().matches(""))){
+                        ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Invalid input!");
+                    }
+                    if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
+                        ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input!");
+                    }
+                }
             }
         });
 
@@ -217,15 +251,12 @@ public class MainActivity extends AppCompatActivity {
                             u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
                             s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
 
-                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff Component's species");
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff Component's species composition percent");
                             barDataSet.setBarBorderWidth(0.9f);
                             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                             BarData barData = new BarData(barDataSet);
-                            XAxis xAxis = barChart.getXAxis();
-                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                             IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
-                            xAxis.setGranularity(1f);
-                            xAxis.setValueFormatter(formatter);
+                            bChartX.setValueFormatter(formatter);
                             barChart.setData(barData);
                             barChart.setFitBars(true);
                             barChart.animateY(500);
@@ -256,8 +287,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Resumed");
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
-                System.out.println("Entered indexes");
-                for (int el : s1.Entered) System.out.println(el);
                 p1 = new Poly(s1.GetDic());
             }
             AcidBaseSw.setEnabled(true);

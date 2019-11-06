@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,9 @@ public class AddComponentActivity extends AppCompatActivity {
     AlertDialog dialogA;
     AlertDialog dialogB;
     EditText[] ETs;
+    Button SaveBtn;
     boolean AllRight;
+    ArrayList<Integer> IgnoreList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,9 @@ public class AddComponentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_component);
         final Button ManBtn = findViewById(R.id.ManBtn);
         final Button AutoBtn = findViewById(R.id.AutoBtn);
-        final Button SaveBtn = findViewById(R.id.SaveBtn);
         final Button NextBtn =  findViewById(R.id.NextBtn);
         final Button SlotBtn = findViewById(R.id.button15);
+        SaveBtn = findViewById(R.id.SaveBtn);
         final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
         final EditText nTxt =  findViewById(R.id.nTxt);
         final EditText cuTxt =  findViewById(R.id.cuTxt);
@@ -51,6 +54,7 @@ public class AddComponentActivity extends AppCompatActivity {
         final TextInputLayout KTxtIL = findViewById(R.id.KTxtIL);
         final EditText KTxt = findViewById(R.id.KTxt);
         ETs = new EditText[] {nTxt, cuTxt, cnTxt, VTxt};
+        IgnoreList = new ArrayList<>();
 
         try{
             s1 = getIntent().getParcelableExtra("Solution");
@@ -86,12 +90,11 @@ public class AddComponentActivity extends AppCompatActivity {
                 SaveBtn.setVisibility(View.VISIBLE);
                 u2.ion = "A";
                 u2.ent = true;
-                if (s1.Entered.size() != 0) u2.Valid[3] = 1;
+                if ((s1.Entered.size() != 0) && !VTxt.getText().toString().matches("")) IgnoreList.add(3);
                 nTxt.setEnabled(true);
                 AcidBaseSwInp.setEnabled(true);
                 AutoBtn.setEnabled(false);
                 nTxt.setText("");
-                if (!VTxt.getText().toString().matches("")) u2.Valid[3] = 1;
             }
         });
 
@@ -114,7 +117,7 @@ public class AddComponentActivity extends AppCompatActivity {
                         KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
                         nTxt.setText(String.format(Locale.US, "%s", u2.n));
                         u2.ent = false;
-                        if (s1.Entered.size() != 0) u2.Valid[3] = 1;
+                        if (s1.Entered.size() != 0) IgnoreList.add(3);
                     }
                 });
 
@@ -134,7 +137,7 @@ public class AddComponentActivity extends AppCompatActivity {
         SaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double[] Inputs = ValidateInputs();
+                double[] Inputs = ValidateInputs(IgnoreList);
                 int n;
                 double cu, cn, V;
                 if (Inputs.length != 0) { // if all inputs are valid
@@ -261,7 +264,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     SaveBtn.setEnabled(false);
                     u2.Valid[0] = 0;
                 } else u2.Valid[0] = 1;
-                if (u2.AllInputsValid()) SaveBtn.setEnabled(true);
+                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
             }
 
             @Override
@@ -279,7 +282,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     SaveBtn.setEnabled(false);
                     u2.Valid[1] = 0;
                 } else u2.Valid[1] = 1;
-                if (u2.AllInputsValid()) SaveBtn.setEnabled(true);
+                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
             }
 
             @Override
@@ -293,7 +296,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     SaveBtn.setEnabled(false);
                     u2.Valid[2] = 0;
                 } else u2.Valid[2] = 1;
-                if (u2.AllInputsValid()) SaveBtn.setEnabled(true);
+                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
             }
 
             @Override
@@ -317,7 +320,7 @@ public class AddComponentActivity extends AppCompatActivity {
                 } else {
                     u2.Valid[3] = 1;
                 }
-                if (u2.AllInputsValid()) SaveBtn.setEnabled(true);
+                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
             }
 
             @Override
@@ -403,29 +406,31 @@ public class AddComponentActivity extends AppCompatActivity {
 
     @NonNull
     @Contract(" -> new")
-    private double[] ValidateInputs() {
+    private double[] ValidateInputs(ArrayList<Integer> IgnList) {
         for (EditText el : ETs) ((TextInputLayout) (el.getParent()).getParent()).setError(null);
         double[] out = new double[4];
         AllRight = true;
 
         for (int i = 0; i < 4; i++) {
-            try {
+            if (!IgnList.contains(i)) try {
                 out[i] = Double.parseDouble(ETs[i].getText().toString());
                 if (i == 0) {
                     if (out[i] == 0.0) {
+                        AllRight = false;
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!");
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
                         builder.setTitle("Notice");
                         builder.setMessage("No dissociation will be observed!");
 
-                        builder.setPositiveButton("Continue", null);
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                AllRight = false;
+                                IgnoreList.add(0);
+                                SaveBtn.performClick();
                             }
                         });
+                        builder.setNegativeButton("Cancel", null);
 
                         // create and show the alert dialog
                         AlertDialog alert = builder.create();

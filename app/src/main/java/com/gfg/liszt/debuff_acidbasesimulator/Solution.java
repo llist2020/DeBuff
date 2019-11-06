@@ -131,40 +131,71 @@ public class Solution implements Parcelable {
             System.out.println(e.getMessage());
         }
         V += v;
-        System.out.println("Solution constitution updated successfully.");
     }
 
-    ArrayList<Entry> GenerateTitrationGraphData(Switch s){
+    ArrayList<Entry> GenerateTitrationGraphData(Switch s, double titV){
         ArrayList<Entry> lineEntries = new ArrayList<>();
-        double cnCache = cn;
-        cn = 0;
         Poly p2;
-        double v = V*GetEq()/l/40;
         if (l != 0) {
             if (s.isChecked()) {
+                // titrirano bazom
+
                 l = Math.abs(l);
             } else {
-                cn = GetEq();
+                // titrirano kiselinom
+
                 l = -Math.abs(l);
             }
         }
-        // stavi oznaku di je cn, paralelno s y osi ,bil, a posle vrati na taj cn
+        double v = Math.abs(titV/(30*n));
 
-        for (int i = 1; i<51; i++){
+        for (int i = 0; i<30*n; i++){
             Titrate(v, s);
             p2 = new Poly(GetDic());
-            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)),
-                    Float.parseFloat(String.valueOf(MainFunction(p2)))));
+            MainFunction(p2);
+            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
-        Titrate(-50*v, s);
+        Titrate(-30*n*v, s);
+        return(lineEntries);
+    }
+
+    ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s){
+        ArrayList<Entry> lineEntries = new ArrayList<>();
+        double cnCache = cn;
+        Poly p2;
+        double[] EqL = GetEq();
+        double Eq = EqL[0] - EqL[1];
+        if (l != 0) {
+            if (s.isChecked()) {
+                // titrirano bazom
+
+                cn = EqL[1];
+                l = Math.abs(l);
+            } else {
+                // titrirano kiselinom
+
+                cn = EqL[0];
+                l = -Math.abs(l);
+            }
+        }
+        double v = Math.abs(V*Eq/l/(30*(n-0.5)));
+
+        for (int i = 0; i<30*n; i++){
+            Titrate(v, s);
+            p2 = new Poly(GetDic());
+            MainFunction(p2);
+            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+        }
+        Titrate(-30*n*v, s);
         cn = cnCache;
         return(lineEntries);
     }
 
-    double GetEq(){
-        double fin = 0;
+    double[] GetEq(){
+        double[] fin = new double[] {0, 0};
         for (Component comp: comps){
-            fin += comp.n*comp.cu;
+            int a = comp.acid ? 0 : 1;
+            fin[a] += Math.pow(-1, a)*comp.n*comp.cu;
         }
         return(fin);
     }
@@ -231,7 +262,6 @@ public class Solution implements Parcelable {
     }
 
     SpannableStringBuilder MainFunction(@NonNull Poly p){
-        System.out.println("Initializing simulation.");
 
         // setting up the polynomial, beginning with the permanent part
         dic = new double[n+3];
@@ -250,7 +280,6 @@ public class Solution implements Parcelable {
                     SetUpB(C);
                     SetDownB(C);
                 }
-                System.out.println("Component application successful.");
             } catch(Exception e){
                 // component error
             }
