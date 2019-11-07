@@ -382,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
         species = new String[Comp.n+1];
         for (int i = 0; i<Comp.n+1; i++){
             entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
-            species[i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
+            species[Comp.n-i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
         }
         return entries;
     }
