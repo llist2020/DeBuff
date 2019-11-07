@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -139,12 +141,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else{
                             s1.Titrate(Double.parseDouble(VolTitTxt.getText().toString()), AcidBaseSw);
-                            p1 = new Poly(s1.GetDic());
+                            p1 = new Poly(s1.getDic());
                             pHVw.setText(s1.MainFunction(p1));
-                            u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
+                            u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
+                            s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
 
-                            getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
+                            getData(s1.getComponentByBtnId(id));
+                            barChart.clearAnimation();
                             AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
                             changer.run();
                         }
@@ -166,10 +169,27 @@ public class MainActivity extends AppCompatActivity {
                 GraphShow = new BottomSheetDialog(MainActivity.this);
                 GraphShow.setContentView(R.layout.dialog);
                 GraphShow.setTitle("Titration diagram");
+                CheckBox CBEqPts = GraphShow.findViewById(R.id.CheckBoxEqPts);
+                //CheckBox CBHalfEqPts = GraphShow.findViewById(R.id.CheckBoxHalfEqPts);
+                final LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
+                final XAxis TitX = TitChart.getXAxis();
                 GraphShow.findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         GraphShow.dismiss();
+                    }
+                });
+
+                CBEqPts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        if (checked){
+                            s1.GenerateEquivalencePtsTags(TitX);
+                        }
+                        else{
+                            TitX.removeAllLimitLines();
+                        }
+                        TitChart.invalidate();
                     }
                 });
 
@@ -190,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))) {
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
                         } else{
-                            LineDataSet LDS = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString())), "pH");
+                            LineDataSet LDS = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString())), "pH-V");
                             LDS.setAxisDependency(YAxis.AxisDependency.LEFT);
                             LDS.setHighlightEnabled(true);
                             LDS.setLineWidth(2);
@@ -207,25 +227,23 @@ public class MainActivity extends AppCompatActivity {
                             LDS.setFillAlpha(25);
                             LDS.setDrawCircles(false);
 
-                            LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
-
                             LineData lineData = new LineData(LDS);
                             GraphShow.show();
 
-                            TitChart.getDescription().setText("pH-V titration diagram");
+                            TitChart.getDescription().setText("");
                             TitChart.getDescription().setTextSize(12);
                             TitChart.setDrawMarkers(true);
                             // TitChart.setMarker(markerView(MainActivity.this));
                             // TitChart.getAxisLeft().addLimitLine(lowerLimitLine(2,"Lower Limit",2,12, getColor("defaultOrange"),getColor("defaultOrange")));
                             // TitChart.getAxisLeft().addLimitLine(upperLimitLine(5,"Upper Limit",2,12, getColor("defaultGreen"),getColor("defaultGreen")));
 
-                            TitChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+                            TitX.setPosition(XAxis.XAxisPosition.BOTTOM);
                             TitChart.animateX(600);
-                            TitChart.getXAxis().setGranularityEnabled(true);
-                            TitChart.getXAxis().setDrawGridLines(false);
-                            TitChart.getXAxis().setGranularity(Float.parseFloat(String.valueOf(
+                            TitX.setGranularityEnabled(true);
+                            TitX.setDrawGridLines(false);
+                            TitX.setGranularity(Float.parseFloat(String.valueOf(
                                     s1.V*(s1.GetEq()[0]-s1.GetEq()[1])/s1.l/5)));
-                            TitChart.getXAxis().setLabelCount(6);
+                            TitX.setLabelCount(6);
 
                             TitChart.setData(lineData);
                         }
@@ -246,12 +264,12 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 if (id!=-1){
                     try {
-                        if (s1.Entered.contains(RButt(id))){
+                        if (s1.Entered.contains(u1.RButt(id))){
                             Rst(ConcentrationTextViews);
-                            u1.PrepareOutputs(ConcentrationTextViews, s1.GetComps().get(s1.Entered.indexOf(RButt(id))));
-                            s1.GetComps().get(s1.Entered.indexOf(RButt(id))).PrintConcentrations(ConcentrationTextViews, s1.GetCn());
+                            u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
+                            s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
 
-                            BarDataSet barDataSet = new BarDataSet(getData(s1.GetComps().get(s1.Entered.indexOf(RButt(id)))), "DeBuff Component's species composition percent");
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.getComponentByBtnId(id)), "DeBuff Component's species composition percent");
                             barDataSet.setBarBorderWidth(0.9f);
                             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                             BarData barData = new BarData(barDataSet);
@@ -287,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Resumed");
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
-                p1 = new Poly(s1.GetDic());
+                p1 = new Poly(s1.getDic());
             }
             AcidBaseSw.setEnabled(true);
             TitTxt.setEnabled(true);
@@ -360,20 +378,6 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i=(Texts.length)-3; i<Texts.length; i++){
             Texts[i].setVisibility(View.VISIBLE);
-        }
-    }
-    public int RButt(int id) {
-        switch (id) {
-            case R.id.rBtn0:
-                return (0);
-            case R.id.rBtn1:
-                return (1);
-            case R.id.rBtn2:
-                return (2);
-            case R.id.rBtn3:
-                return (3);
-            default:
-                return(5555);
         }
     }
     private ArrayList getData(@NotNull Component Comp){

@@ -8,6 +8,8 @@ import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.widget.Switch;
 
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 
 import org.jetbrains.annotations.Contract;
@@ -63,7 +65,7 @@ public class Solution implements Parcelable {
                     FillSlot(u.slot);
                 } else{
                     // overwriting the component
-                    cn -= comps.get(Entered.indexOf(u.slot)).GetCn();
+                    cn -= comps.get(Entered.indexOf(u.slot)).getCn();
                     comps.set(Entered.indexOf(u.slot), new Component(u));
                     ind = Entered.indexOf(u.slot);
                 }
@@ -98,14 +100,18 @@ public class Solution implements Parcelable {
         Entered.add(i);
     }
 
-    List<Component> GetComps(){
+    List<Component> getComps(){
         return(comps);
     }
-    public double GetCn(){
+    public double getCn(){
         return(cn);
     }
-    double[] GetDic(){
+    double[] getDic(){
         return(dic);
+    }
+    Component getComponentByBtnId(int id){
+        User u2 = new User(0,0);
+        return(comps.get(Entered.indexOf(u2.RButt(id))));
     }
 
     // updates the data describing the (ideal) acid/base content
@@ -151,7 +157,7 @@ public class Solution implements Parcelable {
 
         for (int i = 0; i<30*n; i++){
             Titrate(v, s);
-            p2 = new Poly(GetDic());
+            p2 = new Poly(getDic());
             MainFunction(p2);
             lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
@@ -182,13 +188,52 @@ public class Solution implements Parcelable {
 
         for (int i = 0; i<30*n; i++){
             Titrate(v, s);
-            p2 = new Poly(GetDic());
+            p2 = new Poly(getDic());
             MainFunction(p2);
             lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
         Titrate(-30*n*v, s);
         cn = cnCache;
         return(lineEntries);
+    }
+
+    void GenerateEquivalencePtsTags(@NotNull XAxis x){
+        x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        double EqPtVol0;
+        boolean OverTitrated;
+        int a;
+        String s;
+        LimitLine ll1;
+        for (Component C: comps){
+            a = C.acid ? -1 : 1;
+            OverTitrated = a*cn + C.cu*C.n < 0;
+            if (!OverTitrated){
+                EqPtVol0 = a*(-C.cu*V/l+cn);
+                double EqPtVol = Math.abs(C.cu*V/l);
+                for (int i = (int)(EqPtVol0/EqPtVol)-1; i<C.n; i++){
+                    s = "";
+                    if (i != C.n - 1) {
+                        s+=(("(pKa")+(i + 1)+("+")+("pKa")+(i + 2)+(")/2"));
+                    }
+                    if (i == 0 && Math.abs(EqPtVol0)>0){
+                        ll1 = new LimitLine((float)EqPtVol0, s);
+                    } else{
+                        ll1 = new LimitLine((float)(i*EqPtVol+EqPtVol0), s);
+                    }
+                    ll1.setLineWidth(4f);
+                    ll1.enableDashedLine(10f, 10f, 0f);
+                    if (i%2==0){
+                        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+                    } else{
+                        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+                    }
+                    ll1.setTextSize(10f);
+                    ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+
+                    x.addLimitLine(ll1);
+                }
+            }
+        }
     }
 
     double[] GetEq(){
@@ -219,7 +264,7 @@ public class Solution implements Parcelable {
         return(out);
     }
     @Contract(pure = true)
-    private void SetUpA(@NonNull Component c){
+    private void setUpA(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -230,7 +275,7 @@ public class Solution implements Parcelable {
         c.up = out;
     }
     @Contract(pure = true)
-    private void SetDownA(@NonNull Component c){
+    private void setDownA(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -240,7 +285,7 @@ public class Solution implements Parcelable {
         }
         c.down = out;
     }
-    private void SetUpB(@NonNull Component c){
+    private void setUpB(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -250,7 +295,7 @@ public class Solution implements Parcelable {
         }
         c.up = out;
     }
-    private void SetDownB(@NonNull Component c){
+    private void setDownB(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -274,11 +319,11 @@ public class Solution implements Parcelable {
         for (Component C: comps) {
             try {
                 if (C.acid){
-                    SetUpA(C);
-                    SetDownA(C);
+                    setUpA(C);
+                    setDownA(C);
                 } else{
-                    SetUpB(C);
-                    SetDownB(C);
+                    setUpB(C);
+                    setDownB(C);
                 }
             } catch(Exception e){
                 // component error

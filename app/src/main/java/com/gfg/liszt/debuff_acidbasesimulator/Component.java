@@ -37,7 +37,7 @@ public class Component extends Solution implements Parcelable {
         V = u.V;
     }
 
-    public double GetCn(){
+    public double getCn(){
         return(cn);
     }
     double[] GetConcentrations(){

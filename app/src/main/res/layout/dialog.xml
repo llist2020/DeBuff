@@ -18,12 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
+        <CheckBox
+            android:id="@+id/CheckBoxEqPts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show equivalence points" />
+
+        <CheckBox
+            android:id="@+id/CheckBoxHalfEqPts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Show half-equivalence points" />
+
         <Button
             android:id="@+id/okBtn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ok" />
+            android:text="close" />
 
     </LinearLayout>
 

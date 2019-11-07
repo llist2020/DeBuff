@@ -35,7 +35,7 @@ class Poly implements Serializable {
         }
         boolean mcons = true;
         double outa = 0, outb = 0;
-        List<Component> comps = s.GetComps();
+        List<Component> comps = s.getComps();
 
         for (int j = 0; j<s.Entered.size(); j++) {
             try {
@@ -92,8 +92,8 @@ class Poly implements Serializable {
         }
 
         // the law of charge conservation
-        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.GetCn() + h) * 10d) / 10d) ||
-                ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.GetCn() + h) * 100d) / 100d));
+        boolean chcons = (((double) Math.round((outa + s.kw / h) * 10d) / 10d) == ((double) Math.round((outb + s.getCn() + h) * 10d) / 10d) ||
+                ((double) Math.round((outa + s.kw / h) * 100d) / 100d) == ((double) Math.round((outb + s.getCn() + h) * 100d) / 100d));
 
         return(mcons && chcons);
     }

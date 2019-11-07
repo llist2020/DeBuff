@@ -308,4 +308,19 @@ class User {
             t[(c.n-i)*3].setText(out, TextView.BufferType.SPANNABLE);
         }
     }
+
+    public int RButt(int id) {
+        switch (id) {
+            case R.id.rBtn0:
+                return (0);
+            case R.id.rBtn1:
+                return (1);
+            case R.id.rBtn2:
+                return (2);
+            case R.id.rBtn3:
+                return (3);
+            default:
+                return(5555);
+        }
+    }
 }
