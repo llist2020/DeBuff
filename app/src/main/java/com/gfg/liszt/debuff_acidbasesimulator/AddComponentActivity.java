@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -260,15 +260,12 @@ public class AddComponentActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (nTxt.getText().toString().matches("")) {
-                    SaveBtn.setEnabled(false);
-                    u2.Valid[0] = 0;
-                } else u2.Valid[0] = 1;
-                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
+                checkField(nTxt.getText().toString(), 0);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkField(nTxt.getText().toString(), 0);
             }
         });
         cuTxt.addTextChangedListener(new TextWatcher() {
@@ -278,33 +275,27 @@ public class AddComponentActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (cuTxt.getText().toString().matches("") && cuTxt.getText().toString().matches(".")) {
-                    SaveBtn.setEnabled(false);
-                    u2.Valid[1] = 0;
-                } else u2.Valid[1] = 1;
-                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
+                checkField(cuTxt.getText().toString(), 1);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkField(cuTxt.getText().toString(), 1);
             }
         });
         cnTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (cnTxt.getText().toString().matches("") && cnTxt.getText().toString().matches(".")) {
-                    SaveBtn.setEnabled(false);
-                    u2.Valid[2] = 0;
-                } else u2.Valid[2] = 1;
-                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                checkField(cnTxt.getText().toString(), 2);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkField(cnTxt.getText().toString(), 2);
             }
         });
         VTxt.addTextChangedListener(new TextWatcher() {
@@ -314,17 +305,12 @@ public class AddComponentActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (cuTxt.getText().toString().matches("") && cuTxt.getText().toString().matches(".")) {
-                    SaveBtn.setEnabled(false);
-                    u2.Valid[3] = 0;
-                } else {
-                    u2.Valid[3] = 1;
-                }
-                if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
+                checkField(VTxt.getText().toString(), 3);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                checkField(VTxt.getText().toString(), 3);
             }
         });
 
@@ -364,34 +350,30 @@ public class AddComponentActivity extends AppCompatActivity {
                 builderA.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        try{
-                            if (s1.Entered.contains(u2.slot)){
-                                // setup the alert builder
-                                AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
-                                builder.setTitle("Notice");
-                                builder.setMessage("There is a component at the selected slot. Do you want to overwrite?");
+                        if (s1.Entered.contains(u2.slot)){
+                            // setup the alert builder
+                            AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
+                            builder.setTitle("Notice");
+                            builder.setMessage("There is a component at the selected slot. Do you want to overwrite?");
 
-                                builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
-                                    }
-                                });
-                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialogA.show();
-                                    }
-                                });
+                            builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialogA.show();
+                                }
+                            });
 
-                                // create and show the alert dialog
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                            } else{
-                                SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
-                            }
-                        } catch(Exception e){
-                            // nekej ne valja
+                            // create and show the alert dialog
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        } else{
+                            SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
                         }
                     }
                 });
@@ -405,7 +387,6 @@ public class AddComponentActivity extends AppCompatActivity {
     }
 
     @NonNull
-    @Contract(" -> new")
     private double[] ValidateInputs(ArrayList<Integer> IgnList) {
         for (EditText el : ETs) ((TextInputLayout) (el.getParent()).getParent()).setError(null);
         double[] out = new double[4];
@@ -477,5 +458,12 @@ public class AddComponentActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    private void checkField(@NotNull String field, int i){
+        if (field.matches("")) {
+            SaveBtn.setEnabled(false);
+            u2.Valid[i] = 0;
+        } else u2.Valid[i] = 1;
+        if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
     }
 }

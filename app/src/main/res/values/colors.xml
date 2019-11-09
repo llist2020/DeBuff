@@ -4,5 +4,10 @@
     <color name="colorPrimaryDark">#ab000d</color>
     <color name="colorAccent">#ff6f60</color>
     <color name="pale_green">#6BF3AD</color>
+    <color name="f0">#6d0000</color>
+    <color name="f1">#c70000</color>
+    <color name="f2">#d4541d</color>
+    <color name="f3">#cc8922</color>
+    <color name="f4">#813a00</color>
 
 </resources>
