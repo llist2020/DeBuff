@@ -59,29 +59,6 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <Button
-        android:id="@+id/ManBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/Manual"
-        app:layout_constraintEnd_toStartOf="@+id/AutoBtn"
-        app:layout_constraintLeft_toLeftOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@id/textView13" />
-
-    <Button
-        android:id="@+id/AutoBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/Auto"
-        app:layout_constraintEnd_toStartOf="@id/button15"
-        app:layout_constraintStart_toEndOf="@+id/ManBtn"
-        app:layout_constraintTop_toBottomOf="@id/textView13" />
-
-    <Button
         android:id="@+id/button15"
         style="@android:style/Widget.Holo.Light.Button.Small"
         android:layout_width="60dp"
@@ -89,7 +66,6 @@
         android:layout_marginTop="16dp"
         android:text="Slot"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toEndOf="@id/AutoBtn"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -107,7 +83,7 @@
         android:layout_weight="1"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/ManBtn">
+        app:layout_constraintTop_toBottomOf="@id/button15">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nTxt"

@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -55,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
     private BarChart barChart;
     private XAxis bChartX;
     private String[] species;
-    private ArrayList<BarEntry> entries;
-    private ArrayList<BarEntry> oldentries;
+    private ArrayList<BarEntry> Entries;
+    private ArrayList<BarEntry> oldEntries;
     private Dialog GraphShow;
-    private final static int REQUEST_CODE_1 = 1;
+    private final static int REQUEST_CODE_Manual = 1;
+    private final static int REQUEST_CODE_Auto = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +114,23 @@ public class MainActivity extends AppCompatActivity {
         bChartX.setGranularity(1f);
 
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.ManFab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
+                intent.putExtra("req_c", REQUEST_CODE_Manual);
                 intent.putExtra("Solution", s1);
-                startActivityForResult(intent, REQUEST_CODE_1);
+                startActivityForResult(intent, REQUEST_CODE_Manual);
+            }
+        });
+
+        findViewById(R.id.AutoFab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
+                intent.putExtra("req_c", REQUEST_CODE_Auto);
+                intent.putExtra("Solution", s1);
+                startActivityForResult(intent, REQUEST_CODE_Auto);
             }
         });
 
@@ -147,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
                             getData(s1.getComponentByBtnId(id));
                             barChart.clearAnimation();
-                            AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldentries, entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
+                            AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldEntries, Entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
                             changer.run();
                         }
                     }
@@ -272,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
                             barDataSet.setBarBorderWidth(0.9f);
                             barDataSet.setColors(getColorSet(s1.n));
                             BarData barData = new BarData(barDataSet);
+                            barData.setHighlightEnabled(false);
                             IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
                             bChartX.setValueFormatter(formatter);
                             barChart.setData(barData);
@@ -287,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        findViewById(R.id.fab).performClick();
+        ((FloatingActionsMenu) findViewById(R.id.FabMenu)).expand();
     }
 
     // This method is invoked when target activity return result data back.
@@ -300,8 +314,9 @@ public class MainActivity extends AppCompatActivity {
         // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
         // String messageReturn = dataIntent.getStringExtra("message_return");
 
-        if (requestCode == REQUEST_CODE_1) {
+        if (requestCode == REQUEST_CODE_Auto || requestCode == REQUEST_CODE_Manual) {
             System.out.println("Resumed");
+            ((FloatingActionsMenu) findViewById(R.id.FabMenu)).collapse();
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
                 p1 = new Poly(s1.getDic());
@@ -380,14 +395,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private ArrayList getData(@NotNull Component Comp){
-        oldentries = entries;
-        entries = new ArrayList<>();
+        oldEntries = Entries;
+        Entries = new ArrayList<>();
         species = new String[Comp.n+1];
         for (int i = 0; i<Comp.n+1; i++){
-            entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
+            Entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
             species[Comp.n-i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
         }
-        return entries;
+        return(Entries);
     }
     static int manipulateColor(int color, float factor) {
         float[] hsv = new float[3];
@@ -399,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
     int[] getColorSet(int n){
         int[] out = new int[n+1];
         for (int i = 0; i<n+1; i++){
-            out[i] = manipulateColor(MainActivity.this.getResources().getColor(R.color.colorPrimary), (float) 2*i/(n+1)+0.1f);
+            out[i] = manipulateColor(MainActivity.this.getResources().getColor(R.color.colorPrimary), (float) 3*i/(n+1)+0.1f);
         }
         return(out);
     }

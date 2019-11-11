@@ -32,31 +32,39 @@ public class AddComponentActivity extends AppCompatActivity {
     private User u2;
     AlertDialog dialogA;
     AlertDialog dialogB;
-    EditText[] ETs;
     Button SaveBtn;
+    Button NextBtn;
     boolean AllRight;
     ArrayList<Integer> IgnoreList;
+    int Request_Code;
+    Switch AcidBaseSwInp;
+    EditText VTxt;
+    EditText KTxt;
+    EditText nTxt;
+    EditText cuTxt;
+    EditText cnTxt;
+    EditText[] ETs;
+    TextInputLayout KTxtIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_component);
-        final Button ManBtn = findViewById(R.id.ManBtn);
-        final Button AutoBtn = findViewById(R.id.AutoBtn);
-        final Button NextBtn =  findViewById(R.id.NextBtn);
+        NextBtn =  findViewById(R.id.NextBtn);
         final Button SlotBtn = findViewById(R.id.button15);
         SaveBtn = findViewById(R.id.SaveBtn);
-        final Switch AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
-        final EditText nTxt =  findViewById(R.id.nTxt);
-        final EditText cuTxt =  findViewById(R.id.cuTxt);
-        final EditText cnTxt =  findViewById(R.id.cnTxt);
-        final EditText VTxt = findViewById(R.id.VTxt);
-        final TextInputLayout KTxtIL = findViewById(R.id.KTxtIL);
-        final EditText KTxt = findViewById(R.id.KTxt);
+        AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
+        nTxt =  findViewById(R.id.nTxt);
+        cuTxt =  findViewById(R.id.cuTxt);
+        cnTxt =  findViewById(R.id.cnTxt);
+        VTxt = findViewById(R.id.VTxt);
+        KTxtIL = findViewById(R.id.KTxtIL);
+        KTxt = findViewById(R.id.KTxt);
         ETs = new EditText[] {nTxt, cuTxt, cnTxt, VTxt};
         IgnoreList = new ArrayList<>();
 
         try{
+            Request_Code = getIntent().getIntExtra("req_c", 0);
             s1 = getIntent().getParcelableExtra("Solution");
             u2 = new User(0, s1.Slot());
             SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
@@ -66,73 +74,12 @@ public class AddComponentActivity extends AppCompatActivity {
             }// else if (choice == 0) AutoBtn.setEnabled(false);
             SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
             AcidBaseSwInp.setEnabled(false);
+            Initialize(Request_Code);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
 
         //final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
-
-        ManBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-                    if (s1.Entered.size() != 0) {
-                        VTxt.setEnabled(false);
-                        VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
-                    }// else if (choice == 0) AutoBtn.setEnabled(false);
-                    SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
-                    AcidBaseSwInp.setEnabled(false);
-                } catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-
-                for (EditText el : ETs) el.setVisibility(View.VISIBLE);
-                SaveBtn.setVisibility(View.VISIBLE);
-                u2.ion = "A";
-                u2.ent = true;
-                if ((s1.Entered.size() != 0) && !VTxt.getText().toString().matches("")) IgnoreList.add(3);
-                nTxt.setEnabled(true);
-                AcidBaseSwInp.setEnabled(true);
-                AutoBtn.setEnabled(false);
-                nTxt.setText("");
-            }
-        });
-
-        AutoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builderB = new AlertDialog.Builder(AddComponentActivity.this);
-                builderB.setTitle("Choose an acid");
-
-                String[] slots = {getResources().getString(R.string.hydrogen_chloride), getResources().getString(R.string.hydrogen_fluoride), getResources().getString(R.string.hydrogen_cyanide), getResources().getString(R.string.acetic_acid), getResources().getString(R.string.hydrogen_sulfide), getResources().getString(R.string.carbonic_acid), getResources().getString(R.string.sulfuric_acid), getResources().getString(R.string.oxalic_acid), getResources().getString(R.string.phosphoric_acid), getResources().getString(R.string.arsenic_acid), getResources().getString(R.string.boric_acid), getResources().getString(R.string.citric_acid), getResources().getString(R.string.edta)};
-                builderB.setItems(slots, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        u2 = new User(which+1, u2.slot);
-                        for (EditText el : ETs) el.setVisibility(View.VISIBLE);
-                        nTxt.setEnabled(false);
-                        ManBtn.setEnabled(false);
-                        // privremeno
-                        AcidBaseSwInp.setChecked(!u2.acid);
-                        KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
-                        nTxt.setText(String.format(Locale.US, "%s", u2.n));
-                        u2.ent = false;
-                        if (s1.Entered.size() != 0) IgnoreList.add(3);
-                    }
-                });
-
-                builderB.setNegativeButton("Switch to manual", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ManBtn.performClick();
-                    }
-                });
-
-                // create and show the alert dialog
-                dialogB = builderB.create();
-                dialogB.show();
-            }
-        });
 
         SaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +110,6 @@ public class AddComponentActivity extends AppCompatActivity {
                         el.setEnabled(false);
                         el.setError(null);
                     }
-                    ManBtn.setEnabled(false);
-                    AutoBtn.setEnabled(false);
                     AcidBaseSwInp.setEnabled(false);
                     if (u2.n > 0) {
                         KTxtIL.setVisibility(View.VISIBLE);
@@ -465,5 +410,62 @@ public class AddComponentActivity extends AppCompatActivity {
             u2.Valid[i] = 0;
         } else u2.Valid[i] = 1;
         if (u2.AllInputsValid(IgnoreList)) SaveBtn.setEnabled(true);
+    }
+    public void Initialize(int RC) {
+        switch (RC) {
+            case 1:
+                try {
+                    if (s1.Entered.size() != 0) {
+                        VTxt.setEnabled(false);
+                        VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
+                    }// else if (choice == 0) AutoBtn.setEnabled(false);
+                    SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
+                    AcidBaseSwInp.setEnabled(false);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                for (EditText el : ETs) el.setVisibility(View.VISIBLE);
+                SaveBtn.setVisibility(View.VISIBLE);
+                u2.ion = "A";
+                u2.ent = true;
+                if ((s1.Entered.size() != 0) && !VTxt.getText().toString().matches(""))
+                    IgnoreList.add(3);
+                nTxt.setEnabled(true);
+                AcidBaseSwInp.setEnabled(true);
+                nTxt.setText("");
+                break;
+            case 2:
+                AlertDialog.Builder builderB = new AlertDialog.Builder(AddComponentActivity.this);
+                builderB.setTitle("Choose an acid");
+
+                String[] slots = {getResources().getString(R.string.hydrogen_chloride), getResources().getString(R.string.hydrogen_fluoride), getResources().getString(R.string.hydrogen_cyanide), getResources().getString(R.string.acetic_acid), getResources().getString(R.string.hydrogen_sulfide), getResources().getString(R.string.carbonic_acid), getResources().getString(R.string.sulfuric_acid), getResources().getString(R.string.oxalic_acid), getResources().getString(R.string.phosphoric_acid), getResources().getString(R.string.arsenic_acid), getResources().getString(R.string.boric_acid), getResources().getString(R.string.citric_acid), getResources().getString(R.string.edta)};
+                builderB.setItems(slots, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        u2 = new User(which + 1, u2.slot);
+                        for (EditText el : ETs) el.setVisibility(View.VISIBLE);
+                        nTxt.setEnabled(false);
+                        // privremeno
+                        AcidBaseSwInp.setChecked(!u2.acid);
+                        KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
+                        nTxt.setText(String.format(Locale.US, "%s", u2.n));
+                        u2.ent = false;
+                        if (s1.Entered.size() != 0) IgnoreList.add(3);
+                    }
+                });
+
+                builderB.setNegativeButton("Switch to manual", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Initialize(1);
+                    }
+                });
+
+                // create and show the alert dialog
+                dialogB = builderB.create();
+                dialogB.show();
+                break;
+        }
     }
 }
