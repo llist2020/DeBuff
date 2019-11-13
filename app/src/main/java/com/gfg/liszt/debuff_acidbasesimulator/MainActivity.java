@@ -29,7 +29,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                         if (checked){
-                            s1.GenerateEquivalencePtsTags(TitX);
+                            s1.GenerateEquivalencePtsTags(TitX, MainActivity.this);
                         }
                         else{
                             TitX.removeAllLimitLines();
@@ -271,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
                             BarDataSet barDataSet = new BarDataSet(getData(s1.getComponentByBtnId(id)), "DeBuff Component's species composition percent");
                             barDataSet.setBarBorderWidth(0.9f);
-                            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                            barDataSet.setColors(getColorSet(s1.n));
                             BarData barData = new BarData(barDataSet);
                             IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
                             bChartX.setValueFormatter(formatter);
@@ -369,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void Rst(@NonNull TextView[] Texts){
+    void Rst(@NonNull TextView[] Texts){
         for (TextView el : Texts) {
             el.setVisibility(View.GONE); // Remove the yet-to-calculate values
         }
@@ -389,5 +388,19 @@ public class MainActivity extends AppCompatActivity {
             species[Comp.n-i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
         }
         return entries;
+    }
+    static int manipulateColor(int color, float factor) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] = 1.0f - factor * (1.0f - hsv[2]);
+        color = Color.HSVToColor(hsv);
+        return(color);
+    }
+    int[] getColorSet(int n){
+        int[] out = new int[n+1];
+        for (int i = 0; i<n+1; i++){
+            out[i] = manipulateColor(MainActivity.this.getResources().getColor(R.color.colorPrimary), (float) 2*i/(n+1)+0.1f);
+        }
+        return(out);
     }
 }

@@ -1,6 +1,7 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
 import android.graphics.Color;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -198,7 +199,7 @@ public class Solution implements Parcelable {
         return(lineEntries);
     }
 
-    void GenerateEquivalencePtsTags(@NotNull XAxis x){
+    void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(R.color.plav);
@@ -212,22 +213,30 @@ public class Solution implements Parcelable {
         int a;
         String s;
         LimitLine ll1;
+        ArrayList<Integer> cl = new ArrayList<>();
+        cl.add(R.color.f0);
+        cl.add(R.color.f1);
+        cl.add(R.color.f2);
+        cl.add(R.color.f3);
+        cl.add(R.color.f4);
+
         for (Component C: comps){
             a = C.acid ? -1 : 1;
             OverTitrated = a*cn + C.cu*C.n < 0;
             if (!OverTitrated){
-                EqPtVol0 = a*(-C.cu*V/l+cn);
+                EqPtVol0 = a*(-C.cu*V+cn*V)/l;
                 double EqPtVol = Math.abs(C.cu*V/l);
-                for (int i = (int)(EqPtVol0/EqPtVol)-1; i<C.n; i++){
+                for (int i = 0; i<C.n; i++){
                     s = "";
                     if (i != C.n - 1) {
                         s+=(("(pKa")+(i + 1)+("+")+("pKa")+(i + 2)+(")/2"));
                     }
                     if (i == 0 && Math.abs(EqPtVol0)>0){
                         ll1 = new LimitLine((float)EqPtVol0, s);
-                    } else{
+                    } else if (Math.abs(cn)>0) {
                         ll1 = new LimitLine((float)(i*EqPtVol+EqPtVol0), s);
-                    }
+                    } else continue;
+                    ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
                     ll1.setLineWidth(4f);
                     ll1.enableDashedLine(10f, 10f, 0f);
                     if (i%2==0){

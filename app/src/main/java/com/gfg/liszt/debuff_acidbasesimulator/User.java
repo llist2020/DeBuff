@@ -196,7 +196,7 @@ class User {
 
     // a simple function used at data collection
     boolean AllInputsValid(ArrayList<Integer> IgnList){
-        for (int t: Valid) if ((t == 0) && !IgnList.contains(t)) return (false);
+        for (int t = 0; t<Valid.length; t++) if ((Valid[t] == 0) && !IgnList.contains(t)) return (false);
         return(true);
     }
 
