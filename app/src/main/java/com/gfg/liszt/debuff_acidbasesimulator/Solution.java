@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -199,6 +200,13 @@ public class Solution implements Parcelable {
 
     void GenerateEquivalencePtsTags(@NotNull XAxis x){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(R.color.plav);
+        colors.add(R.color.kulboja);
+        colors.add(R.color.rot);
+        colors.add(R.color.pale_green);
+        colors.add(R.color.dabadeedabadaa);
+
         double EqPtVol0;
         boolean OverTitrated;
         int a;
@@ -229,6 +237,7 @@ public class Solution implements Parcelable {
                     }
                     ll1.setTextSize(10f);
                     ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+                    ll1.setLineColor(colors.get(comps.indexOf(C)));
 
                     x.addLimitLine(ll1);
                 }
