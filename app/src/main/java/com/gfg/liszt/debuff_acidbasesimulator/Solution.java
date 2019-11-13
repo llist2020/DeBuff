@@ -1,6 +1,5 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
-import android.graphics.Color;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
@@ -201,12 +200,6 @@ public class Solution implements Parcelable {
 
     void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(R.color.plav);
-        colors.add(R.color.kulboja);
-        colors.add(R.color.rot);
-        colors.add(R.color.pale_green);
-        colors.add(R.color.dabadeedabadaa);
 
         double EqPtVol0;
         boolean OverTitrated;
@@ -214,14 +207,16 @@ public class Solution implements Parcelable {
         String s;
         LimitLine ll1;
         ArrayList<Integer> cl = new ArrayList<>();
-        cl.add(R.color.f0);
-        cl.add(R.color.f1);
-        cl.add(R.color.f2);
-        cl.add(R.color.f3);
-        cl.add(R.color.f4);
+        cl.add(R.color.plav);
+        cl.add(R.color.kulboja);
+        cl.add(R.color.rot);
+        cl.add(R.color.pale_green);
+        cl.add(R.color.dabadeedabadaa);
 
         for (Component C: comps){
-            a = C.acid ? -1 : 1;
+            a = (C.acid && l>0)||(!C.acid && l<0) ? -1 : 1;
+            System.out.println("TITDATA");
+            System.out.println(a);
             OverTitrated = a*cn + C.cu*C.n < 0;
             if (!OverTitrated){
                 EqPtVol0 = a*(-C.cu*V+cn*V)/l;
@@ -246,7 +241,7 @@ public class Solution implements Parcelable {
                     }
                     ll1.setTextSize(10f);
                     ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
-                    ll1.setLineColor(colors.get(comps.indexOf(C)));
+                    ll1.setLineColor(cl.get(comps.indexOf(C)));
 
                     x.addLimitLine(ll1);
                 }
