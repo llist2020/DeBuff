@@ -200,20 +200,23 @@ public class Solution implements Parcelable {
 
     void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+
         double EqPtVol0;
         boolean OverTitrated;
         int a;
         String s;
         LimitLine ll1;
         ArrayList<Integer> cl = new ArrayList<>();
-        cl.add(R.color.f0);
-        cl.add(R.color.f1);
-        cl.add(R.color.f2);
-        cl.add(R.color.f3);
-        cl.add(R.color.f4);
+        cl.add(R.color.plav);
+        cl.add(R.color.kulboja);
+        cl.add(R.color.rot);
+        cl.add(R.color.pale_green);
+        cl.add(R.color.dabadeedabadaa);
 
         for (Component C: comps){
-            a = C.acid ? -1 : 1;
+            a = (C.acid && l>0)||(!C.acid && l<0) ? -1 : 1;
+            System.out.println("TITDATA");
+            System.out.println(a);
             OverTitrated = a*cn + C.cu*C.n < 0;
             if (!OverTitrated){
                 EqPtVol0 = a*(-C.cu*V+cn*V)/l;
@@ -238,6 +241,7 @@ public class Solution implements Parcelable {
                     }
                     ll1.setTextSize(10f);
                     ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+                    ll1.setLineColor(cl.get(comps.indexOf(C)));
 
                     x.addLimitLine(ll1);
                 }
