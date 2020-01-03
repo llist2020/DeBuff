@@ -67,7 +67,7 @@ public class AddComponentActivity extends AppCompatActivity {
             Request_Code = getIntent().getIntExtra("req_c", 0);
             s1 = getIntent().getParcelableExtra("Solution");
             u2 = new User(0, s1.Slot());
-            SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
+            SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
             if (s1.Entered.size() != 0) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
@@ -304,7 +304,7 @@ public class AddComponentActivity extends AppCompatActivity {
                             builder.setPositiveButton("Overwrite", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
+                                    SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -318,7 +318,7 @@ public class AddComponentActivity extends AppCompatActivity {
                             AlertDialog alert = builder.create();
                             alert.show();
                         } else{
-                            SlotBtn.setText(getString(R.string.slot)+(u2.slot+1));
+                            SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
                         }
                     }
                 });

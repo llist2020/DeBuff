@@ -12,6 +12,7 @@ import android.widget.Switch;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 /**
  * @author L. List
@@ -137,33 +139,62 @@ public class Solution implements Parcelable {
             cn = cn * V / (V + v);
             System.out.println(e.getMessage());
         }
+        if (Math.abs(cn)<Math.pow(10, -14)) cn = 0;
         V += v;
     }
 
-    ArrayList<Entry> GenerateTitrationGraphData(Switch s, double titV){
-        ArrayList<Entry> lineEntries = new ArrayList<>();
-        Poly p2;
+    ArrayList<LineDataSet> GenerateTitrationGraphData(Switch s, double titV, int indicator, Context context){
+        ArrayList<ArrayList<Entry>> lineEntries = new ArrayList<>();
+        lineEntries.add(new ArrayList<Entry>());
+        lineEntries.add(new ArrayList<Entry>());
+
+        ArrayList<LineDataSet> out = new ArrayList<>();
+        out.add(new LineDataSet(lineEntries.get(0), "pH - V [ml]"));
+        out.add(new LineDataSet(lineEntries.get(1), null));
+
+        double IndShift = AssignIndicator(out, indicator, context);
+
+        Poly p2 = new Poly(getDic());
+        double v = 0;
+        MainFunction(p2);
+        int cache = h<IndShift ? 0 : 1;
         if (l != 0) {
-            if (s.isChecked()) {
-                // titrirano bazom
-
-                l = Math.abs(l);
-            } else {
-                // titrirano kiselinom
-
-                l = -Math.abs(l);
-            }
+            if (s.isChecked()) l = Math.abs(l);
+            else l = -Math.abs(l);
         }
-        double v = Math.abs(titV/(30*n));
+        if (n!=0) v = Math.abs(titV/(30*n));
 
         for (int i = 0; i<30*n; i++){
             Titrate(v, s);
             p2 = new Poly(getDic());
             MainFunction(p2);
-            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+            if (cache != (h<IndShift ? 0 : 1)){
+                Titrate(-99*v/100, s);
+                for (int j = 0; j<98; j++){
+                    p2 = new Poly(getDic());
+                    MainFunction(p2);
+                    lineEntries.get(h<IndShift ? 0 : 1).add(new Entry(Float.parseFloat(String.valueOf((i-0.99+j/100.0)*v)), (float)h));
+                    Titrate(v/100, s);
+                }
+                p2 = new Poly(getDic());
+                MainFunction(p2);
+                lineEntries.get(0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+                lineEntries.get(1).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+                Titrate(v/100, s);
+                p2 = new Poly(getDic());
+                MainFunction(p2);
+                lineEntries.get(cache==0 ? 1 : 0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+            }
+            cache = h<IndShift ? 0 : 1;
+            lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+            lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
         Titrate(-30*n*v, s);
-        return(lineEntries);
+
+        out.get(0).setValues(lineEntries.get(0));
+        out.get(1).setValues(lineEntries.get(1));
+
+        return(out);
     }
 
     ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s){
@@ -201,49 +232,60 @@ public class Solution implements Parcelable {
     void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
 
-        double EqPtVol0;
+        double EqPtVol0, EqPtVol;
         boolean OverTitrated;
-        int a;
-        String s;
+        int CrntEqPt;
+        String s, tag;
         LimitLine ll1;
         ArrayList<Integer> cl = new ArrayList<>();
-        cl.add(R.color.plav);
         cl.add(R.color.kulboja);
-        cl.add(R.color.rot);
-        cl.add(R.color.pale_green);
+        cl.add(R.color.plav);
         cl.add(R.color.dabadeedabadaa);
+        cl.add(R.color.pale_green);
+        cl.add(R.color.rot);
 
         for (Component C: comps){
-            a = (C.acid && l>0)||(!C.acid && l<0) ? -1 : 1;
-            System.out.println("TITDATA");
-            System.out.println(a);
-            OverTitrated = a*cn + C.cu*C.n < 0;
-            if (!OverTitrated){
-                EqPtVol0 = a*(-C.cu*V+cn*V)/l;
-                double EqPtVol = Math.abs(C.cu*V/l);
-                for (int i = 0; i<C.n; i++){
-                    s = "";
-                    if (i != C.n - 1) {
-                        s+=(("(pKa")+(i + 1)+("+")+("pKa")+(i + 2)+(")/2"));
-                    }
-                    if (i == 0 && Math.abs(EqPtVol0)>0){
-                        ll1 = new LimitLine((float)EqPtVol0, s);
-                    } else if (Math.abs(cn)>0) {
-                        ll1 = new LimitLine((float)(i*EqPtVol+EqPtVol0), s);
-                    } else continue;
-                    ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
-                    ll1.setLineWidth(4f);
-                    ll1.enableDashedLine(10f, 10f, 0f);
-                    if (i%2==0){
-                        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-                    } else{
-                        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-                    }
-                    ll1.setTextSize(10f);
-                    ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
-                    ll1.setLineColor(cl.get(comps.indexOf(C)));
+            tag = (C.acid) ? "a" : "b";
 
-                    x.addLimitLine(ll1);
+            if (Math.abs(cn)>Math.pow(10, -15)) CrntEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
+            else CrntEqPt = 0;
+            System.out.println("Tagggg");
+            System.out.println(cn);
+            System.out.println(cn/C.cu);
+            System.out.println(Math.floor(cn/C.cu));
+            System.out.println(CrntEqPt);
+
+            OverTitrated = CrntEqPt > C.n;
+            if (!OverTitrated){
+                EqPtVol0 = (C.cu * (l<Math.pow(10, -15) ? -1 : 1) - cn) * V / l;
+                EqPtVol = Math.abs(C.cu*V/l);
+                System.out.println(EqPtVol0);
+                System.out.println(EqPtVol);
+
+                for (int i = CrntEqPt; i<C.n+1; i++){
+                    if (i>0){
+                        System.out.println(i);
+                        s = "";
+                        if (i != C.n) {
+                            s += (("(pK") + tag + i + ("+") + ("pK") + tag + (i + 1) + (")/2"));
+                        }
+                        ll1 = new LimitLine((float) (EqPtVol0 + EqPtVol * (i-CrntEqPt-1)), s);
+
+                        ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
+                        ll1.setLineWidth(4f);
+                        ll1.enableDashedLine(10f, 10f, 0f);
+                        if (i % 2 == 0) {
+                            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+                        } else {
+                            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+                        }
+
+                        ll1.setTextSize(10f);
+                        ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+                        ll1.setLineColor(cl.get(comps.indexOf(C)));
+
+                        x.addLimitLine(ll1);
+                    }
                 }
             }
         }
@@ -256,6 +298,29 @@ public class Solution implements Parcelable {
             fin[a] += Math.pow(-1, a)*comp.n*comp.cu;
         }
         return(fin);
+    }
+
+    private double AssignIndicator(ArrayList<LineDataSet> DataSets, int IndicatorCode, Context context){
+        switch (IndicatorCode){
+            case 0: // phph
+                DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.transparent));
+                DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.phenolphtalein));
+                DataSets.get(0).setFillAlpha(100);
+                DataSets.get(1).setFillAlpha(25);
+                return(8.2);
+            case 1: // MO
+                DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.f1));
+                DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.f3));
+                DataSets.get(0).setFillAlpha(25);
+                DataSets.get(1).setFillAlpha(25);
+                return(3.5);
+            default:
+                DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                DataSets.get(0).setFillAlpha(25);
+                DataSets.get(1).setFillAlpha(25);
+                return(100);
+        }
     }
 
     // functions used to manipulate the provided data and generate

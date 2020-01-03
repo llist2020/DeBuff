@@ -1,5 +1,6 @@
 package com.gfg.liszt.debuff_acidbasesimulator;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,27 +39,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
-    public User u1;
+    private User u1;
     private Poly p1;
     private Solution s1;
     private TextView[] ConcentrationTextViews;
-    private EditText TitTxt;
-    private EditText VolTitTxt;
-    private Button TitBtn;
+    private EditText TitTxt, VolTitTxt;
+    private TextView pHVw;
+    private Button TitBtn, GraphBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
-    private TextView pHVw;
+    private String[] species;
+    private ArrayList<BarEntry> Entries, oldEntries;
     private BarChart barChart;
     private XAxis bChartX;
-    private String[] species;
-    private ArrayList<BarEntry> Entries;
-    private ArrayList<BarEntry> oldEntries;
     private Dialog GraphShow;
+    private AlertDialog dialogInd;
     private final static int REQUEST_CODE_Manual = 1;
     private final static int REQUEST_CODE_Auto = 2;
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
-        Button graphBtn = findViewById(R.id.GraphBtn);
+        GraphBtn = findViewById(R.id.GraphBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        graphBtn.setOnClickListener(new View.OnClickListener() {
+        GraphBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GraphShow = new BottomSheetDialog(MainActivity.this);
@@ -184,11 +183,41 @@ public class MainActivity extends AppCompatActivity {
                 CheckBox CBEqPts = GraphShow.findViewById(R.id.CheckBoxEqPts);
                 //CheckBox CBHalfEqPts = GraphShow.findViewById(R.id.CheckBoxHalfEqPts);
                 final LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
+                TitChart.getAxisRight().setEnabled(false);
                 final XAxis TitX = TitChart.getXAxis();
                 GraphShow.findViewById(R.id.okBtn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         GraphShow.dismiss();
+                    }
+                });
+                GraphShow.findViewById(R.id.indBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // setup the alert builder
+                        AlertDialog.Builder builderA = new android.app.AlertDialog.Builder(MainActivity.this);
+                        builderA.setTitle("Choose a slot to write on");
+
+                        // add a radio button list
+                        String[] indicators = {"Phenolphthalein", "Methyl Orange", "none"};
+                        builderA.setSingleChoiceItems(indicators, u1.indicator, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                u1.indicator = which;
+                            }
+                        });
+                        builderA.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TitChart.setData(PrepareGraphData(u1.indicator));
+                                TitChart.invalidate();
+                            }
+                        });
+                        builderA.setNegativeButton("Cancel", null);
+
+                        // create and show the alert dialog
+                        dialogInd = builderA.create();
+                        dialogInd.show();
                     }
                 });
 
@@ -222,24 +251,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))) {
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
                         } else{
-                            LineDataSet LDS = new LineDataSet(s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString())), "pH-V");
-                            LDS.setAxisDependency(YAxis.AxisDependency.LEFT);
-                            LDS.setHighlightEnabled(true);
-                            LDS.setLineWidth(2);
-                            // lineDataSet.setColor(getColor("defaultBlue"));
-                            LDS.setDrawHighlightIndicators(true);
-                            LDS.setHighLightColor(Color.RED);
-                            LDS.setValueTextSize(12);
-                            // lineDataSet.setValueTextColor(getColor("primaryDark"));
-                            LDS.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                            LDS.setDrawFilled(true);
-                            LDS.setDrawValues(false);
-                            LDS.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-                            LDS.setColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                            LDS.setFillAlpha(25);
-                            LDS.setDrawCircles(false);
-
-                            LineData lineData = new LineData(LDS);
+                            LineData lineData = PrepareGraphData(u1.indicator);
                             GraphShow.show();
 
                             TitChart.getDescription().setText("");
@@ -281,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                             u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
                             s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
 
-                            BarDataSet barDataSet = new BarDataSet(getData(s1.getComponentByBtnId(id)), "DeBuff Component's species composition percent");
+                            BarDataSet barDataSet = new BarDataSet(getData(s1.getComponentByBtnId(id)), "Species composition percent");
                             barDataSet.setBarBorderWidth(0.9f);
                             barDataSet.setColors(getColorSet(s1.n));
                             BarData barData = new BarData(barDataSet);
@@ -325,6 +337,8 @@ public class MainActivity extends AppCompatActivity {
             TitTxt.setEnabled(true);
             VolTitTxt.setEnabled(true);
             TitBtn.setEnabled(true);
+            GraphBtn.setEnabled(true);
+
             int ch;
             try{
                 ch = s1.Entered.get(s1.Entered.size()-1);
@@ -417,5 +431,30 @@ public class MainActivity extends AppCompatActivity {
             out[i] = manipulateColor(MainActivity.this.getResources().getColor(R.color.colorPrimary), (float) 3*i/(n+1)+0.1f);
         }
         return(out);
+    }
+    LineData PrepareGraphData(int Indicator){
+        ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this);
+        LineDataSet LDSa = DataSets.get(0);
+        LineDataSet LDSb = DataSets.get(1);
+
+        for (LineDataSet el: new LineDataSet[] {LDSa, LDSb}){
+            el.setAxisDependency(YAxis.AxisDependency.LEFT);
+            el.setHighlightEnabled(true);
+            el.setLineWidth(2);
+            // lineDataSet.setColor(getColor("defaultBlue"));
+            el.setDrawHighlightIndicators(true);
+            el.setHighLightColor(Color.RED);
+            el.setValueTextSize(12);
+            // lineDataSet.setValueTextColor(getColor("primaryDark"));
+            el.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            el.setDrawFilled(true);
+            el.setDrawValues(false);
+            // el.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+            // boju ispod crte ne diramo - odrazava boju indikatora
+            el.setColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+            el.setDrawCircles(false);
+        }
+
+        return(new LineData(LDSa, LDSb));
     }
 }

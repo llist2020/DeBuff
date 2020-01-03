@@ -29,7 +29,7 @@ class User {
     String ion;
     double V = 10;
     int[] Valid;
-    int slot;
+    int slot, indicator = 2;
 
     User(int number, double OvC, double CatC, double Vol, String IonName, int Slot){
         n = number;
@@ -309,7 +309,7 @@ class User {
         }
     }
 
-    public int RButt(int id) {
+    int RButt(int id) {
         switch (id) {
             case R.id.rBtn0:
                 return (0);

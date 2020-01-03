@@ -64,7 +64,7 @@
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Slot"
+        android:text="@string/Slot"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 

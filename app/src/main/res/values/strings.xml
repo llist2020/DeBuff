@@ -30,6 +30,10 @@
     <string name="InputD">Solution volume [ml]:</string>
     <string name="Next">Next</string>
     <string name="Save">Save</string>
+    <string name="Close">Close</string>
+    <string name="Show">Show equivalence points</string>
+    <string name="Slot">Slot %d</string>
+    <string name="Ind">Select indicator</string>
     <string name="Manual">Manual</string>
     <string name="Auto">Pre-saved</string>
     <string name="hydrogen_chloride" translatable="false">HCl</string>
@@ -51,6 +55,5 @@
     <string name="ChooseD">2-PROTIC</string>
     <string name="ChooseE">3-PROTIC</string>
     <string name="ChooseF">4-PROTIC</string>
-    <string name="slot">Slot</string>
     <!-- <string name=""></string> !-->
 </resources>
