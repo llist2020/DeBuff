@@ -30,7 +30,7 @@ import androidx.core.content.ContextCompat;
 public class Solution implements Parcelable {
     private List<Component> comps;
     private double[] dic;
-    int n;
+    int n, TitInd;
     final double kw=Math.pow(10, -14);
     double cu = 0, l, V;
     private double cn = 0, h;
@@ -57,8 +57,8 @@ public class Solution implements Parcelable {
     comps.get(0).ion = u.ion;
 }
 
-    void AddComp(@NotNull User u, boolean sw){
-        if (u.slot<4){
+    void AddComp(@NotNull User u, boolean sw, boolean initial){
+        if (u.slot < 4  || (u.slot == 5 && !initial && NoTitrantAssigned())){
             int ind = 0;
             try{
                 if (!Entered.contains(u.slot)){
@@ -72,6 +72,10 @@ public class Solution implements Parcelable {
                     comps.set(Entered.indexOf(u.slot), new Component(u));
                     ind = Entered.indexOf(u.slot);
                 }
+                if (!initial){
+                    TitInd = ind;
+                    comps.get(ind).ConvertToTitrant();
+                }
             } catch(Exception e){
                 // error
                 System.out.println(e.getMessage());
@@ -83,7 +87,7 @@ public class Solution implements Parcelable {
             dic = new double[n+3];
             comps.get(ind).V = V;
             comps.get(ind).acid = !sw;
-            for(int i=0; i<Slot(); i++){
+            for(int i=0; i<Entered.size(); i++){
                 comps.get(i).SetCn(cn);
             }
             if (u.ent){
@@ -91,6 +95,7 @@ public class Solution implements Parcelable {
             }
             u.SetAcid(!sw);
             comps.get(ind).ion = u.ion;
+            comps.get(ind).titrant = !initial;
         }
     }
 
@@ -118,8 +123,8 @@ public class Solution implements Parcelable {
     }
 
     // updates the data describing the (ideal) acid/base content
-    void Titrate(double v, Switch s){
-        if (l != 0) {
+    void Titrate(double v, Switch s, boolean custom){
+        if (l != 0 && !custom) {
             if (s.isChecked()) {
                 l = Math.abs(l);
             } else {
@@ -133,6 +138,10 @@ public class Solution implements Parcelable {
                 // component error
             }
         }
+        if (custom) {
+            comps.get(TitInd).cu += comps.get(TitInd).ul * v / (V + v);
+            l = comps.get(TitInd).l;
+        }
         try {
             cn = (cn * V + l * v) / (V + v);
         } catch(Exception e){
@@ -143,7 +152,7 @@ public class Solution implements Parcelable {
         V += v;
     }
 
-    ArrayList<LineDataSet> GenerateTitrationGraphData(Switch s, double titV, int indicator, Context context){
+    ArrayList<LineDataSet> GenerateTitrationGraphData(Switch s, double titV, int indicator, Context context, boolean custom){
         ArrayList<ArrayList<Entry>> lineEntries = new ArrayList<>();
         lineEntries.add(new ArrayList<Entry>());
         lineEntries.add(new ArrayList<Entry>());
@@ -165,22 +174,22 @@ public class Solution implements Parcelable {
         if (n!=0) v = Math.abs(titV/(30*n));
 
         for (int i = 0; i<30*n; i++){
-            Titrate(v, s);
+            Titrate(v, s, custom);
             p2 = new Poly(getDic());
             MainFunction(p2);
             if (cache != (h<IndShift ? 0 : 1)){
-                Titrate(-99*v/100, s);
+                Titrate(-99*v/100, s, custom);
                 for (int j = 0; j<98; j++){
                     p2 = new Poly(getDic());
                     MainFunction(p2);
                     lineEntries.get(h<IndShift ? 0 : 1).add(new Entry(Float.parseFloat(String.valueOf((i-0.99+j/100.0)*v)), (float)h));
-                    Titrate(v/100, s);
+                    Titrate(v/100, s, custom);
                 }
                 p2 = new Poly(getDic());
                 MainFunction(p2);
                 lineEntries.get(0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
                 lineEntries.get(1).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
-                Titrate(v/100, s);
+                Titrate(v/100, s, custom);
                 p2 = new Poly(getDic());
                 MainFunction(p2);
                 lineEntries.get(cache==0 ? 1 : 0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
@@ -189,7 +198,7 @@ public class Solution implements Parcelable {
             lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
             lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
-        Titrate(-30*n*v, s);
+        Titrate(-30*n*v, s, custom);
 
         out.get(0).setValues(lineEntries.get(0));
         out.get(1).setValues(lineEntries.get(1));
@@ -197,7 +206,7 @@ public class Solution implements Parcelable {
         return(out);
     }
 
-    ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s){
+    ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s, boolean custom){
         ArrayList<Entry> lineEntries = new ArrayList<>();
         double cnCache = cn;
         Poly p2;
@@ -219,12 +228,12 @@ public class Solution implements Parcelable {
         double v = Math.abs(V*Eq/l/(30*(n-0.5)));
 
         for (int i = 0; i<30*n; i++){
-            Titrate(v, s);
+            Titrate(v, s, custom);
             p2 = new Poly(getDic());
             MainFunction(p2);
             lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
-        Titrate(-30*n*v, s);
+        Titrate(-30*n*v, s, custom);
         cn = cnCache;
         return(lineEntries);
     }
@@ -321,6 +330,14 @@ public class Solution implements Parcelable {
                 DataSets.get(1).setFillAlpha(25);
                 return(100);
         }
+    }
+
+    @Contract(pure = true)
+    private boolean NoTitrantAssigned(){
+        for (Component c: comps){
+            if (c.titrant) return(false);
+        }
+        return(true);
     }
 
     // functions used to manipulate the provided data and generate
@@ -466,6 +483,7 @@ public class Solution implements Parcelable {
         out.writeList(comps);
         out.writeDoubleArray(dic);
         out.writeInt(n);
+        out.writeInt(TitInd);
         out.writeDouble(cu);
         out.writeDouble(l);
         out.writeDouble(V);
@@ -488,6 +506,7 @@ public class Solution implements Parcelable {
         in.readList(comps, Component.class.getClassLoader());
         dic = in.createDoubleArray();
         n = in.readInt();
+        TitInd = in.readInt();
         cu = in.readDouble();
         l = in.readDouble();
         V = in.readDouble();

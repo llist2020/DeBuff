@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.mikephil.charting.charts.BarChart;
@@ -48,18 +49,21 @@ public class MainActivity extends AppCompatActivity {
     private Solution s1;
     private TextView[] ConcentrationTextViews;
     private EditText TitTxt, VolTitTxt;
-    private TextView pHVw;
+    private TextView pHVw, SelectedVw;
     private Button TitBtn, GraphBtn;
+    private ToggleButton CustomTitBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
-    private String[] species;
     private ArrayList<BarEntry> Entries, oldEntries;
     private BarChart barChart;
     private XAxis bChartX;
     private Dialog GraphShow;
     private AlertDialog dialogInd;
+    private String[] species;
+
     private final static int REQUEST_CODE_Manual = 1;
     private final static int REQUEST_CODE_Auto = 2;
+    private final static int REQUEST_CODE_Titrant = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +73,13 @@ public class MainActivity extends AppCompatActivity {
         TitTxt = findViewById(R.id.TitTxt);
         VolTitTxt = findViewById(R.id.VolTitTxt);
         TitBtn = findViewById(R.id.TitBtn);
+        CustomTitBtn = findViewById(R.id.CustomTitBtn);
         GraphBtn = findViewById(R.id.GraphBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
         barChart = findViewById(R.id.ConcentrationChart);
+        SelectedVw = findViewById(R.id.SelectedView);
         final TextView cVwx = findViewById(R.id.cVwx);
         final TextView cTxtX = findViewById(R.id.cTxtX);
         final TextView solutionVol = findViewById(R.id.solutionVol);
@@ -141,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     int id = rBtnGrp.getCheckedRadioButtonId();
                     s1.l = Double.parseDouble(TitTxt.getText().toString());
+                    if (CustomTitBtn.isChecked()) s1.getComps().get(s1.TitInd).SetTitrantConcentration(s1.l);
                     if (Math.abs(s1.l) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
                         if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
@@ -149,9 +156,8 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
-                        }
-                        else{
-                            s1.Titrate(Double.parseDouble(VolTitTxt.getText().toString()), AcidBaseSw);
+                        } else{
+                            s1.Titrate(Double.parseDouble(VolTitTxt.getText().toString()), AcidBaseSw, CustomTitBtn.isChecked());
                             p1 = new Poly(s1.getDic());
                             pHVw.setText(s1.MainFunction(p1));
                             u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
@@ -170,6 +176,21 @@ public class MainActivity extends AppCompatActivity {
                     if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
                         ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
+                }
+            }
+        });
+
+        CustomTitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (CustomTitBtn.isChecked()){
+                    AcidBaseSw.setEnabled(false);
+                    Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
+                    intent.putExtra("req_c", REQUEST_CODE_Titrant);
+                    intent.putExtra("Solution", s1);
+                    startActivityForResult(intent, REQUEST_CODE_Titrant);
+                } else{
+                    AcidBaseSw.setEnabled(true);
                 }
             }
         });
@@ -224,33 +245,32 @@ public class MainActivity extends AppCompatActivity {
                 CBEqPts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                        if (checked){
+                        if (checked) {
                             s1.GenerateEquivalencePtsTags(TitX, MainActivity.this);
-                        }
-                        else{
+                        } else {
                             TitX.removeAllLimitLines();
                         }
                         TitChart.invalidate();
                     }
                 });
 
-                try{
+                try {
                     ((TextInputLayout) (TitTxt.getParent()).getParent()).setError(null);
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     s1.l = Double.parseDouble(TitTxt.getText().toString());
                     if (Math.abs(s1.l) > 50 || String.valueOf(s1.l).matches("0.0")) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
-                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
-                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
-                        } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))){
-                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
-                        }
-                    } else {
-                        if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
+                        if (Double.parseDouble(VolTitTxt.getText().toString()) > 2000) {
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
                         } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))) {
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
-                        } else{
+                        }
+                    } else {
+                        if (Double.parseDouble(VolTitTxt.getText().toString()) > 2000) {
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
+                        } else if ((String.valueOf(Double.parseDouble(VolTitTxt.getText().toString())).matches("0.0"))) {
+                            ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("No titration?");
+                        } else {
                             LineData lineData = PrepareGraphData(u1.indicator);
                             GraphShow.show();
 
@@ -266,20 +286,28 @@ public class MainActivity extends AppCompatActivity {
                             TitX.setGranularityEnabled(true);
                             TitX.setDrawGridLines(false);
                             TitX.setGranularity(Float.parseFloat(String.valueOf(
-                                    s1.V*(s1.GetEq()[0]-s1.GetEq()[1])/s1.l/5)));
+                                    s1.V * (s1.GetEq()[0] - s1.GetEq()[1]) / s1.l / 5)));
                             TitX.setLabelCount(6);
 
                             TitChart.setData(lineData);
                         }
                     }
-                } catch(Exception e) {
-                    if (TitTxt.getText().toString().matches(".") || (TitTxt.getText().toString().matches(""))){
+                } catch (Exception e) {
+                    if (TitTxt.getText().toString().matches(".") || (TitTxt.getText().toString().matches(""))) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
-                    if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))){
+                    if (VolTitTxt.getText().toString().matches(".") || (VolTitTxt.getText().toString().matches(""))) {
                         ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Invalid input!");
                     }
                 }
+            }
+        });
+
+        AcidBaseSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) SelectedVw.setText("NaOH");
+                else SelectedVw.setText("HCl");
             }
         });
 
@@ -327,7 +355,6 @@ public class MainActivity extends AppCompatActivity {
         // String messageReturn = dataIntent.getStringExtra("message_return");
 
         if (requestCode == REQUEST_CODE_Auto || requestCode == REQUEST_CODE_Manual) {
-            System.out.println("Resumed");
             ((FloatingActionsMenu) findViewById(R.id.FabMenu)).collapse();
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
@@ -362,6 +389,22 @@ public class MainActivity extends AppCompatActivity {
             if (ch != -1) {
                 rBtnGrp.getChildAt(ch).setEnabled(true);
                 rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
+            }
+        } else if (requestCode == REQUEST_CODE_Titrant){
+            if (resultCode == RESULT_OK) {
+                s1 = dataIntent.getParcelableExtra("Solution");
+                p1 = new Poly(s1.getDic());
+
+                Rst(ConcentrationTextViews);
+                pHVw.setText(s1.MainFunction(p1));
+
+                try{
+                    SelectedVw.setText(u1.AssignConcentrations(s1.getComps().get(s1.TitInd).n, s1.getComps().get(s1.TitInd), true), TextView.BufferType.SPANNABLE);
+                    VolTitTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).vl));
+                    TitTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).ul));
+                } catch (Exception e){
+                    // no titrant
+                }
             }
         }
     }
@@ -433,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
         return(out);
     }
     LineData PrepareGraphData(int Indicator){
-        ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this);
+        ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this, false);
         LineDataSet LDSa = DataSets.get(0);
         LineDataSet LDSb = DataSets.get(1);
 

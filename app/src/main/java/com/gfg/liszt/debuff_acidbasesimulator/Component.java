@@ -19,10 +19,10 @@ import java.text.DecimalFormat;
  */
 
 public class Component extends Solution implements Parcelable {
-    boolean acid;
+    boolean acid, titrant;
     int n;
     double[] K;
-    double V, cu;
+    double V, cu, l, ul, vl;
     private double cn;
     private double[] Concentrations;
     double[] up, down;
@@ -35,6 +35,15 @@ public class Component extends Solution implements Parcelable {
         n = u.n;
         K = u.K;
         V = u.V;
+        titrant = false;
+    }
+
+    void ConvertToTitrant(){
+        vl = V;
+        ul = cu;
+        l = cn;
+        cu = 0;
+        cn = 0;
     }
 
     public double getCn(){
@@ -55,6 +64,11 @@ public class Component extends Solution implements Parcelable {
         cu = cu*V/(V+v);
         cn = cn * V/ (V + v);
         V += v;
+    }
+
+    void SetTitrantConcentration(double new_l){
+        l *= new_l/ul;
+        ul = new_l;
     }
 
     // a function setting the viewable concentration values
@@ -92,11 +106,15 @@ public class Component extends Solution implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(acid ? 1 : 0);
+        out.writeInt(titrant ? 1 : 0);
         out.writeInt(n);
         out.writeDoubleArray(K);
         out.writeDouble(V);
         out.writeDouble(cu);
         out.writeDouble(cn);
+        out.writeDouble(l);
+        out.writeDouble(ul);
+        out.writeDouble(vl);
         out.writeDoubleArray(Concentrations);
         out.writeDoubleArray(up);
         out.writeDoubleArray(down);
@@ -117,11 +135,15 @@ public class Component extends Solution implements Parcelable {
     // constructor that takes a Parcel and gives you an object populated with it's values
     private Component(@NotNull Parcel in) {
         acid = in.readInt() == 1;
+        titrant = in.readInt() == 1;
         n = in.readInt();
         K = in.createDoubleArray();
         V = in.readDouble();
         cu = in.readDouble();
         cn = in.readDouble();
+        l = in.readDouble();
+        ul = in.readDouble();
+        vl = in.readDouble();
         Concentrations = in.createDoubleArray();
         up = in.createDoubleArray();
         down = in.createDoubleArray();

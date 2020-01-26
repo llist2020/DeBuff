@@ -11,6 +11,7 @@
     <string name="Vol_unit" translatable="false">ml</string>
     <string name="Vol_declaration" translatable="false"><i>V</i> =</string>
     <string name="Ph_declaration" translatable="false"><b>pH =</b></string>
+    <string name="HeadD">Custom</string>
     <string name="HeadC">Graph</string>
     <string name="HeadB">Results</string>
     <string name="HeadA">Titrate</string>

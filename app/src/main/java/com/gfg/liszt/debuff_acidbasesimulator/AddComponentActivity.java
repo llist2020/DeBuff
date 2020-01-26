@@ -32,17 +32,12 @@ public class AddComponentActivity extends AppCompatActivity {
     private User u2;
     AlertDialog dialogA;
     AlertDialog dialogB;
-    Button SaveBtn;
-    Button NextBtn;
+    Button SaveBtn, NextBtn, SlotBtn;
     boolean AllRight;
     ArrayList<Integer> IgnoreList;
     int Request_Code;
     Switch AcidBaseSwInp;
-    EditText VTxt;
-    EditText KTxt;
-    EditText nTxt;
-    EditText cuTxt;
-    EditText cnTxt;
+    EditText VTxt, KTxt, nTxt, cuTxt, cnTxt;
     EditText[] ETs;
     TextInputLayout KTxtIL;
 
@@ -51,7 +46,7 @@ public class AddComponentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_component);
         NextBtn =  findViewById(R.id.NextBtn);
-        final Button SlotBtn = findViewById(R.id.button15);
+        SlotBtn = findViewById(R.id.button15);
         SaveBtn = findViewById(R.id.SaveBtn);
         AcidBaseSwInp = findViewById(R.id.AcidBaseSwInp);
         nTxt =  findViewById(R.id.nTxt);
@@ -66,9 +61,10 @@ public class AddComponentActivity extends AppCompatActivity {
         try{
             Request_Code = getIntent().getIntExtra("req_c", 0);
             s1 = getIntent().getParcelableExtra("Solution");
-            u2 = new User(0, s1.Slot());
+            if (Request_Code!=3) u2 = new User(0, s1.Slot());
+            else u2 = new User(0, 5);
             SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
-            if (s1.Entered.size() != 0) {
+            if (s1.Entered.size() != 0 && Request_Code!=3) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
             }// else if (choice == 0) AutoBtn.setEnabled(false);
@@ -117,8 +113,9 @@ public class AddComponentActivity extends AppCompatActivity {
                         NextBtn.performClick();
                     } else {
                         if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked());
+                        else if (s1.Slot() < 4 || Request_Code==3) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
                         u2.itt = -1;
+                        if (Request_Code==3) s1.getComps().get(s1.Entered.indexOf(u2.slot)).vl = V;
 
                         Intent intent = new Intent();
                         u2.ent = false;
@@ -128,7 +125,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     }
                 } else {
                     for (EditText el : ETs) el.setEnabled(true);
-                    if (s1.Entered.size() != 0) {
+                    if (s1.Entered.size() != 0 && Request_Code!=3) {
                         VTxt.setEnabled(false);
                         VTxt.setText(String.format(Locale.US, "%.2f", u2.V));
                     }
@@ -162,7 +159,8 @@ public class AddComponentActivity extends AppCompatActivity {
 
                     if (u2.itt == u2.n) {
                         if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked());
+                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
+                        if (Request_Code==3) s1.getComps().get(s1.Entered.indexOf(u2.slot)).vl = Double.parseDouble(VTxt.getText().toString());
 
                         u2.itt = -1;
                         Intent intent = new Intent();
@@ -263,7 +261,7 @@ public class AddComponentActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    if (s1.Entered.size() != 0) {
+                    if (s1.Entered.size() != 0 && Request_Code!=3) {
                         InputMethodManager inputManager = (InputMethodManager) AddComponentActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow(cuTxt.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     } else {
@@ -415,7 +413,7 @@ public class AddComponentActivity extends AppCompatActivity {
         switch (RC) {
             case 1:
                 try {
-                    if (s1.Entered.size() != 0) {
+                    if (s1.Entered.size() != 0 && Request_Code!=3) {
                         VTxt.setEnabled(false);
                         VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
                     }// else if (choice == 0) AutoBtn.setEnabled(false);
@@ -451,7 +449,7 @@ public class AddComponentActivity extends AppCompatActivity {
                         KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
                         nTxt.setText(String.format(Locale.US, "%s", u2.n));
                         u2.ent = false;
-                        if (s1.Entered.size() != 0) IgnoreList.add(3);
+                        if (s1.Entered.size() != 0  && Request_Code!=3) IgnoreList.add(3);
                     }
                 });
 
@@ -466,6 +464,11 @@ public class AddComponentActivity extends AppCompatActivity {
                 dialogB = builderB.create();
                 dialogB.show();
                 break;
+            case 3:
+                Initialize(2);
+                // kak da zna kam sprema ??
+                SlotBtn.setEnabled(false);
+                SlotBtn.setText("Titrant");
         }
     }
 }
