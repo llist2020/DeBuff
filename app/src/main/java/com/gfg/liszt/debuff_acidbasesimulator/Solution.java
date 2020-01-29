@@ -118,8 +118,7 @@ public class Solution implements Parcelable {
         return(dic);
     }
     Component getComponentByBtnId(int id){
-        User u2 = new User(0,0);
-        return(comps.get(Entered.indexOf(u2.RButt(id))));
+        return(comps.get(Entered.indexOf(User.RButt(id))));
     }
 
     // updates the data describing the (ideal) acid/base content

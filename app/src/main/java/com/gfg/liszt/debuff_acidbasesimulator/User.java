@@ -323,7 +323,8 @@ class User {
         }
     }
 
-    int RButt(int id) {
+    @Contract(pure = true)
+    static int RButt(int id) {
         switch (id) {
             case R.id.rBtn0:
                 return (0);

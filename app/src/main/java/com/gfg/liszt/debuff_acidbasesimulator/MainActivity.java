@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 if (id!=-1){
                     try {
-                        if (s1.Entered.contains(u1.RButt(id))){
+                        if (s1.Entered.contains(User.RButt(id))){
                             Rst(ConcentrationTextViews);
                             u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
                             s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
