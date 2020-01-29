@@ -137,7 +137,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:visibility="gone"
-                            android:text="Edit" />
+                            android:text="@string/HeadE" />
 
 
                     </LinearLayout>
@@ -160,16 +160,16 @@
                             android:enabled="false"
                             android:text="@string/HeadD"
                             android:textOff="@string/HeadD"
-                            android:textOn="Selected:" />
+                            android:textOn="@string/LineD" />
 
                         <TextView
                             android:id="@+id/SelectedView"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="NaOH"
+                            android:text="@string/sodium_hydroxide"
                             android:layout_toEndOf="@id/CustomTitBtn"
                             android:layout_marginStart="8dp"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:layout_centerVertical="true" />
 
                         <TextView
@@ -178,11 +178,11 @@
                             android:layout_height="wrap_content"
                             android:text="@string/Vol_declaration"
                             android:textSize="24sp"
-                            android:layout_toStartOf="@id/textinputlay1"
+                            android:layout_toStartOf="@id/VTxtLayout"
                             android:layout_centerVertical="true"/>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textinputlay1"
+                            android:id="@+id/VTxtLayout"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"

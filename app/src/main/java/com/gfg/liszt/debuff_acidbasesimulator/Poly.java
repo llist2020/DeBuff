@@ -2,7 +2,6 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 /**
  * @author L. List
  */
-class Poly implements Serializable {
+class Poly {
     double[] p;
 
     Poly(double[] poo){
@@ -28,7 +27,7 @@ class Poly implements Serializable {
     }
 
     // reviews the offered polynomial root (H+ concentration)
-    private boolean Check(double h, @NonNull Solution s) {
+    private static boolean Check(double h, @NonNull Solution s) {
         if (h<0){
             // negative concentration - impossible
             return(false);
@@ -44,11 +43,11 @@ class Poly implements Serializable {
                 double out = 0;
                 if (el.acid) {
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.ConstantsB(i, el) / (Math.pow(h, i));
+                        out += Solution.ConstantsB(i, el) / (Math.pow(h, i));
                     }
                 } else{
                     for (int i = 0; i < el.n + 1; i++) {
-                        out += el.ConstantsB(i, el) * (Math.pow((h / el.kw), i));
+                        out += Solution.ConstantsB(i, el) * (Math.pow((h / el.kw), i));
                     }
                 }
 
@@ -85,7 +84,7 @@ class Poly implements Serializable {
                 mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) ||
                         ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
 
-                if (mcons) el.SetConcentrations(c);
+                if (mcons) el.setConcentrations(c);
             } catch (Exception e) {
                 // there is no Component at this index
             }
@@ -100,12 +99,6 @@ class Poly implements Serializable {
 
     // returns a legitimate root, implementing Newton's method with given initial x
     double Solve(@NotNull Solution s) {
-
-        /*System.out.println("poly:");
-        for (double el: p){
-            System.out.println(el);
-        }*/
-
         double x = s.cu*s.n+1, cache = x*2;
         final double dx = 6;
         // in case the lower border value is a root
@@ -150,7 +143,7 @@ class Poly implements Serializable {
 
     // functions for adding and multiplying polynomials, used at the genesis
     // of the Poly p
-    double[] Add(@NonNull double[] a, @NonNull double[] b){
+    static double[] Add(@NonNull double[] a, @NonNull double[] b){
         if (a.length<b.length){
             double[] out = b.clone();
             for (int i=0; i<a.length; i++){
@@ -165,7 +158,7 @@ class Poly implements Serializable {
             return(out);
         }
     }
-    double[] Multiply(@NotNull double[] a, @NonNull double[] b){
+    static double[] Multiply(@NotNull double[] a, @NonNull double[] b){
         double[] out = new double[a.length+b.length-1];
         double[] outs;
         int l = out.length;

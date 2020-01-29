@@ -30,7 +30,8 @@ import androidx.core.content.ContextCompat;
 public class Solution implements Parcelable {
     private List<Component> comps;
     private double[] dic;
-    int n, TitInd;
+    int n;
+    private int TitInd;
     final double kw=Math.pow(10, -14);
     double cu = 0, l, V;
     private double cn = 0, h;
@@ -58,7 +59,7 @@ public class Solution implements Parcelable {
 }
 
     void AddComp(@NotNull User u, boolean sw, boolean initial){
-        if (u.slot < 4  || (u.slot == 5 && !initial && NoTitrantAssigned())){
+        if (u.slot < 4  || (!initial && NoTitrantAssigned())){
             int ind = 0;
             try{
                 if (!Entered.contains(u.slot)){
@@ -88,7 +89,7 @@ public class Solution implements Parcelable {
             comps.get(ind).V = V;
             comps.get(ind).acid = !sw;
             for(int i=0; i<Entered.size(); i++){
-                comps.get(i).SetCn(cn);
+                comps.get(i).setCn(cn);
             }
             if (u.ent){
                 u.ion = "A";
@@ -114,11 +115,14 @@ public class Solution implements Parcelable {
     public double getCn(){
         return(cn);
     }
-    double[] getDic(){
-        return(dic);
-    }
     Component getComponentByBtnId(int id){
         return(comps.get(Entered.indexOf(User.RButt(id))));
+    }
+    Component getTitrant(){
+        return(comps.get(TitInd));
+    }
+    int getTitrantSlot(){
+        return(Entered.get(TitInd));
     }
 
     // updates the data describing the (ideal) acid/base content
@@ -162,9 +166,8 @@ public class Solution implements Parcelable {
 
         double IndShift = AssignIndicator(out, indicator, context);
 
-        Poly p2 = new Poly(getDic());
         double v = 0;
-        MainFunction(p2);
+        MainFunction();
         int cache = h<IndShift ? 0 : 1;
         if (l != 0) {
             if (s.isChecked()) l = Math.abs(l);
@@ -174,23 +177,19 @@ public class Solution implements Parcelable {
 
         for (int i = 0; i<30*n; i++){
             Titrate(v, s, custom);
-            p2 = new Poly(getDic());
-            MainFunction(p2);
+            MainFunction();
             if (cache != (h<IndShift ? 0 : 1)){
                 Titrate(-99*v/100, s, custom);
                 for (int j = 0; j<98; j++){
-                    p2 = new Poly(getDic());
-                    MainFunction(p2);
+                    MainFunction();
                     lineEntries.get(h<IndShift ? 0 : 1).add(new Entry(Float.parseFloat(String.valueOf((i-0.99+j/100.0)*v)), (float)h));
                     Titrate(v/100, s, custom);
                 }
-                p2 = new Poly(getDic());
-                MainFunction(p2);
+                MainFunction();
                 lineEntries.get(0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
                 lineEntries.get(1).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
                 Titrate(v/100, s, custom);
-                p2 = new Poly(getDic());
-                MainFunction(p2);
+                MainFunction();
                 lineEntries.get(cache==0 ? 1 : 0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
             }
             cache = h<IndShift ? 0 : 1;
@@ -208,8 +207,7 @@ public class Solution implements Parcelable {
     ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s, boolean custom){
         ArrayList<Entry> lineEntries = new ArrayList<>();
         double cnCache = cn;
-        Poly p2;
-        double[] EqL = GetEq();
+        double[] EqL = fetchEq();
         double Eq = EqL[0] - EqL[1];
         if (l != 0) {
             if (s.isChecked()) {
@@ -228,8 +226,7 @@ public class Solution implements Parcelable {
 
         for (int i = 0; i<30*n; i++){
             Titrate(v, s, custom);
-            p2 = new Poly(getDic());
-            MainFunction(p2);
+            MainFunction();
             lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
         }
         Titrate(-30*n*v, s, custom);
@@ -291,7 +288,7 @@ public class Solution implements Parcelable {
         }
     }
 
-    double[] GetEq(){
+    double[] fetchEq(){
         double[] fin = new double[] {0, 0};
         for (Component comp: comps){
             int a = comp.acid ? 0 : 1;
@@ -300,7 +297,7 @@ public class Solution implements Parcelable {
         return(fin);
     }
 
-    private double AssignIndicator(ArrayList<LineDataSet> DataSets, int IndicatorCode, Context context){
+    private static double AssignIndicator(ArrayList<LineDataSet> DataSets, int IndicatorCode, Context context){
         switch (IndicatorCode){
             case 0: // phph
                 DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.transparent));
@@ -340,7 +337,7 @@ public class Solution implements Parcelable {
     // functions used to manipulate the provided data and generate
     // the building blocks of the polynomial
     @Contract(pure = true)
-    private double ConstantsA(int i, @NonNull Component c){
+    private static double ConstantsA(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<c.n-i+1; j++){
             out *= c.K[j];
@@ -348,7 +345,7 @@ public class Solution implements Parcelable {
         return(out);
     }
     @Contract(pure = true)
-    double ConstantsB(int i, @NonNull Component c){
+    static double ConstantsB(int i, @NonNull Component c){
         double out = 1;
         for (int j=0; j<(i+1); j++){
             out *= c.K[j];
@@ -356,7 +353,7 @@ public class Solution implements Parcelable {
         return(out);
     }
     @Contract(pure = true)
-    private void setUpA(@NonNull Component c){
+    private static void setUpA(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -367,7 +364,7 @@ public class Solution implements Parcelable {
         c.up = out;
     }
     @Contract(pure = true)
-    private void setDownA(@NonNull Component c){
+    private static void setDownA(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -377,7 +374,7 @@ public class Solution implements Parcelable {
         }
         c.down = out;
     }
-    private void setUpB(@NonNull Component c){
+    private static void setUpB(@NonNull Component c){
         double[] out = new double[c.n+2];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -387,7 +384,7 @@ public class Solution implements Parcelable {
         }
         c.up = out;
     }
-    private void setDownB(@NonNull Component c){
+    private static void setDownB(@NonNull Component c){
         double[] out = new double[c.n+1];
         for (int i = 0; i<out.length; i++){
             out[i] = 0;
@@ -398,7 +395,8 @@ public class Solution implements Parcelable {
         c.down = out;
     }
 
-    SpannableStringBuilder MainFunction(@NonNull Poly p){
+    SpannableStringBuilder MainFunction(){
+        Poly p;
 
         // setting up the polynomial, beginning with the permanent part
         dic = new double[n+3];
@@ -425,7 +423,7 @@ public class Solution implements Parcelable {
         // getting rid of the denominators
         for (Component C: comps) {
             try {
-                dic = p.Multiply(dic, C.down);
+                dic = Poly.Multiply(dic, C.down);
             }catch(Exception e){
                 // component error
             }
@@ -434,7 +432,7 @@ public class Solution implements Parcelable {
             for (int j = 0; j<4; j++){
                 if (i != j){
                     try {
-                        comps.get(i).up = p.Multiply(comps.get(i).up, comps.get(j).down);
+                        comps.get(i).up = Poly.Multiply(comps.get(i).up, comps.get(j).down);
                     }catch(Exception e){
                         // there is no Component at this index
                     }
@@ -445,7 +443,7 @@ public class Solution implements Parcelable {
         // generating the final polynomial
         for (Component C: comps){
             try{
-                dic = p.Add(C.up, dic);
+                dic = Poly.Add(C.up, dic);
             }catch(Exception e){
                 // there is no Component at this index
             }
@@ -453,7 +451,7 @@ public class Solution implements Parcelable {
 
         // the freshly generated polynomial is being transposed to the Poly format
         // in order to find the positive root that satisfies the laws of conservation
-        p.p = dic;
+        p = new Poly(dic);
         try {
             h = -Math.log10(p.Solve(this));
         } catch(Exception e){

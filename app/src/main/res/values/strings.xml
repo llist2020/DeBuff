@@ -11,6 +11,7 @@
     <string name="Vol_unit" translatable="false">ml</string>
     <string name="Vol_declaration" translatable="false"><i>V</i> =</string>
     <string name="Ph_declaration" translatable="false"><b>pH =</b></string>
+    <string name="HeadE">Edit</string>
     <string name="HeadD">Custom</string>
     <string name="HeadC">Graph</string>
     <string name="HeadB">Results</string>
@@ -18,6 +19,7 @@
     <string name="LineA">Against: </string>
     <string name="LineB">Concentration: </string>
     <string name="LineC">Volume: </string>
+    <string name="LineD">Selected: </string>
     <string name="Acid">acid</string>
     <string name="Base">base</string>
     <string name="WorkingOn">--</string>

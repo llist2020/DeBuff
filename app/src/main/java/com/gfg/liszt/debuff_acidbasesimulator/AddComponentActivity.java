@@ -66,7 +66,8 @@ public class AddComponentActivity extends AppCompatActivity {
             SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
             if (s1.Entered.size() != 0 && Request_Code!=3) {
                 VTxt.setEnabled(false);
-                VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
+                if (Request_Code == 4) VTxt.setText(String.format(Locale.US, "%.2f", s1.getTitrant().vl));
+                else VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
             }
             SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
             AcidBaseSwInp.setEnabled(false);
@@ -86,6 +87,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     cu = Inputs[1];
                     cn = Inputs[2];
                     V = Inputs[3];
+                    if (Request_Code > 2) u2.V = V;
                     for (EditText el : ETs) el.setEnabled(false);
                     SaveBtn.setEnabled(false);
                     AcidBaseSwInp.setEnabled(false);
@@ -94,7 +96,9 @@ public class AddComponentActivity extends AppCompatActivity {
                         if (!u2.ent) {
                             u2.V = V;
                             u2 = new User(n, cu, cn, u2);
-                        } else u2 = new User(n, cu, cn, V, "Mjau", u2.slot);
+                        } else{
+                            u2 = new User(n, cu, cn, V, "Mjau", u2.slot);
+                        }
                     } else {
                         if (u2.ent) u2 = new User(n, cu, cn, u2.V, "Mjau", u2.slot);
                         else u2 = new User(n, cu, cn, u2);
@@ -105,11 +109,7 @@ public class AddComponentActivity extends AppCompatActivity {
                         el.setError(null);
                     }
                     AcidBaseSwInp.setEnabled(false);
-                    if (u2.n > 0) {
-                        KTxtIL.setVisibility(View.VISIBLE);
-                        NextBtn.setVisibility(View.VISIBLE);
-                        NextBtn.performClick();
-                    } else if (Request_Code == 4){
+                    if (Request_Code == 4) {
                         s1.UpdateTitrant(u2.cn, u2.cu, u2.V);
 
                         Intent intent = new Intent();
@@ -117,9 +117,13 @@ public class AddComponentActivity extends AppCompatActivity {
                         intent.putExtra("Solution", s1);
                         setResult(RESULT_OK, intent);
                         finish();
+                    } else if (u2.n > 0) {
+                        KTxtIL.setVisibility(View.VISIBLE);
+                        NextBtn.setVisibility(View.VISIBLE);
+                        NextBtn.performClick();
                     } else{
                         if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4 || Request_Code==3) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
+                        else if (s1.Slot() < 4 || Request_Code == 3) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
                         u2.itt = -1;
 
                         Intent intent = new Intent();
@@ -163,8 +167,12 @@ public class AddComponentActivity extends AppCompatActivity {
                     }
 
                     if (u2.itt == u2.n) {
-                        if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
-                        else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
+                        if (s1.Entered.size() == 0 && Request_Code!=3){
+                            s1 = new Solution(u2, AcidBaseSwInp.isChecked());
+                        }
+                        else if (s1.Slot() < 4  || (s1.Slot() == 4 && Request_Code == 3)){
+                            s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
+                        }
 
                         u2.itt = -1;
                         Intent intent = new Intent();
@@ -342,8 +350,12 @@ public class AddComponentActivity extends AppCompatActivity {
         AllRight = true;
 
         for (int i = 0; i < 4; i++) {
-            if (!IgnList.contains(i)) try {
+            try{
                 out[i] = Double.parseDouble(ETs[i].getText().toString());
+            } catch(Exception e){
+                // error while parsing
+            }
+            if (!IgnList.contains(i)) try {
                 if (i == 0) {
                     if (out[i] == 0.0) {
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!");
@@ -421,17 +433,8 @@ public class AddComponentActivity extends AppCompatActivity {
     public void Initialize(int RC) {
         switch (RC) {
             case 1:
-                try {
-                    if (s1.Entered.size() != 0 && Request_Code!=3) {
-                        VTxt.setEnabled(false);
-                        VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
-                    }
-                    SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
-                    AcidBaseSwInp.setEnabled(false);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-
+                SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
+                AcidBaseSwInp.setEnabled(false);
                 for (EditText el : ETs) el.setVisibility(View.VISIBLE);
                 SaveBtn.setVisibility(View.VISIBLE);
                 u2.ion = "A";
@@ -485,10 +488,10 @@ public class AddComponentActivity extends AppCompatActivity {
                 break;
             case 4:
                 nTxt.setEnabled(false);
-                nTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).n));
+                nTxt.setText(String.valueOf(s1.getTitrant().n));
                 Initialize(1);
                 SlotBtn.setEnabled(false);
-                SlotBtn.setText(String.format(Locale.UK, "Titrant %d", (s1.Entered.get(s1.TitInd))+1));
+                SlotBtn.setText(String.format(Locale.UK, "Titrant %d", (s1.getTitrantSlot())+1));
                 break;
         }
     }

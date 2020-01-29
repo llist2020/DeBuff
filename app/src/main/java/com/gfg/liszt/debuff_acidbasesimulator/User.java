@@ -221,7 +221,7 @@ class User {
     // defines species' tags and displaying the right number of fields
     // needed for the concentration printout
     @Contract(pure = true)
-    SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c, boolean span){
+    static SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c, boolean span){
         int sups = 0, supe = 0;
         int subs = 0, sube = 0;
         String s = "";
@@ -310,7 +310,7 @@ class User {
         }
         return(out);
     }
-    void PrepareOutputs(TextView[] t, @NonNull Component c){
+    static void PrepareOutputs(TextView[] t, @NonNull Component c){
         for (int i=0; i<3*(c.n+1); i++){
             t[i].setVisibility(View.VISIBLE);
         }

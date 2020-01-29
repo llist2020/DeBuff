@@ -45,7 +45,6 @@ import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     private User u1;
-    private Poly p1;
     private Solution s1;
     private TextView[] ConcentrationTextViews;
     private EditText TitTxt, VolTitTxt;
@@ -158,16 +157,29 @@ public class MainActivity extends AppCompatActivity {
                         if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
                             ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError("Value out of range!");
                         } else{
+                            boolean tit = CustomTitBtn.isChecked() && s1.getTitrant().cu<Math.pow(10, -15);
                             s1.Titrate(Double.parseDouble(VolTitTxt.getText().toString()), AcidBaseSw, CustomTitBtn.isChecked());
-                            p1 = new Poly(s1.getDic());
-                            pHVw.setText(s1.MainFunction(p1));
-                            u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
+                            pHVw.setText(s1.MainFunction());
+                            User.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
                             s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
-
-                            getData(s1.getComponentByBtnId(id));
-                            barChart.clearAnimation();
-                            AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldEntries, Entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
-                            changer.run();
+                            if (tit){
+                                BarDataSet barDataSet = new BarDataSet(getData(s1.getTitrant()), "Species composition percent");
+                                barDataSet.setBarBorderWidth(0.9f);
+                                barDataSet.setColors(getColorSet(s1.n));
+                                BarData barData = new BarData(barDataSet);
+                                barData.setHighlightEnabled(false);
+                                IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(species);
+                                bChartX.setValueFormatter(formatter);
+                                barChart.setData(barData);
+                                barChart.setFitBars(true);
+                                barChart.animateY(500);
+                                barChart.invalidate();
+                            } else {
+                                getData(s1.getComponentByBtnId(id));
+                                barChart.clearAnimation();
+                                AnimateDataSetChanged changer = new AnimateDataSetChanged(200, barChart, oldEntries, Entries);changer.setInterpolator(new AccelerateInterpolator()); // optionally set the Interpolator
+                                changer.run();
+                            }
                         }
                     }
                 } catch(Exception e) {
@@ -185,14 +197,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (CustomTitBtn.isChecked()){
+                    AcidBaseSw.setEnabled(false);
+                    TitTxt.setEnabled(false);
+                    EditBtn.setVisibility(View.VISIBLE);
                     if (s1.NoTitrantAssigned()){
-                        AcidBaseSw.setEnabled(false);
-                        TitTxt.setEnabled(false);
-                        EditBtn.setVisibility(View.VISIBLE);
                         Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
                         intent.putExtra("req_c", REQUEST_CODE_Titrant);
                         intent.putExtra("Solution", s1);
                         startActivityForResult(intent, REQUEST_CODE_Titrant);
+                    } else{
+                        SelectedVw.setText(User.AssignConcentrations(s1.getTitrant().n, s1.getTitrant(), true), TextView.BufferType.SPANNABLE);
+                        VolTitTxt.setText(String.valueOf(s1.getTitrant().vl));
+                        TitTxt.setText(String.valueOf(s1.getTitrant().ul));
                     }
                 } else{
                     AcidBaseSw.setEnabled(true);
@@ -305,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
                             TitX.setGranularityEnabled(true);
                             TitX.setDrawGridLines(false);
                             TitX.setGranularity(Float.parseFloat(String.valueOf(
-                                    s1.V * (s1.GetEq()[0] - s1.GetEq()[1]) / s1.l / 5)));
+                                    s1.V * (s1.fetchEq()[0] - s1.fetchEq()[1]) / s1.l / 5)));
                             TitX.setLabelCount(6);
 
                             TitChart.setData(lineData);
@@ -337,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (s1.Entered.contains(User.RButt(id))){
                             Rst(ConcentrationTextViews);
-                            u1.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
+                            User.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
                             s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
 
                             BarDataSet barDataSet = new BarDataSet(getData(s1.getComponentByBtnId(id)), "Species composition percent");
@@ -360,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         ((FloatingActionsMenu) findViewById(R.id.FabMenu)).expand();
     }
 
@@ -377,7 +394,6 @@ public class MainActivity extends AppCompatActivity {
             ((FloatingActionsMenu) findViewById(R.id.FabMenu)).collapse();
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
-                p1 = new Poly(s1.getDic());
             }
             AcidBaseSw.setEnabled(true);
             TitTxt.setEnabled(true);
@@ -403,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (resultCode == RESULT_OK) {
                 Rst(ConcentrationTextViews);
-                pHVw.setText(s1.MainFunction(p1));
+                pHVw.setText(s1.MainFunction());
             }
             rBtnGrp.clearCheck();
             if (ch != -1) {
@@ -413,15 +429,13 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_CODE_Titrant || requestCode == REQUEST_CODE_Titrant_edit){
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
-                p1 = new Poly(s1.getDic());
-
                 Rst(ConcentrationTextViews);
-                pHVw.setText(s1.MainFunction(p1));
+                pHVw.setText(s1.MainFunction());
 
                 try{
-                    SelectedVw.setText(u1.AssignConcentrations(s1.getComps().get(s1.TitInd).n, s1.getComps().get(s1.TitInd), true), TextView.BufferType.SPANNABLE);
-                    VolTitTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).vl));
-                    TitTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).ul));
+                    SelectedVw.setText(User.AssignConcentrations(s1.getTitrant().n, s1.getTitrant(), true), TextView.BufferType.SPANNABLE);
+                    VolTitTxt.setText(String.valueOf(s1.getTitrant().vl));
+                    TitTxt.setText(String.valueOf(s1.getTitrant().ul));
                 } catch (Exception e){
                     // no titrant
                 }
@@ -485,8 +499,8 @@ public class MainActivity extends AppCompatActivity {
         Entries = new ArrayList<>();
         species = new String[Comp.n+1];
         for (int i = 0; i<Comp.n+1; i++){
-            Entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.GetConcentrations()[i]/Comp.cu))));
-            species[Comp.n-i] = String.valueOf(u1.AssignConcentrations(i, Comp, false));
+            Entries.add(new BarEntry(i, Float.parseFloat(String.valueOf(Comp.getConcentrations()[i]/Comp.cu))));
+            species[Comp.n-i] = String.valueOf(User.AssignConcentrations(i, Comp, false));
         }
         return(Entries);
     }

@@ -38,7 +38,7 @@ public class Component extends Solution implements Parcelable {
         titrant = false;
     }
 
-    void ConvertToTitrant(User u){
+    void ConvertToTitrant(@NotNull User u){
         vl = u.V;
         ul = cu;
         l = cn;
@@ -49,13 +49,13 @@ public class Component extends Solution implements Parcelable {
     public double getCn(){
         return(cn);
     }
-    double[] GetConcentrations(){
+    double[] getConcentrations(){
         return(Concentrations);
     }
-    void SetCn(double c) {
+    void setCn(double c) {
         cn = c;
     }
-    void SetConcentrations(double[] c){
+    void setConcentrations(double[] c){
         Concentrations = c;
     }
 
