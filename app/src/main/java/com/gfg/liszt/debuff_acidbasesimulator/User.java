@@ -26,7 +26,7 @@ class User {
     double[] K;
     boolean ent, acid;
     String a;
-    String ion;
+    String ion = "A";
     double V = 10;
     int[] Valid;
     int slot, indicator = 2;
@@ -38,9 +38,9 @@ class User {
         K = new double[n+1];
         K[0] = 1;
         V = Vol;
-        ResetValids();
+        ResetValid();
         ent = true;
-        ion = "A";
+        //ion = "A";
         if (!IonName.matches("Mjau")) ion = IonName;
         SetAcid(true);
         slot = Slot;
@@ -54,16 +54,16 @@ class User {
         K[0] = 1;
         V = u1.V;
         itt = u1.itt;
-        ResetValids();
+        ResetValid();
         ent = u1.ent;
-        if (ent) ion = "A";
-        else ion = u1.ion;
+        if (!ent) ion = u1.ion;
+        // "A";else ion =
         SetAcid(u1.acid);
         slot = u1.slot;
     }
     User (int a, int Slot){
-        ion = "A";
-        SetAcid(true);
+        //ion = "A";
+        SetAcid(a<14);
         ent = false;
         switch(a){
             case 0:
@@ -176,10 +176,24 @@ class User {
                 K[4] = Math.pow(10, -10.26);
                 ion = "EDTA";
                 break;
+            case 14:
+                n = 1;
+                K = new double[n+1];
+                K[0] = 1;
+                K[1] = Math.pow(10, -4.75);
+                ion = "NH4";
+                break;
+            case 15:
+                n = 1;
+                K = new double[n+1];
+                K[0] = 1;
+                K[1] = Math.pow(10, -3.36);
+                ion = "CH3NH3";
+                break;
         }
         itt=0;
         slot = Slot;
-        ResetValids();
+        ResetValid();
     }
 
     // setting the type of the Component which's data is being collected
@@ -200,7 +214,7 @@ class User {
         return(true);
     }
 
-    private void ResetValids(){
+    private void ResetValid(){
          Valid = new int[] {0, 0, 0, 0};
     }
 

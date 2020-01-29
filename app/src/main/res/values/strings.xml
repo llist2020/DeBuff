@@ -50,6 +50,9 @@
     <string name="boric_acid" translatable="false">H<sub>3</sub>BO<sub>3</sub></string>
     <string name="citric_acid" translatable="false">H<sub>3</sub>C<sub>6</sub>H<sub>5</sub>O<sub>7</sub></string>
     <string name="edta" translatable="false">EDTA</string>
+    <string name="ammonia" translatable="false">NH<sub>3</sub></string>
+    <string name="methylamine" translatable="false">CH<sub>3</sub>NH<sub>2</sub></string>
+    <string name="sodium_hydroxide" translatable="false">NaOH</string>
     <string name="ChooseA">MANUAL INPUT ACID DATA</string>
     <string name="ChooseB">OR CHOOSE FROM EXISTING</string>
     <string name="ChooseC">1-PROTIC</string>

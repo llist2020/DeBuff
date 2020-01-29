@@ -74,7 +74,7 @@ public class Solution implements Parcelable {
                 }
                 if (!initial){
                     TitInd = ind;
-                    comps.get(ind).ConvertToTitrant();
+                    comps.get(ind).ConvertToTitrant(u);
                 }
             } catch(Exception e){
                 // error
@@ -258,22 +258,14 @@ public class Solution implements Parcelable {
 
             if (Math.abs(cn)>Math.pow(10, -15)) CrntEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
             else CrntEqPt = 0;
-            System.out.println("Tagggg");
-            System.out.println(cn);
-            System.out.println(cn/C.cu);
-            System.out.println(Math.floor(cn/C.cu));
-            System.out.println(CrntEqPt);
 
             OverTitrated = CrntEqPt > C.n;
             if (!OverTitrated){
                 EqPtVol0 = (C.cu * (l<Math.pow(10, -15) ? -1 : 1) - cn) * V / l;
                 EqPtVol = Math.abs(C.cu*V/l);
-                System.out.println(EqPtVol0);
-                System.out.println(EqPtVol);
 
                 for (int i = CrntEqPt; i<C.n+1; i++){
                     if (i>0){
-                        System.out.println(i);
                         s = "";
                         if (i != C.n) {
                             s += (("(pK") + tag + i + ("+") + ("pK") + tag + (i + 1) + (")/2"));
@@ -333,11 +325,17 @@ public class Solution implements Parcelable {
     }
 
     @Contract(pure = true)
-    private boolean NoTitrantAssigned(){
+    boolean NoTitrantAssigned(){
         for (Component c: comps){
             if (c.titrant) return(false);
         }
         return(true);
+    }
+
+    void UpdateTitrant(double new_l, double new_ul, double new_vl){
+        comps.get(TitInd).l =  new_l;
+        comps.get(TitInd).ul =  new_ul;
+        comps.get(TitInd).vl =  new_vl;
     }
 
     // functions used to manipulate the provided data and generate
@@ -465,7 +463,6 @@ public class Solution implements Parcelable {
         }
 
         // finally, the pH is returned
-        // the concentrations of the Component at comps index 0 are to be displayed
         SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
         out.setSpan(new StyleSpan(Typeface.BOLD), 0,
                 out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

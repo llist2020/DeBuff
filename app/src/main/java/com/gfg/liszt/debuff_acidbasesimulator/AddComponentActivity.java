@@ -62,20 +62,18 @@ public class AddComponentActivity extends AppCompatActivity {
             Request_Code = getIntent().getIntExtra("req_c", 0);
             s1 = getIntent().getParcelableExtra("Solution");
             if (Request_Code!=3) u2 = new User(0, s1.Slot());
-            else u2 = new User(0, 5);
+            else u2 = new User(0, 4);
             SlotBtn.setText(String.format(getResources().getString(R.string.Slot), (u2.slot+1)));
             if (s1.Entered.size() != 0 && Request_Code!=3) {
                 VTxt.setEnabled(false);
                 VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
-            }// else if (choice == 0) AutoBtn.setEnabled(false);
+            }
             SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
             AcidBaseSwInp.setEnabled(false);
             Initialize(Request_Code);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-        //final int choice = Integer.parseInt(getIntent().getStringExtra("buttonClicked"));
 
         SaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +109,18 @@ public class AddComponentActivity extends AppCompatActivity {
                         KTxtIL.setVisibility(View.VISIBLE);
                         NextBtn.setVisibility(View.VISIBLE);
                         NextBtn.performClick();
-                    } else {
+                    } else if (Request_Code == 4){
+                        s1.UpdateTitrant(u2.cn, u2.cu, u2.V);
+
+                        Intent intent = new Intent();
+                        u2.ent = false;
+                        intent.putExtra("Solution", s1);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else{
                         if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
                         else if (s1.Slot() < 4 || Request_Code==3) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
                         u2.itt = -1;
-                        if (Request_Code==3) s1.getComps().get(s1.Entered.indexOf(u2.slot)).vl = V;
 
                         Intent intent = new Intent();
                         u2.ent = false;
@@ -160,7 +165,6 @@ public class AddComponentActivity extends AppCompatActivity {
                     if (u2.itt == u2.n) {
                         if (s1.Entered.size() == 0) s1 = new Solution(u2, AcidBaseSwInp.isChecked());
                         else if (s1.Slot() < 4) s1.AddComp(u2, AcidBaseSwInp.isChecked(), Request_Code!=3);
-                        if (Request_Code==3) s1.getComps().get(s1.Entered.indexOf(u2.slot)).vl = Double.parseDouble(VTxt.getText().toString());
 
                         u2.itt = -1;
                         Intent intent = new Intent();
@@ -281,7 +285,9 @@ public class AddComponentActivity extends AppCompatActivity {
                 builderA.setTitle("Choose a slot to write on");
 
                 // add a radio button list
-                String[] slots = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
+                String[] slots;
+                if (Request_Code == 3) slots = new String[] {"Slot 1", "Slot 2", "Slot 3", "Slot 4", "Titrant 5"};
+                else slots = new String[] {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
                 builderA.setSingleChoiceItems(slots, u2.slot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -340,25 +346,28 @@ public class AddComponentActivity extends AppCompatActivity {
                 out[i] = Double.parseDouble(ETs[i].getText().toString());
                 if (i == 0) {
                     if (out[i] == 0.0) {
-                        AllRight = false;
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("No dissociation will be observed!");
+                        ETs[0].setText("");
+                        AllRight = false;
+                        if (Request_Code != 3){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
+                            builder.setTitle("Notice");
+                            builder.setMessage("No dissociation will be observed!");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddComponentActivity.this);
-                        builder.setTitle("Notice");
-                        builder.setMessage("No dissociation will be observed!");
+                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ETs[0].setText("0");
+                                    IgnoreList.add(0);
+                                    SaveBtn.performClick();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", null);
 
-                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                IgnoreList.add(0);
-                                SaveBtn.performClick();
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", null);
-
-                        // create and show the alert dialog
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                            // create and show the alert dialog
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
                     }
                     if (out[i] > 6 || out[i] < 0) { // math limit;
                         ((TextInputLayout) (ETs[0].getParent()).getParent()).setError("DeBuff supports n€<0,7>!");
@@ -416,7 +425,7 @@ public class AddComponentActivity extends AppCompatActivity {
                     if (s1.Entered.size() != 0 && Request_Code!=3) {
                         VTxt.setEnabled(false);
                         VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
-                    }// else if (choice == 0) AutoBtn.setEnabled(false);
+                    }
                     SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
                     AcidBaseSwInp.setEnabled(false);
                 } catch (Exception e) {
@@ -429,22 +438,23 @@ public class AddComponentActivity extends AppCompatActivity {
                 u2.ent = true;
                 if ((s1.Entered.size() != 0) && !VTxt.getText().toString().matches(""))
                     IgnoreList.add(3);
-                nTxt.setEnabled(true);
+                if (Request_Code != 4){
+                    nTxt.setEnabled(true);
+                    nTxt.setText("");
+                } else IgnoreList.add(0);
                 AcidBaseSwInp.setEnabled(true);
-                nTxt.setText("");
                 break;
             case 2:
                 AlertDialog.Builder builderB = new AlertDialog.Builder(AddComponentActivity.this);
-                builderB.setTitle("Choose an acid");
+                builderB.setTitle("Select an acid or a base");
 
-                String[] slots = {getResources().getString(R.string.hydrogen_chloride), getResources().getString(R.string.hydrogen_fluoride), getResources().getString(R.string.hydrogen_cyanide), getResources().getString(R.string.acetic_acid), getResources().getString(R.string.hydrogen_sulfide), getResources().getString(R.string.carbonic_acid), getResources().getString(R.string.sulfuric_acid), getResources().getString(R.string.oxalic_acid), getResources().getString(R.string.phosphoric_acid), getResources().getString(R.string.arsenic_acid), getResources().getString(R.string.boric_acid), getResources().getString(R.string.citric_acid), getResources().getString(R.string.edta)};
-                builderB.setItems(slots, new DialogInterface.OnClickListener() {
+                String[] choices = {getResources().getString(R.string.hydrogen_chloride), getResources().getString(R.string.hydrogen_fluoride), getResources().getString(R.string.hydrogen_cyanide), getResources().getString(R.string.acetic_acid), getResources().getString(R.string.hydrogen_sulfide), getResources().getString(R.string.carbonic_acid), getResources().getString(R.string.sulfuric_acid), getResources().getString(R.string.oxalic_acid), getResources().getString(R.string.phosphoric_acid), getResources().getString(R.string.arsenic_acid), getResources().getString(R.string.boric_acid), getResources().getString(R.string.citric_acid), getResources().getString(R.string.edta), getResources().getString(R.string.ammonia), getResources().getString(R.string.methylamine)};
+                builderB.setItems(choices, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         u2 = new User(which + 1, u2.slot);
                         for (EditText el : ETs) el.setVisibility(View.VISIBLE);
                         nTxt.setEnabled(false);
-                        // privremeno
                         AcidBaseSwInp.setChecked(!u2.acid);
                         KTxt.setText(String.format(Locale.US, "%.2f", -Math.log10(u2.K[1])));
                         nTxt.setText(String.format(Locale.US, "%s", u2.n));
@@ -462,13 +472,24 @@ public class AddComponentActivity extends AppCompatActivity {
 
                 // create and show the alert dialog
                 dialogB = builderB.create();
+                dialogB.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(final DialogInterface arg0) {
+                    if (nTxt.getText().toString().matches("")) Initialize(1);
+                }
+            });
                 dialogB.show();
                 break;
             case 3:
                 Initialize(2);
-                // kak da zna kam sprema ??
+                break;
+            case 4:
+                nTxt.setEnabled(false);
+                nTxt.setText(String.valueOf(s1.getComps().get(s1.TitInd).n));
+                Initialize(1);
                 SlotBtn.setEnabled(false);
-                SlotBtn.setText("Titrant");
+                SlotBtn.setText(String.format(Locale.UK, "Titrant %d", (s1.Entered.get(s1.TitInd))+1));
+                break;
         }
     }
 }

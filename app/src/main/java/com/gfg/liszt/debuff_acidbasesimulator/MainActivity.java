@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView[] ConcentrationTextViews;
     private EditText TitTxt, VolTitTxt;
     private TextView pHVw, SelectedVw;
-    private Button TitBtn, GraphBtn;
+    private Button TitBtn, GraphBtn, EditBtn;
     private ToggleButton CustomTitBtn;
     private RadioGroup rBtnGrp;
     private Switch AcidBaseSw;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int REQUEST_CODE_Manual = 1;
     private final static int REQUEST_CODE_Auto = 2;
     private final static int REQUEST_CODE_Titrant = 3;
+    private final static int REQUEST_CODE_Titrant_edit = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         TitBtn = findViewById(R.id.TitBtn);
         CustomTitBtn = findViewById(R.id.CustomTitBtn);
         GraphBtn = findViewById(R.id.GraphBtn);
+        EditBtn = findViewById(R.id.EditBtn);
         rBtnGrp = findViewById(R.id.rBtnGrp);
         AcidBaseSw = findViewById(R.id.AcidBaseSw);
         pHVw = findViewById(R.id.pHVw);
@@ -147,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                     ((TextInputLayout) (VolTitTxt.getParent()).getParent()).setError(null);
                     int id = rBtnGrp.getCheckedRadioButtonId();
                     s1.l = Double.parseDouble(TitTxt.getText().toString());
-                    if (CustomTitBtn.isChecked()) s1.getComps().get(s1.TitInd).SetTitrantConcentration(s1.l);
                     if (Math.abs(s1.l) > 50) {
                         ((TextInputLayout) (TitTxt.getParent()).getParent()).setError("Value out of range!");
                         if (Double.parseDouble(VolTitTxt.getText().toString())>2000){
@@ -184,14 +185,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (CustomTitBtn.isChecked()){
-                    AcidBaseSw.setEnabled(false);
-                    Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
-                    intent.putExtra("req_c", REQUEST_CODE_Titrant);
-                    intent.putExtra("Solution", s1);
-                    startActivityForResult(intent, REQUEST_CODE_Titrant);
+                    if (s1.NoTitrantAssigned()){
+                        AcidBaseSw.setEnabled(false);
+                        TitTxt.setEnabled(false);
+                        EditBtn.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
+                        intent.putExtra("req_c", REQUEST_CODE_Titrant);
+                        intent.putExtra("Solution", s1);
+                        startActivityForResult(intent, REQUEST_CODE_Titrant);
+                    }
                 } else{
                     AcidBaseSw.setEnabled(true);
+                    TitTxt.setEnabled(true);
+                    EditBtn.setVisibility(View.GONE);
+                    if (AcidBaseSw.isChecked()) SelectedVw.setText(getResources().getString(R.string.sodium_hydroxide));
+                    else SelectedVw.setText(getResources().getString(R.string.hydrogen_chloride));
                 }
+            }
+        });
+
+        EditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
+                intent.putExtra("req_c", REQUEST_CODE_Titrant_edit);
+                intent.putExtra("Solution", s1);
+                startActivityForResult(intent, REQUEST_CODE_Titrant_edit);
             }
         });
 
@@ -306,8 +325,8 @@ public class MainActivity extends AppCompatActivity {
         AcidBaseSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) SelectedVw.setText("NaOH");
-                else SelectedVw.setText("HCl");
+                if (b) SelectedVw.setText(getResources().getString(R.string.sodium_hydroxide));
+                else SelectedVw.setText(getResources().getString(R.string.hydrogen_chloride));
             }
         });
 
@@ -365,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
             VolTitTxt.setEnabled(true);
             TitBtn.setEnabled(true);
             GraphBtn.setEnabled(true);
+            CustomTitBtn.setEnabled(true);
 
             int ch;
             try{
@@ -390,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
                 rBtnGrp.getChildAt(ch).setEnabled(true);
                 rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
             }
-        } else if (requestCode == REQUEST_CODE_Titrant){
+        } else if (requestCode == REQUEST_CODE_Titrant || requestCode == REQUEST_CODE_Titrant_edit){
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
                 p1 = new Poly(s1.getDic());
@@ -405,7 +425,16 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e){
                     // no titrant
                 }
-            }
+                for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
+                    try {
+                        if (s1.Entered.contains(i)) {
+                            rBtnGrp.getChildAt(i).setEnabled(true);
+                        } else rBtnGrp.getChildAt(i).setEnabled(false);
+                    } catch (Exception e) {
+                        rBtnGrp.getChildAt(i).setEnabled(false);
+                    }
+                }
+            } else CustomTitBtn.setChecked(false);
         }
     }
 

@@ -38,8 +38,8 @@ public class Component extends Solution implements Parcelable {
         titrant = false;
     }
 
-    void ConvertToTitrant(){
-        vl = V;
+    void ConvertToTitrant(User u){
+        vl = u.V;
         ul = cu;
         l = cn;
         cu = 0;
@@ -64,11 +64,6 @@ public class Component extends Solution implements Parcelable {
         cu = cu*V/(V+v);
         cn = cn * V/ (V + v);
         V += v;
-    }
-
-    void SetTitrantConcentration(double new_l){
-        l *= new_l/ul;
-        ul = new_l;
     }
 
     // a function setting the viewable concentration values
