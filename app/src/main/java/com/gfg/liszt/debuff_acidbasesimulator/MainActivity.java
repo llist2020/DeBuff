@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                             pHVw.setText(s1.MainFunction());
                             User.PrepareOutputs(ConcentrationTextViews, s1.getComponentByBtnId(id));
                             s1.getComponentByBtnId(id).PrintConcentrations(ConcentrationTextViews, s1.getCn());
-                            if (tit){
+                            if (s1.getTitrantSlot() == User.RButt(id) && tit){
                                 BarDataSet barDataSet = new BarDataSet(getData(s1.getTitrant()), "Species composition percent");
                                 barDataSet.setBarBorderWidth(0.9f);
                                 barDataSet.setColors(getColorSet(s1.n));
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (CustomTitBtn.isChecked()){
                     AcidBaseSw.setEnabled(false);
-                    TitTxt.setEnabled(false);
+                    ((TextInputLayout) TitTxt.getParent().getParent()).setEnabled(false);
                     EditBtn.setVisibility(View.VISIBLE);
                     if (s1.NoTitrantAssigned()){
                         Intent intent = new Intent(MainActivity.this, AddComponentActivity.class);
@@ -212,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else{
                     AcidBaseSw.setEnabled(true);
-                    TitTxt.setEnabled(true);
+                    ((TextInputLayout) TitTxt.getParent().getParent()).setEnabled(true);
+                    s1.getTitrant().vl = Double.parseDouble(VolTitTxt.getText().toString());
                     EditBtn.setVisibility(View.GONE);
                     if (AcidBaseSw.isChecked()) SelectedVw.setText(getResources().getString(R.string.sodium_hydroxide));
                     else SelectedVw.setText(getResources().getString(R.string.hydrogen_chloride));
@@ -396,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
                 s1 = dataIntent.getParcelableExtra("Solution");
             }
             AcidBaseSw.setEnabled(true);
-            TitTxt.setEnabled(true);
+            if (!CustomTitBtn.isChecked()) TitTxt.setEnabled(true);
             VolTitTxt.setEnabled(true);
             TitBtn.setEnabled(true);
             GraphBtn.setEnabled(true);
@@ -519,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
         return(out);
     }
     LineData PrepareGraphData(int Indicator){
-        ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this, false);
+        ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this, CustomTitBtn.isChecked());
         LineDataSet LDSa = DataSets.get(0);
         LineDataSet LDSb = DataSets.get(1);
 
