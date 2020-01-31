@@ -74,6 +74,7 @@ public class Solution implements Parcelable {
                     ind = Entered.indexOf(u.slot);
                 }
                 if (!initial){
+                    // adding a titrant component
                     TitInd = ind;
                     comps.get(ind).ConvertToTitrant(u);
                 }
@@ -100,11 +101,12 @@ public class Solution implements Parcelable {
         }
     }
 
-    // inputs entering another slot
+    // method returns the first free slot
     int Slot(){
         for (int i = 0; i<4; i++) if (!Entered.contains(i)) return(i);
         return(4);
     }
+
     private void FillSlot(int i){
         Entered.add(i);
     }
@@ -125,7 +127,7 @@ public class Solution implements Parcelable {
         return(Entered.get(TitInd));
     }
 
-    // updates the data describing the (ideal) acid/base content
+    // updates the data describing the acid/base content - simulation of titration
     void Titrate(double v, Switch s, boolean custom){
         if (l != 0 && !custom) {
             if (s.isChecked()) {
@@ -145,12 +147,13 @@ public class Solution implements Parcelable {
             comps.get(TitInd).cu += comps.get(TitInd).ul * v / (V + v);
             l = comps.get(TitInd).l;
         }
+        // JEL OVO NUZNO TU TRY??
         try {
             cn = (cn * V + l * v) / (V + v);
         } catch(Exception e){
             cn = cn * V / (V + v);
-            System.out.println(e.getMessage());
         }
+        // protection against errors induced by calculation
         if (Math.abs(cn)<Math.pow(10, -14)) cn = 0;
         V += v;
     }
@@ -180,6 +183,8 @@ public class Solution implements Parcelable {
             MainFunction();
             if (cache != (h<IndShift ? 0 : 1)){
                 Titrate(-99*v/100, s, custom);
+
+                // generates points - stores in lineEntries
                 for (int j = 0; j<98; j++){
                     MainFunction();
                     lineEntries.get(h<IndShift ? 0 : 1).add(new Entry(Float.parseFloat(String.valueOf((i-0.99+j/100.0)*v)), (float)h));
@@ -234,12 +239,13 @@ public class Solution implements Parcelable {
         return(lineEntries);
     }
 
+    // Shows equivalence points in the titration diagram
     void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
         x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
 
         double EqPtVol0, EqPtVol;
         boolean OverTitrated;
-        int CrntEqPt;
+        int CurrEqPt;
         String s, tag;
         LimitLine ll1;
         ArrayList<Integer> cl = new ArrayList<>();
@@ -252,21 +258,21 @@ public class Solution implements Parcelable {
         for (Component C: comps){
             tag = (C.acid) ? "a" : "b";
 
-            if (Math.abs(cn)>Math.pow(10, -15)) CrntEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
-            else CrntEqPt = 0;
+            if (Math.abs(cn)>Math.pow(10, -15)) CurrEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
+            else CurrEqPt = 0;
 
-            OverTitrated = CrntEqPt > C.n;
+            OverTitrated = CurrEqPt > C.n;
             if (!OverTitrated){
                 EqPtVol0 = (C.cu * (l<Math.pow(10, -15) ? -1 : 1) - cn) * V / l;
                 EqPtVol = Math.abs(C.cu*V/l);
 
-                for (int i = CrntEqPt; i<C.n+1; i++){
+                for (int i = CurrEqPt; i<C.n+1; i++){
                     if (i>0){
                         s = "";
                         if (i != C.n) {
                             s += (("(pK") + tag + i + ("+") + ("pK") + tag + (i + 1) + (")/2"));
                         }
-                        ll1 = new LimitLine((float) (EqPtVol0 + EqPtVol * (i-CrntEqPt-1)), s);
+                        ll1 = new LimitLine((float) (EqPtVol0 + EqPtVol * (i-CurrEqPt-1)), s);
 
                         ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
                         ll1.setLineWidth(4f);
@@ -288,6 +294,7 @@ public class Solution implements Parcelable {
         }
     }
 
+    // an aiding method in setting the diagram properties
     double[] fetchEq(){
         double[] fin = new double[] {0, 0};
         for (Component comp: comps){
@@ -297,21 +304,22 @@ public class Solution implements Parcelable {
         return(fin);
     }
 
+    // showing indicator colors in the diagram
     private static double AssignIndicator(ArrayList<LineDataSet> DataSets, int IndicatorCode, Context context){
         switch (IndicatorCode){
-            case 0: // phph
+            case 0: // phenolphthalein
                 DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.transparent));
                 DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.phenolphtalein));
                 DataSets.get(0).setFillAlpha(100);
                 DataSets.get(1).setFillAlpha(25);
                 return(8.2);
-            case 1: // MO
+            case 1: // methyl orange
                 DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.f1));
                 DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.f3));
                 DataSets.get(0).setFillAlpha(25);
                 DataSets.get(1).setFillAlpha(25);
                 return(3.5);
-            default:
+            default: // no indicator
                 DataSets.get(0).setFillColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 DataSets.get(1).setFillColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 DataSets.get(0).setFillAlpha(25);
@@ -334,8 +342,8 @@ public class Solution implements Parcelable {
         comps.get(TitInd).vl =  new_vl;
     }
 
-    // functions used to manipulate the provided data and generate
-    // the building blocks of the polynomial
+    // methods used to manipulate the provided data and generate
+    //  the building blocks of the polynomial
     @Contract(pure = true)
     private static double ConstantsA(int i, @NonNull Component c){
         double out = 1;
@@ -450,7 +458,7 @@ public class Solution implements Parcelable {
         }
 
         // the freshly generated polynomial is being transposed to the Poly format
-        // in order to find the positive root that satisfies the laws of conservation
+        //  in order to find the positive root that satisfies the laws of conservation
         p = new Poly(dic);
         try {
             h = -Math.log10(p.Solve(this));
@@ -461,12 +469,11 @@ public class Solution implements Parcelable {
 
         // finally, the pH is returned
         SpannableStringBuilder out = new SpannableStringBuilder(String.valueOf((double)Math.round(h * 1000d) / 1000d));
-        out.setSpan(new StyleSpan(Typeface.BOLD), 0,
-                out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        out.setSpan(new StyleSpan(Typeface.BOLD), 0, out.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return(out);
     }
 
-    // The code for passing Solution objects' data between activities
+    // The code for passing Solution instances' data between the activities
     @Override
     public int describeContents() {
         return 0;

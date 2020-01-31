@@ -196,7 +196,7 @@ class User {
         ResetValid();
     }
 
-    // setting the type of the Component which's data is being collected
+    // setting the type of the Component
     void SetAcid(boolean i){
         acid = i;
         if (acid){
@@ -218,8 +218,8 @@ class User {
          Valid = new int[] {0, 0, 0, 0};
     }
 
-    // defines species' tags and displaying the right number of fields
-    // needed for the concentration printout
+    // define species' tags and display the right number of fields
+    //  required for the concentration printout
     @Contract(pure = true)
     static SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c, boolean span){
         int sups = 0, supe = 0;
@@ -310,10 +310,12 @@ class User {
         }
         return(out);
     }
+
     static void PrepareOutputs(TextView[] t, @NonNull Component c){
         for (int i=0; i<3*(c.n+1); i++){
             t[i].setVisibility(View.VISIBLE);
         }
+        /*
         for (int i=c.n; i>-1; i--){
             SpannableStringBuilder out = new SpannableStringBuilder("c(");
             out.append(AssignConcentrations(i, c, true));
@@ -321,8 +323,10 @@ class User {
             out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             t[(c.n-i)*3].setText(out, TextView.BufferType.SPANNABLE);
         }
+        */
     }
 
+    // return the slot number by the corresponding
     @Contract(pure = true)
     static int RButt(int id) {
         switch (id) {
