@@ -326,7 +326,7 @@ class User {
         */
     }
 
-    // return the slot number by the corresponding
+    // return the slot number by the corresponding radio button's id
     @Contract(pure = true)
     static int RButt(int id) {
         switch (id) {
