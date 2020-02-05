@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 
@@ -40,7 +41,6 @@ class User {
         V = Vol;
         ResetValid();
         ent = true;
-        //ion = "A";
         if (!IonName.matches("Mjau")) ion = IonName;
         SetAcid(true);
         slot = Slot;
@@ -57,140 +57,111 @@ class User {
         ResetValid();
         ent = u1.ent;
         if (!ent) ion = u1.ion;
-        // "A";else ion =
         SetAcid(u1.acid);
         slot = u1.slot;
     }
     User (int a, int Slot){
-        //ion = "A";
         SetAcid(a<14);
         ent = false;
+        List<Double> k = new ArrayList<>();
+        k.add(1.0);
         switch(a){
             case 0:
-                K = new double[] {1};
                 ent = true;
                 break;
             case 1:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, 3);
+                k.add(Math.pow(10, 3));
                 ion = "Cl";
                 break;
             case 2:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -3.17);
+                k.add(Math.pow(10, -3.17));
                 ion = "F";
                 break;
             case 3:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -9.21);
+                k.add(Math.pow(10, -9.21));
                 ion = "CN";
                 break;
             case 4:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -4.756);
+                k.add(Math.pow(10, -4.756));
                 ion = "AcO";
                 break;
             case 5:
                 n = 2;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -7.04);
-                K[2] = Math.pow(10, -11.96);
+                k.add(Math.pow(10, -7.04));
+                k.add(Math.pow(10, -11.96));
                 ion = "S";
                 break;
             case 6:
                 n = 2;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -6.3);
-                K[2] = Math.pow(10, -10.32);
+                k.add(Math.pow(10, -6.3));
+                k.add(Math.pow(10, -10.32));
                 ion = "CO3";
                 break;
             case 7:
                 n = 2;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, 9);
-                K[2] = Math.pow(10, -1.96);
+                k.add(Math.pow(10, 9));
+                k.add(Math.pow(10, -1.96));
                 ion = "SO4";
                 break;
             case 8:
                 n = 2;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -1.2676);
-                K[2] = Math.pow(10, -4.2676);
+                k.add(Math.pow(10, -1.2676));
+                k.add(Math.pow(10, -4.2676));
                 ion = "C2O4";
                 break;
             case 9:
                 n = 3;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -2.124);
-                K[2] = Math.pow(10, -7.2);
-                K[3] = Math.pow(10, -11.89);
+                k.add(Math.pow(10, -2.124));
+                k.add(Math.pow(10, -7.2));
+                k.add(Math.pow(10, -11.89));
                 ion = "PO4";
                 break;
             case 10:
                 n = 3;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -2.19);
-                K[2] = Math.pow(10, -6.94);
-                K[3] = Math.pow(10, -11.5);
+                k.add(Math.pow(10, -2.19));
+                k.add(Math.pow(10, -6.94));
+                k.add(Math.pow(10, -11.5));
                 ion = "AsO4";
                 break;
             case 11:
                 n = 3;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -9.24);
-                K[2] = Math.pow(10, -12.4);
-                K[3] = Math.pow(10, -13.3);
+                k.add(Math.pow(10, -9.24));
+                k.add(Math.pow(10, -12.4));
+                k.add(Math.pow(10, -13.3));
                 ion = "BO3";
                 break;
             case 12:
                 n = 3;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -3.13);
-                K[2] = Math.pow(10, -4.76);
-                K[3] = Math.pow(10, -6.395);
+                k.add(Math.pow(10, -3.13));
+                k.add(Math.pow(10, -4.76));
+                k.add(Math.pow(10, -6.395));
                 ion = "C6H5O7";
                 break;
             case 13:
                 n = 4;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -1.99);
-                K[2] = Math.pow(10, -2.67);
-                K[3] = Math.pow(10, -6.16);
-                K[4] = Math.pow(10, -10.26);
+                k.add(Math.pow(10, -1.99));
+                k.add(Math.pow(10, -2.67));
+                k.add(Math.pow(10, -6.16));
+                k.add(Math.pow(10, -10.26));
                 ion = "EDTA";
                 break;
             case 14:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -4.75);
+                k.add(Math.pow(10, -4.75));
                 ion = "NH4";
                 break;
             case 15:
                 n = 1;
-                K = new double[n+1];
-                K[0] = 1;
-                K[1] = Math.pow(10, -3.36);
+                k.add(Math.pow(10, -3.36));
                 ion = "CH3NH3";
                 break;
         }
+        K = new double[n+1];
+        for (int i = 0; i<K.length; i++) K[i] = k.get(i);
         itt=0;
         slot = Slot;
         ResetValid();
@@ -208,7 +179,7 @@ class User {
         }
     }
 
-    // a simple function used at data collection
+    // returns true if all inputs are valid - in the right format and make sense
     boolean AllInputsValid(ArrayList<Integer> IgnList){
         for (int t = 0; t<Valid.length; t++) if ((Valid[t] == 0) && !IgnList.contains(t)) return (false);
         return(true);
@@ -219,7 +190,7 @@ class User {
     }
 
     // define species' tags and display the right number of fields
-    //  required for the concentration printout
+    //  (required for the concentration printout)
     @Contract(pure = true)
     static SpannableStringBuilder AssignConcentrations(int i, @NonNull Component c, boolean span){
         int sups = 0, supe = 0;
@@ -311,6 +282,7 @@ class User {
         return(out);
     }
 
+    // sets up the results' declarations
     static void PrepareOutputs(TextView[] t, @NonNull Component c){
         for (int i=0; i<3*(c.n+1); i++){
             t[i].setVisibility(View.VISIBLE);
@@ -324,7 +296,7 @@ class User {
         }
     }
 
-    // return the slot number by the corresponding radio button's id
+    // returns the slot number by the corresponding radio button's id
     @Contract(pure = true)
     static int RButt(int id) {
         switch (id) {

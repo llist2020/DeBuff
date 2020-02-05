@@ -58,6 +58,7 @@ public class Solution implements Parcelable {
     comps.get(0).ion = u.ion;
 }
 
+    // adds a component to an existing solution
     void AddComp(@NotNull User u, boolean sw, boolean initial){
         if (u.slot < 4  || (!initial && NoTitrantAssigned())){
             int ind = 0;
@@ -101,12 +102,12 @@ public class Solution implements Parcelable {
         }
     }
 
-    // method returns the first free slot
+    // returns the first free slot to enter a component
     int Slot(){
         for (int i = 0; i<4; i++) if (!Entered.contains(i)) return(i);
         return(4);
     }
-
+    // logs the filled slot
     private void FillSlot(int i){
         Entered.add(i);
     }
@@ -158,6 +159,7 @@ public class Solution implements Parcelable {
         V += v;
     }
 
+    // returns a list of points for the titration diagram
     ArrayList<LineDataSet> GenerateTitrationGraphData(Switch s, double titV, int indicator, Context context, boolean custom){
         ArrayList<ArrayList<Entry>> lineEntries = new ArrayList<>();
         lineEntries.add(new ArrayList<Entry>());
@@ -184,7 +186,7 @@ public class Solution implements Parcelable {
             if (cache != (h<IndShift ? 0 : 1)){
                 Titrate(-99*v/100, s, custom);
 
-                // generates points - stores in lineEntries
+                // generate points - store in lineEntries
                 for (int j = 0; j<98; j++){
                     MainFunction();
                     lineEntries.get(h<IndShift ? 0 : 1).add(new Entry(Float.parseFloat(String.valueOf((i-0.99+j/100.0)*v)), (float)h));
@@ -209,39 +211,9 @@ public class Solution implements Parcelable {
         return(out);
     }
 
-    ArrayList<Entry> GenerateAutoTitrationGraphData(Switch s, boolean custom){
-        ArrayList<Entry> lineEntries = new ArrayList<>();
-        double cnCache = cn;
-        double[] EqL = fetchEq();
-        double Eq = EqL[0] - EqL[1];
-        if (l != 0) {
-            if (s.isChecked()) {
-                // titrirano bazom
-
-                cn = EqL[1];
-                l = Math.abs(l);
-            } else {
-                // titrirano kiselinom
-
-                cn = EqL[0];
-                l = -Math.abs(l);
-            }
-        }
-        double v = Math.abs(V*Eq/l/(30*(n-0.5)));
-
-        for (int i = 0; i<30*n; i++){
-            Titrate(v, s, custom);
-            MainFunction();
-            lineEntries.add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
-        }
-        Titrate(-30*n*v, s, custom);
-        cn = cnCache;
-        return(lineEntries);
-    }
-
-    // Shows equivalence points in the titration diagram
+    // Highlights the equivalence points in the titration diagram
     void GenerateEquivalencePtsTags(@NotNull XAxis x, Context context){
-        x.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+        x.removeAllLimitLines(); // resets all the limit lines to avoid overlapping
 
         double EqPtVol0, EqPtVol;
         boolean OverTitrated;
@@ -294,7 +266,8 @@ public class Solution implements Parcelable {
         }
     }
 
-    // an aiding method in setting the diagram properties
+    // an aiding method in setting the diagram resolution
+    //  - determines the approximate intervals between the eq. pts.
     double[] fetchEq(){
         double[] fin = new double[] {0, 0};
         for (Component comp: comps){
@@ -304,7 +277,7 @@ public class Solution implements Parcelable {
         return(fin);
     }
 
-    // showing indicator colors in the diagram
+    // shows the selected indicator's colors in the diagram
     private static double AssignIndicator(ArrayList<LineDataSet> DataSets, int IndicatorCode, Context context){
         switch (IndicatorCode){
             case 0: // phenolphthalein
@@ -403,9 +376,8 @@ public class Solution implements Parcelable {
         c.down = out;
     }
 
+    // returns the pH of the solution
     SpannableStringBuilder MainFunction(){
-        Poly p;
-
         // setting up the polynomial, beginning with the permanent part
         dic = new double[n+3];
         for (int i = 0; i<dic.length; i++) dic[i] = 0;
@@ -445,7 +417,7 @@ public class Solution implements Parcelable {
 
         // the freshly generated polynomial is being transposed to the Poly format
         //  in order to find the positive root that satisfies the laws of conservation
-        p = new Poly(dic);
+        Poly p = new Poly(dic);
         try {
             h = -Math.log10(p.Solve(this));
         } catch(Exception e){

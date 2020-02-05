@@ -238,7 +238,6 @@ public class MainActivity extends AppCompatActivity {
                 GraphShow.setContentView(R.layout.dialog);
                 GraphShow.setTitle("Titration diagram");
                 CheckBox CBEqPts = GraphShow.findViewById(R.id.CheckBoxEqPts);
-                //CheckBox CBHalfEqPts = GraphShow.findViewById(R.id.CheckBoxHalfEqPts);
                 final LineChart TitChart = GraphShow.findViewById(R.id.TitChart);
                 TitChart.getAxisRight().setEnabled(false);
                 final XAxis TitX = TitChart.getXAxis();
@@ -309,14 +308,9 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             LineData lineData = PrepareGraphData(u1.indicator);
                             GraphShow.show();
-
                             TitChart.getDescription().setText("");
                             TitChart.getDescription().setTextSize(12);
                             TitChart.setDrawMarkers(true);
-                            // TitChart.setMarker(markerView(MainActivity.this));
-                            // TitChart.getAxisLeft().addLimitLine(lowerLimitLine(2,"Lower Limit",2,12, getColor("defaultOrange"),getColor("defaultOrange")));
-                            // TitChart.getAxisLeft().addLimitLine(upperLimitLine(5,"Upper Limit",2,12, getColor("defaultGreen"),getColor("defaultGreen")));
-
                             TitX.setPosition(XAxis.XAxisPosition.BOTTOM);
                             TitChart.animateX(600);
                             TitX.setGranularityEnabled(true);
@@ -324,7 +318,6 @@ public class MainActivity extends AppCompatActivity {
                             TitX.setGranularity(Float.parseFloat(String.valueOf(
                                     s1.V * (s1.fetchEq()[0] - s1.fetchEq()[1]) / s1.l / 5)));
                             TitX.setLabelCount(6);
-
                             TitChart.setData(lineData);
                         }
                     }
@@ -460,6 +453,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // opens the info menu
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         int id = item.getItemId();
@@ -484,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // resets the views
     void Rst(@NonNull TextView[] Texts){
         for (TextView el : Texts) {
             el.setVisibility(View.GONE); // Remove the yet-to-calculate values
@@ -495,6 +490,7 @@ public class MainActivity extends AppCompatActivity {
             Texts[i].setVisibility(View.VISIBLE);
         }
     }
+    // updates the values displayed in graph, while saving the old values
     private ArrayList getData(@NotNull Component Comp){
         oldEntries = Entries;
         Entries = new ArrayList<>();
@@ -505,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return(Entries);
     }
+    // returns shades of the same color
     static int manipulateColor(int color, float factor) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
@@ -519,6 +516,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return(out);
     }
+    // initiates the titration diagram
     LineData PrepareGraphData(int Indicator){
         ArrayList<LineDataSet> DataSets = s1.GenerateTitrationGraphData(AcidBaseSw, Double.parseDouble(VolTitTxt.getText().toString()), Indicator, MainActivity.this, CustomTitBtn.isChecked());
         LineDataSet LDSa = DataSets.get(0);
@@ -528,16 +526,14 @@ public class MainActivity extends AppCompatActivity {
             el.setAxisDependency(YAxis.AxisDependency.LEFT);
             el.setHighlightEnabled(true);
             el.setLineWidth(2);
-            // lineDataSet.setColor(getColor("defaultBlue"));
             el.setDrawHighlightIndicators(true);
             el.setHighLightColor(Color.RED);
             el.setValueTextSize(12);
-            // lineDataSet.setValueTextColor(getColor("primaryDark"));
             el.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             el.setDrawFilled(true);
             el.setDrawValues(false);
-            // el.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
-            // boju ispod crte ne diramo - odrazava boju indikatora
+            // el.setFillColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)); - disabled
+            //      ( method AssignIndicator takes care of it)
             el.setColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
             el.setDrawCircles(false);
         }

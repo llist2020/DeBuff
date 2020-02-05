@@ -59,14 +59,14 @@ public class Component extends Solution implements Parcelable {
         Concentrations = c;
     }
 
-    // pulling the new Solution constitution
+    // pulls the new Solution constitution
     void TitComp(double v){
         cu = cu*V/(V+v);
         cn = cn * V/ (V + v);
         V += v;
     }
 
-    // a function setting the viewable concentration values
+    // sets the viewable concentration values
     void PrintConcentrations(TextView[] Texts, Double Cn){
         DecimalFormat format = new DecimalFormat("0.###E0");
         for (int i=n; i>-1; i--){
@@ -85,7 +85,7 @@ public class Component extends Solution implements Parcelable {
             out.setSpan(new RelativeSizeSpan(0.75f), 3, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch(Exception e){
-            // no supers / other error
+            // no supers / other error?
         }
         Texts[21].setText(out);
         Texts[23].setText(String.valueOf((double)Math.round(V * 100.00d) / 100.00d));

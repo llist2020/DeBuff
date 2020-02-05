@@ -37,57 +37,48 @@ class Poly {
         List<Component> comps = s.getComps();
 
         for (int j = 0; j<s.Entered.size(); j++) {
-            try {
-                Component el = comps.get(j);
-                double[] c = new double[el.n+1];
-                double out = 0;
-                if (el.acid) {
-                    for (int i = 0; i < el.n + 1; i++) {
-                        out += Solution.ConstantsB(i, el) / (Math.pow(h, i));
-                    }
-                } else{
-                    for (int i = 0; i < el.n + 1; i++) {
-                        out += Solution.ConstantsB(i, el) * (Math.pow((h / el.kw), i));
-                    }
+            Component el = comps.get(j);
+            double[] c = new double[el.n+1];
+            double out = 0;
+            double k;
+            if (el.acid) {
+                for (int i = 0; i < el.n + 1; i++) {
+                    out += Solution.ConstantsB(i, el) / (Math.pow(h, i));
                 }
-
-                // calculates the concentration of the not dissociated specie
-                c[0] = el.cu / out;
-                out = 0;
-                if (el.acid) {
-                    // defines concentrations' values
-                    for (int i = 1; i < el.n + 1; i++) {
-                        c[i] = c[i - 1] * el.K[i] / h;
-                    }
-
-                    // calculates overall charge (acid)
-                    for (int i = 0; i < c.length; i++) {
-                        outa += c[i] * i;
-                    }
-                } else{
-                    // defines concentrations' values
-                    for (int i = 1; i < el.n + 1; i++) {
-                        c[i] = c[i - 1] * el.K[i] * h / el.kw;
-                    }
-                    // calculates overall charge (base)
-                    for (int i = 0; i < c.length; i++) {
-                        outb += c[i] * i;
-                    }
+            } else{
+                for (int i = 0; i < el.n + 1; i++) {
+                    out += Solution.ConstantsB(i, el) * (Math.pow((h / el.kw), i));
                 }
-
-                // calculates overall concentration
-                for (double CurrC: c) {
-                    out += CurrC;
-                }
-
-                // the law of mass conservation
-                mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) ||
-                        ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
-
-                if (mcons) el.setConcentrations(c);
-            } catch (Exception e) {
-                // there is no Component at this index
             }
+
+            // calculates the concentration of the non-dissociated specie
+            c[0] = el.cu / out;
+            out = 0;
+            if (el.acid) k = 1/h;
+            else k = h / el.kw;
+
+            // defines concentrations' values
+            for (int i = 1; i < el.n + 1; i++) {
+                c[i] = c[i - 1] * el.K[i] * k;
+            }
+            // calculates overall component's charge contribution
+            for (int i = 0; i < c.length; i++) {
+                out += c[i] * i;
+            }
+            if (el.acid) outa += out;
+            else outb += out;
+            out = 0;
+
+            // calculates overall concentration
+            for (double CurrC: c) {
+                out += CurrC;
+            }
+
+            // the law of mass conservation
+            mcons = (((double) Math.round(out * 10d) / 10d) == ((double) Math.round(el.cu * 10d) / 10d) ||
+                    ((double) Math.round(out * 100d) / 100d) == ((double) Math.round(el.cu * 100d) / 100d)) && mcons;
+
+            if (mcons) el.setConcentrations(c);
         }
 
         // the law of charge conservation
@@ -101,23 +92,19 @@ class Poly {
     double Solve(@NotNull Solution s) {
         double x = s.cu*s.n+1, cache = x*2;
         final double dx = 6;
-        // in case the lower border value is a root
-        if (Check(dx, s)) {
-            return (dx);
-        }
 
-        // generating the derived polynomial P_der = d(p(x))/d(x)
+        // generating the derived polynomial p_der = d(p(x))/d(x)
         double[] der = new double [p.length-1];
         for (int i = 0; i<der.length; i++){
             der[i] = p[i+1];
             der[i] *= i+1;
         }
-        Poly P_der = new Poly(der);
+        Poly p_der = new Poly(der);
 
         // implementing the Newton's method
-        x -= Cal(x)/P_der.Cal(x);
+        x -= Cal(x)/p_der.Cal(x);
         while (true){
-            x -= Cal(x)/P_der.Cal(x);
+            x -= Cal(x)/p_der.Cal(x);
 
             if ((Math.abs(x-cache) < Math.pow(10, Math.log(Math.abs(x)) / 2.3 - dx)) || (x==cache)){
                 if (Check(x, s)){

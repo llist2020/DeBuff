@@ -69,7 +69,7 @@ public class AddComponentActivity extends AppCompatActivity {
                 if (Request_Code == 4) VTxt.setText(String.format(Locale.US, "%.2f", s1.getTitrant().vl));
                 else VTxt.setText(String.format(Locale.US, "%.2f", s1.V));
             }
-            SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
+            SaveBtn.setEnabled(false);
             AcidBaseSwInp.setEnabled(false);
             Initialize(Request_Code);
         } catch (Exception e){
@@ -208,6 +208,7 @@ public class AddComponentActivity extends AppCompatActivity {
             }
         });
 
+        // automatic validation on input entering
         nTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -433,7 +434,7 @@ public class AddComponentActivity extends AppCompatActivity {
     public void Initialize(int RC) {
         switch (RC) {
             case 1:
-                SaveBtn.setEnabled(false); // inace bi se mogla samo promjenit boja il nekaj
+                SaveBtn.setEnabled(false); // as the inputs are not valid, it is not advised to continue
                 AcidBaseSwInp.setEnabled(false);
                 for (EditText el : ETs) el.setVisibility(View.VISIBLE);
                 SaveBtn.setVisibility(View.VISIBLE);
