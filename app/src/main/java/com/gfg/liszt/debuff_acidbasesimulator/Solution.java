@@ -415,47 +415,33 @@ public class Solution implements Parcelable {
 
         // setting up the fractions describing the Components
         for (Component C: comps) {
-            try {
-                if (C.acid){
-                    setUpA(C);
-                    setDownA(C);
-                } else{
-                    setUpB(C);
-                    setDownB(C);
-                }
-            } catch(Exception e){
-                // component error
+            if (C.acid){
+                setUpA(C);
+                setDownA(C);
+            } else{
+                setUpB(C);
+                setDownB(C);
             }
         }
 
         // getting rid of the denominators
         for (Component C: comps) {
-            try {
-                dic = Poly.Multiply(dic, C.down);
-            }catch(Exception e){
-                // component error
-            }
+            dic = Poly.Multiply(dic, C.down);
         }
-        for (int i = 0; i<4; i++){
-            for (int j = 0; j<4; j++){
+        for (int i = 0; i<comps.size(); i++){
+            for (int j = 0; j<comps.size(); j++){
                 if (i != j){
-                    try {
-                        comps.get(i).up = Poly.Multiply(comps.get(i).up, comps.get(j).down);
-                    }catch(Exception e){
-                        // there is no Component at this index
-                    }
+                    comps.get(i).up = Poly.Multiply(comps.get(i).up, comps.get(j).down);
                 }
             }
         }
 
         // generating the final polynomial
         for (Component C: comps){
-            try{
-                dic = Poly.Add(C.up, dic);
-            }catch(Exception e){
-                // there is no Component at this index
-            }
+            dic = Poly.Add(C.up, dic);
         }
+        System.out.println(465);
+        for (double el: dic) System.out.println(el);
 
         // the freshly generated polynomial is being transposed to the Poly format
         //  in order to find the positive root that satisfies the laws of conservation

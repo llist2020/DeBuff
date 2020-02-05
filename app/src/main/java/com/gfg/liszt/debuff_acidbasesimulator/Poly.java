@@ -117,7 +117,6 @@ class Poly {
         // implementing the Newton's method
         x -= Cal(x)/P_der.Cal(x);
         while (true){
-
             x -= Cal(x)/P_der.Cal(x);
 
             if ((Math.abs(x-cache) < Math.pow(10, Math.log(Math.abs(x)) / 2.3 - dx)) || (x==cache)){
@@ -128,7 +127,7 @@ class Poly {
                     if (x>0){
                         x = Math.pow(10, -15);
                     } else{
-                        // this outcome is not prefered
+                        // this outcome is not preferred
                         x = 100;
                     }
                 }

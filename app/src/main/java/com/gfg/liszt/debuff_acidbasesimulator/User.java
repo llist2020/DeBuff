@@ -315,7 +315,6 @@ class User {
         for (int i=0; i<3*(c.n+1); i++){
             t[i].setVisibility(View.VISIBLE);
         }
-        /*
         for (int i=c.n; i>-1; i--){
             SpannableStringBuilder out = new SpannableStringBuilder("c(");
             out.append(AssignConcentrations(i, c, true));
@@ -323,7 +322,6 @@ class User {
             out.setSpan(new StyleSpan(Typeface.ITALIC), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             t[(c.n-i)*3].setText(out, TextView.BufferType.SPANNABLE);
         }
-        */
     }
 
     // return the slot number by the corresponding radio button's id

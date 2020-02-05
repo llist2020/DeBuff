@@ -467,10 +467,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.infomenubtn) {
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(this, 0);
-            // SLIKU PRIMJERA INPUTA ??
-            builder.setTitle("Welcome to DeBuff v69!")
+
+            builder.setTitle("Welcome to DeBuff v2.0!")
                     .setMessage("DeBuff is an acid/base solution simulator.\n" +
-                            "You can choose an acid and study its properties or you can manually input acid or base data (which is available on the Internet).\n" +
+                            "You can choose an acid or a base and study its properties or you can manually input acid or base data (which is available on the Internet).\n" +
                             "Afterwards, addition of another solution component (tap the plus button), along with titration simulation is available.\n" +
                             "*Some logical bounds have been set, so you will be warned if you try to cross them. For more info google 'ionic strength'.\n\n" +
                             "Developed by Luka List\nDesign by Tin Prvčić\n© 2019")
