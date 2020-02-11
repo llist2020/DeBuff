@@ -415,8 +415,6 @@ public class Solution implements Parcelable {
         for (Component C: comps){
             dic = Poly.Add(C.up, dic);
         }
-        System.out.println(465);
-        for (double el: dic) System.out.println(el);
 
         // the freshly generated polynomial is being transposed to the Poly format
         //  in order to find the positive root that satisfies the laws of conservation

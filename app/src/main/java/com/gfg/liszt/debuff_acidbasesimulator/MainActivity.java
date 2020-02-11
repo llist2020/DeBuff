@@ -386,9 +386,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_Auto || requestCode == REQUEST_CODE_Manual) {
             ((FloatingActionsMenu) findViewById(R.id.FabMenu)).collapse();
-            if (resultCode == RESULT_OK) {
-                s1 = dataIntent.getParcelableExtra("Solution");
-            }
+            if (resultCode == RESULT_OK) s1 = dataIntent.getParcelableExtra("Solution");
             AcidBaseSw.setEnabled(true);
             if (!CustomTitBtn.isChecked()) TitTxt.setEnabled(true);
             VolTitTxt.setEnabled(true);
@@ -396,54 +394,17 @@ public class MainActivity extends AppCompatActivity {
             GraphBtn.setEnabled(true);
             CustomTitBtn.setEnabled(true);
 
-            int ch;
-            try{
-                ch = s1.Entered.get(s1.Entered.size()-1);
-            } catch(Exception e){
-                ch = -1;
-            }
-            for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
-                try {
-                    if (s1.Entered.contains(i)) {
-                        rBtnGrp.getChildAt(i).setEnabled(true);
-                    } else rBtnGrp.getChildAt(i).setEnabled(false);
-                } catch (Exception e) {
-                    rBtnGrp.getChildAt(i).setEnabled(false);
-                }
-            }
-            if (resultCode == RESULT_OK) {
-                Rst(ConcentrationTextViews);
-                pHVw.setText(s1.MainFunction());
-            }
-            rBtnGrp.clearCheck();
-            if (ch != -1) {
-                rBtnGrp.getChildAt(ch).setEnabled(true);
-                rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
-            }
         } else if (requestCode == REQUEST_CODE_Titrant || requestCode == REQUEST_CODE_Titrant_edit){
             if (resultCode == RESULT_OK) {
                 s1 = dataIntent.getParcelableExtra("Solution");
-                Rst(ConcentrationTextViews);
-                pHVw.setText(s1.MainFunction());
-
-                try{
+                if (!s1.NoTitrantAssigned()){
                     SelectedVw.setText(User.AssignConcentrations(s1.getTitrant().n, s1.getTitrant(), true), TextView.BufferType.SPANNABLE);
                     VolTitTxt.setText(String.valueOf(s1.getTitrant().vl));
                     TitTxt.setText(String.valueOf(s1.getTitrant().ul));
-                } catch (Exception e){
-                    // no titrant
-                }
-                for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
-                    try {
-                        if (s1.Entered.contains(i)) {
-                            rBtnGrp.getChildAt(i).setEnabled(true);
-                        } else rBtnGrp.getChildAt(i).setEnabled(false);
-                    } catch (Exception e) {
-                        rBtnGrp.getChildAt(i).setEnabled(false);
-                    }
                 }
             } else CustomTitBtn.performClick();
         }
+        UpdateFields();
     }
 
     // create an action bar button
@@ -539,5 +500,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return(new LineData(LDSa, LDSb));
+    }
+    void UpdateFields(){
+        int ch;
+        try{
+            ch = s1.Entered.get(s1.Entered.size()-1);
+            if (ch == 4) ch = s1.Entered.get(s1.Entered.size()-2);
+        } catch(Exception e){
+            ch = -1;
+        }
+        for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
+            try {
+                if (s1.Entered.contains(i)) {
+                    rBtnGrp.getChildAt(i).setEnabled(true);
+                } else rBtnGrp.getChildAt(i).setEnabled(false);
+            } catch (Exception e) {
+                rBtnGrp.getChildAt(i).setEnabled(false);
+            }
+        }
+        if (s1.getComps().size() != 0) {
+            Rst(ConcentrationTextViews);
+            pHVw.setText(s1.MainFunction());
+        }
+        rBtnGrp.clearCheck();
+        if (ch != -1 && ch != 4) {
+            rBtnGrp.getChildAt(ch).setEnabled(true);
+            rBtnGrp.check(rBtnGrp.getChildAt(ch).getId());
+        }
     }
 }
