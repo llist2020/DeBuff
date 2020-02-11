@@ -40,6 +40,7 @@ public class AddComponentActivity extends AppCompatActivity {
     EditText VTxt, KTxt, nTxt, cuTxt, cnTxt;
     EditText[] ETs;
     TextInputLayout KTxtIL;
+    TextView Heading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class AddComponentActivity extends AppCompatActivity {
         VTxt = findViewById(R.id.VTxt);
         KTxtIL = findViewById(R.id.KTxtIL);
         KTxt = findViewById(R.id.KTxt);
+        Heading = findViewById(R.id.textView13);
         ETs = new EditText[] {nTxt, cuTxt, cnTxt, VTxt};
         IgnoreList = new ArrayList<>();
 
@@ -97,10 +99,10 @@ public class AddComponentActivity extends AppCompatActivity {
                             u2.V = V;
                             u2 = new User(n, cu, cn, u2);
                         } else{
-                            u2 = new User(n, cu, cn, V, "Mjau", u2.slot);
+                            u2 = new User(n, cu, cn, V, "", u2.slot);
                         }
                     } else {
-                        if (u2.ent) u2 = new User(n, cu, cn, u2.V, "Mjau", u2.slot);
+                        if (u2.ent) u2 = new User(n, cu, cn, u2.V, "", u2.slot);
                         else u2 = new User(n, cu, cn, u2);
                     }
                     u2.SetAcid(!AcidBaseSwInp.isChecked());
@@ -485,9 +487,11 @@ public class AddComponentActivity extends AppCompatActivity {
                 dialogB.show();
                 break;
             case 3:
+                Heading.setText("Define a titrant:");
                 Initialize(2);
                 break;
             case 4:
+                Heading.setText("Edit the titrant:");
                 nTxt.setEnabled(false);
                 nTxt.setText(String.valueOf(s1.getTitrant().n));
                 Initialize(1);

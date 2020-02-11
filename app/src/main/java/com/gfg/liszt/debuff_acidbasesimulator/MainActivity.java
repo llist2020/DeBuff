@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         // setup the alert builder
                         AlertDialog.Builder builderA = new android.app.AlertDialog.Builder(MainActivity.this);
-                        builderA.setTitle("Choose a slot to write on");
+                        builderA.setTitle("Choose an indicator:");
 
                         // add a radio button list
                         String[] indicators = {"Phenolphthalein", "Methyl Orange", "none"};
@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                         rBtnGrp.getChildAt(i).setEnabled(false);
                     }
                 }
-            } else CustomTitBtn.setChecked(false);
+            } else CustomTitBtn.performClick();
         }
     }
 

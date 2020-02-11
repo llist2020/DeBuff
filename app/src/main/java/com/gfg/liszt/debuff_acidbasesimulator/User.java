@@ -42,7 +42,7 @@ class User {
         ResetValid();
         ent = true;
         if (!IonName.matches("Mjau")) ion = IonName;
-        SetAcid(true);
+        //SetAcid(true);
         slot = Slot;
     }
     User(int in, double icu, double icn, User u1){

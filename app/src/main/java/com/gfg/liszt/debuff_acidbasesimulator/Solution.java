@@ -228,38 +228,41 @@ public class Solution implements Parcelable {
         cl.add(R.color.rot);
 
         for (Component C: comps){
-            tag = (C.acid) ? "a" : "b";
+            if (C.acid){ // acids' eq. pts. are shown only
+                //tag = (C.acid) ? "a" : "b";
+                tag = "a";
 
-            if (Math.abs(cn)>Math.pow(10, -15)) CurrEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
-            else CurrEqPt = 0;
+                if (Math.abs(cn)>Math.pow(10, -15)) CurrEqPt = (int) Math.floor(cn / C.cu) * (l<Math.pow(10, -15) ? -1 : 1);
+                else CurrEqPt = 0;
 
-            OverTitrated = CurrEqPt > C.n;
-            if (!OverTitrated){
-                EqPtVol0 = (C.cu * (l<Math.pow(10, -15) ? -1 : 1) - cn) * V / l;
-                EqPtVol = Math.abs(C.cu*V/l);
+                OverTitrated = CurrEqPt > C.n;
+                if (!OverTitrated){
+                    EqPtVol0 = (C.cu * (l<Math.pow(10, -15) ? -1 : 1) - cn) * V / l;
+                    EqPtVol = Math.abs(C.cu*V/l);
 
-                for (int i = CurrEqPt; i<C.n+1; i++){
-                    if (i>0){
-                        s = "";
-                        if (i != C.n) {
-                            s += (("(pK") + tag + i + ("+") + ("pK") + tag + (i + 1) + (")/2"));
+                    for (int i = CurrEqPt; i<C.n+1; i++){
+                        if (i>0){
+                            s = "";
+                            if (i != C.n) {
+                                s += (("(pK") + tag + i + ("+") + ("pK") + tag + (i + 1) + (")/2"));
+                            }
+                            ll1 = new LimitLine((float) (EqPtVol0 + EqPtVol * (i-CurrEqPt-1)), s);
+
+                            ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
+                            ll1.setLineWidth(4f);
+                            ll1.enableDashedLine(10f, 10f, 0f);
+                            if (i % 2 == 0) {
+                                ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+                            } else {
+                                ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+                            }
+
+                            ll1.setTextSize(10f);
+                            ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+                            ll1.setLineColor(cl.get(comps.indexOf(C)));
+
+                            x.addLimitLine(ll1);
                         }
-                        ll1 = new LimitLine((float) (EqPtVol0 + EqPtVol * (i-CurrEqPt-1)), s);
-
-                        ll1.setLineColor(context.getResources().getColor(cl.get(comps.indexOf(C))));
-                        ll1.setLineWidth(4f);
-                        ll1.enableDashedLine(10f, 10f, 0f);
-                        if (i % 2 == 0) {
-                            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-                        } else {
-                            ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-                        }
-
-                        ll1.setTextSize(10f);
-                        ll1.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
-                        ll1.setLineColor(cl.get(comps.indexOf(C)));
-
-                        x.addLimitLine(ll1);
                     }
                 }
             }
