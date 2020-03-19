@@ -404,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else CustomTitBtn.performClick();
         }
-        UpdateFields();
+        if (s1.getComps().size() > 0) UpdateFields();
     }
 
     // create an action bar button

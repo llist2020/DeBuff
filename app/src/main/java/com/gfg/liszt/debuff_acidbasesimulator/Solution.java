@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat;
  */
 
 public class Solution implements Parcelable {
-    private List<Component> comps;
+    private List<Component> comps = new ArrayList<>();
     private double[] dic;
     int n;
     private int TitInd;
@@ -41,7 +41,6 @@ public class Solution implements Parcelable {
         n=0;
     }
     Solution(@NotNull User u, boolean sw){
-    comps = new ArrayList<>();
     comps.add(new Component(u));
     FillSlot(u.slot);
     cu = u.cu;
