@@ -1,4 +1,3 @@
 # DeBuff
-Samo bajo hemija
-
-Zakaj readme?
+Algorithm-Luka List
+Design-Tin Prvcic

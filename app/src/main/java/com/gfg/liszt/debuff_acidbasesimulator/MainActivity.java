@@ -511,9 +511,7 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = rBtnGrp.getChildCount() - 1; i > -1; i--) {
             try {
-                if (s1.Entered.contains(i)) {
-                    rBtnGrp.getChildAt(i).setEnabled(true);
-                } else rBtnGrp.getChildAt(i).setEnabled(false);
+                rBtnGrp.getChildAt(i).setEnabled(s1.Entered.contains(i));
             } catch (Exception e) {
                 rBtnGrp.getChildAt(i).setEnabled(false);
             }

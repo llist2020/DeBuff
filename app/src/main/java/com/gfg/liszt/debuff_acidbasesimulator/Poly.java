@@ -2,6 +2,7 @@ package com.gfg.liszt.debuff_acidbasesimulator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -130,27 +131,25 @@ class Poly {
     // functions for adding and multiplying polynomials, used at the genesis
     // of the Poly p
     static double[] Add(@NonNull double[] a, @NonNull double[] b){
+        double[] out;
         if (a.length<b.length){
-            double[] out = b.clone();
+            out = b.clone();
             for (int i=0; i<a.length; i++){
                 out[i] += a[i];
             }
-            return(out);
         } else{
-            double[] out = a.clone();
+            out = a.clone();
             for (int i=0; i<b.length; i++){
                 out[i] += b[i];
             }
-            return(out);
         }
+        return(out);
     }
     static double[] Multiply(@NotNull double[] a, @NonNull double[] b){
         double[] out = new double[a.length+b.length-1];
         double[] outs;
         int l = out.length;
-        for (int i = 0; i<out.length; i++){
-            out[i] = 0;
-        }
+        Arrays.fill(out, 0);
         for (int i = 0; i<a.length; i++){
             for (int j = 0; j<b.length; j++){
                 out[i+j] += a[i]*b[j];

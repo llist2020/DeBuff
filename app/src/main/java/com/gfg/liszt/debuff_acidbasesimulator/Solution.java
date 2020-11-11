@@ -182,6 +182,7 @@ public class Solution implements Parcelable {
         for (int i = 0; i<30*n; i++){
             Titrate(v, s, custom);
             MainFunction();
+            float titted = Float.parseFloat(String.valueOf(i * v));
             if (cache != (h<IndShift ? 0 : 1)){
                 Titrate(-99*v/100, s, custom);
 
@@ -192,15 +193,15 @@ public class Solution implements Parcelable {
                     Titrate(v/100, s, custom);
                 }
                 MainFunction();
-                lineEntries.get(0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
-                lineEntries.get(1).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+                lineEntries.get(0).add(new Entry(titted, (float)h));
+                lineEntries.get(1).add(new Entry(titted, (float)h));
                 Titrate(v/100, s, custom);
                 MainFunction();
-                lineEntries.get(cache==0 ? 1 : 0).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+                lineEntries.get(cache==0 ? 1 : 0).add(new Entry(titted, (float)h));
             }
             cache = h<IndShift ? 0 : 1;
-            lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
-            lineEntries.get(cache).add(new Entry(Float.parseFloat(String.valueOf(i*v)), (float)h));
+            lineEntries.get(cache).add(new Entry(titted, (float)h));
+            lineEntries.get(cache).add(new Entry(titted, (float)h));
         }
         Titrate(-30*n*v, s, custom);
 
